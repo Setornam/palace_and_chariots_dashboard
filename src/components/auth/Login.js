@@ -2,7 +2,9 @@ import React, {useState, Component} from 'react';
 import ReactDOM from "react-dom";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './firebase';
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom';
+import logoImage from '../../images/logo.png'; // Import the logo image
+
  
 const Login = () => {
     const navigate = useNavigate();
@@ -32,7 +34,7 @@ const Login = () => {
                 <section style={mainContainer}>
                     <div style = {subContainer}>
                     <div style={logoContainer}>
-                        <h1>Palace and Chariots</h1>
+                        <img src={logoImage} alt="Logo" className="logo-image" />                    
                     </div>
                     <div style={formContainer}>                                            
                         <h1 style={title}> User Login </h1>                       
@@ -93,6 +95,18 @@ const Login = () => {
                         </p>
                                                    
                     </div>
+
+                    <style>
+                        {`
+
+                            .logo-image {
+                            width: 138px; /* Set the width of the logo */
+                            height: auto; /* Maintain aspect ratio */
+                            }
+
+            
+                        `}
+                    </style>
                     </div>
                 </section>
             </main>

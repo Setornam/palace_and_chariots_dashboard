@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {  useNavigate } from 'react-router-dom';
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from './firebase';
+import logoImage from '../../images/logo.png'; // Import the logo image
+
  
 const Signup = () => {
     const navigate = useNavigate();
@@ -35,7 +37,7 @@ const Signup = () => {
             <section style={mainContainer}>
                 <div style = {subContainer}>
                     <div style={logoContainer}>
-                        <h1>Palace and Chariots</h1>
+                        <img src={logoImage} alt="Logo" className="logo-image" /> 
                     </div>
                     <div style ={formContainer}>                  
                         <h1 style={title}> User Registration </h1>                                                                            
@@ -96,6 +98,19 @@ const Signup = () => {
                        
                                           
                     </div>
+
+                        <style>
+                            {`
+
+                                .logo-image {
+                                width: 138px; /* Set the width of the logo */
+                                height: auto; /* Maintain aspect ratio */
+                                }
+
+                
+                            `}
+                        </style>
+
                 </div>
             </section>
         </main>

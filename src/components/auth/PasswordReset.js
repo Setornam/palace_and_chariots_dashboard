@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import logoImage from '../../images/logo.png'; // Import the logo image
+
 
 const PasswordReset = () => {
     const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ const PasswordReset = () => {
         <section style={mainContainer}>
             <div style = {subContainer}>
             <div style={logoContainer}>
-                <h1>Palace and Chariots</h1>
+              <img src={logoImage} alt="Logo" className="logo-image" /> 
             </div>
             <div style={formContainer}>                                            
                 <h1 style={title}> Reset Password </h1> 
@@ -55,6 +57,19 @@ const PasswordReset = () => {
                     </div>                               
                 </form>                             
             </div>
+
+                      <style>
+                        {`
+
+                            .logo-image {
+                            width: 138px; /* Set the width of the logo */
+                            height: auto; /* Maintain aspect ratio */
+                            }
+
+            
+                        `}
+                    </style>
+
             </div>
         </section>
     </main>
