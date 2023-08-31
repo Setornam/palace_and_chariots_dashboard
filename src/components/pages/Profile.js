@@ -42,7 +42,12 @@ const Profile = () => {
           margin-left: 100px;
         }
         .profile {
-            width: 100%;
+            width: 1610px;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 7px 0 0 7px;
+            padding-top: 10px
+
         }
         .tab-header {
           display: flex;
@@ -50,14 +55,14 @@ const Profile = () => {
           height: 43px;
           align-items: center;
           width: 200%;
-          padding: 0 550px 0 100px;
+          padding: 0 100px 0 100px;
 
         }
         .tab {
           color: white;
           font-size: 14px;
           font-weight: 400;
-          margin-right: 12%;
+          margin-right: 3.45%;
           cursor: pointer;
           transition: color 0.3s;
         }

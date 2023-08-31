@@ -46,12 +46,11 @@ const Admin = () => {
           .content-container {
             display: flex;
             flex: 6;
-            background-color: #ffffff;
+            background-color: #ECF0F4;
             height: 100vh;
             z-index: 0;
             padding: 0;
             margin-top: 80px;
-            border-radius: 7px 0 0 7px;
            
             
           }

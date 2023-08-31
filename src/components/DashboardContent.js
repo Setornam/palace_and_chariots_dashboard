@@ -1,5 +1,6 @@
 import React from 'react';
 import Profile from './pages/Profile';
+import Customers from './pages/Customers';
 
 const DashboardContent = ({ selectedMenu }) => {
   let content;
@@ -12,7 +13,7 @@ const DashboardContent = ({ selectedMenu }) => {
       content = <div>Products Content</div>;
       break;
     case 'customers':
-      content = <div>Customers Content</div>;
+      content = <Customers />;
       break;
     case 'messages':
       content = <div>Messages Content</div>;
