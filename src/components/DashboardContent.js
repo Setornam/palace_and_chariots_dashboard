@@ -1,28 +1,33 @@
 import React from 'react';
 import Profile from './pages/Profile';
 import Customers from './pages/Customers';
+import Products from './pages/Products';
+import Dashboard from './pages/Dashboard';
+import AuditLogs from './pages/AuditLogs';
+import Messages from './pages/Messages';
+import UserMgt from './pages/UserMgt';
 
 const DashboardContent = ({ selectedMenu }) => {
   let content;
 
   switch (selectedMenu) {
     case 'dashboard':
-      content = <div>Dashboard Content</div>;
+      content = < Dashboard />;
       break;
     case 'products':
-      content = <div>Products Content</div>;
+      content = <Products />;
       break;
     case 'customers':
       content = <Customers />;
       break;
     case 'messages':
-      content = <div>Messages Content</div>;
+      content = <Messages />;
       break;
     case 'audit-logs':
-      content = <div>Audit Logs Content</div>;
+      content = <AuditLogs />;
       break;
     case 'user-management':
-      content = <div>User Management Content</div>;
+      content = <UserMgt />;
       break;
       case 'profile':
         content = <Profile />;

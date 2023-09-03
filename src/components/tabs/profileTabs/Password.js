@@ -66,8 +66,8 @@ const Password = () => {
       
       <style jsx>{`
         .password {
-          margin-left: 100px;
-          margin-top: 50px;
+          margin-left: 70px;
+          margin-top: 30px;
           display: flex;
         }
         .form-field {
@@ -104,7 +104,7 @@ const Password = () => {
         }
 
         .password-rules {
-          margin-left: -150px;
+          margin-left: 0px;
         }
 
         .rules-container {

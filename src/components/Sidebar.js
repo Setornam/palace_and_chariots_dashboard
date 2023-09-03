@@ -3,7 +3,7 @@ import {  FiShoppingBag, FiUsers, FiUser, FiMessageSquare, FiLogOut} from 'react
 import { RiDashboardLine } from 'react-icons/ri';
 import { HiOutlineChartBar } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
-import logoImage from '../images/logo.png'; // Import the logo image
+import logoImage from '../images/logo.png'; 
 
 
 
@@ -18,8 +18,8 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
     messages: <FiMessageSquare />,
     'audit-logs': <HiOutlineChartBar />,
     'user-management': <FiUser />,
-    profile: <CgProfile />, // Icon for the Profile menu item
-    logout: <FiLogOut />, // Icon for the Logout menu item
+    profile: <CgProfile />, 
+    logout: <FiLogOut />, 
   };
 
   const additionalMenus = [
@@ -88,7 +88,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
           }
           .menu-list {
             list-style: none;
-            padding-top: 20px;
+            padding-top: px;
             display: flex;
             flex-direction: column;
             align-items: flex-start; /* Left-align the menu items */
@@ -123,8 +123,8 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             width: 200px;
             height: 0;
             border: 0.5px #ECF0F4 solid; /* Add border between menus */
-            margin: 200px 0 0 0;
-            margin: 200px auto 0 auto; 
+            margin: 100px 0 0 0;
+            margin: 100px auto 0 auto; 
             }
 
             .logo-container {

@@ -161,7 +161,7 @@ const EditProfile = () => {
 
       <style jsx>{`
         .edit-profile {
-          margin-left: 100px;
+          margin-left: 70px;
           display: flex;
           width: 95%;
         }
@@ -214,7 +214,7 @@ const EditProfile = () => {
           width: 119px;
           height: 117px;
           margin-top: 20px;
-          margin-left: -200px;
+          margin-left: 0px;
         }
         .placeholder-profile-photo img {
           width: 70px;

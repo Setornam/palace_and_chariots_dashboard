@@ -45,7 +45,7 @@ const Admin = () => {
           }
           .content-container {
             display: flex;
-            flex: 6;
+            flex: 4.8;
             background-color: #ECF0F4;
             height: 100vh;
             z-index: 0;

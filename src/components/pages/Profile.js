@@ -39,14 +39,15 @@ const Profile = () => {
           color: #0B41AA;
           font-size: 24px;
           font-weight: 600;
-          margin-left: 100px;
+          margin-left: 70px;
         }
         .profile {
-            width: 1610px;
+            width: 1001px;
             height: 100%;
             background-color: #fff;
             border-radius: 7px 0 0 7px;
-            padding-top: 10px
+            padding-top: 10px;
+            margin-left: 25px;
 
         }
         .tab-header {
@@ -54,15 +55,15 @@ const Profile = () => {
           background-color: #0B41AA;
           height: 43px;
           align-items: center;
-          width: 200%;
-          padding: 0 100px 0 100px;
+          width: 1001px;
+          padding: 0 100px 0 70px;
 
         }
         .tab {
           color: white;
           font-size: 14px;
           font-weight: 400;
-          margin-right: 3.45%;
+          margin-right: 6%;
           cursor: pointer;
           transition: color 0.3s;
         }

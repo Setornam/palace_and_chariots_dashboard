@@ -1,9 +1,272 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {  FiSearch } from 'react-icons/fi';
+import DashboardTabContent from '../DashboardTabContent';
+import ActiveTab from '../tabs/dashboardTabs/ActiveTab';
+import PendingTab from '../tabs/dashboardTabs/PendingTab';
+import ClosedTab from '../tabs/dashboardTabs/ClosedTab';
+
+
+// Create placeholder tab content components
+const Tab1Content = () => (
+    <div>
+      <h2>Tab 1 Content</h2>
+      <p>This is the content for Tab 1.</p>
+    </div>
+  );
+  
+  const Tab2Content = () => (
+    <div>
+      <h2>Tab 2 Content</h2>
+      <p>This is the content for Tab 2.</p>
+    </div>
+  );
+  
+  const Tab3Content = () => (
+    <div>
+      <h2>Tab 3 Content</h2>
+      <p>This is the content for Tab 3.</p>
+    </div>
+  );
 
 const Dashboard = () => {
+
+    const tabData = [
+        { id: 1, label: 'Active (50)' },
+        { id: 2, label: 'Pending(15)' },
+        { id: 3, label: 'Closed(200)' },
+        // Add more tab data as needed
+      ];
+
+      const [activeTab, setActiveTab] = useState(1);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+  };
+
     return (
-        <div>
-           <h1>Dashboard</h1> 
+        <div className='main-container'>
+            <div className='dashboard'>
+                <h1>Dashboard</h1> 
+                <div className='inner-dashboard'>
+                    <div className='services-box'>
+                        <h2>12</h2>
+                        <h3>Services</h3>
+                    </div>
+
+                    <div className='request-box'>
+                        <h2>1000</h2>
+                        <h3>Total Request</h3>
+                    </div>
+
+                    <div className='services-box'>
+                        <h2>56</h2>
+                        <h3>Customers</h3>
+                    </div>
+
+                    <div className='services-box'>
+                        <h2>200+</h2>
+                        <h3>Messages</h3>
+                    </div>
+                </div>
+
+            </div>  
+
+
+            <div className='tabs-container'>
+                <h3>Requests</h3>
+                <div className="inner-dashboard">
+          {tabData.map((tab) => (
+            <div
+              key={tab.id}
+              className={`tab ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => handleTabChange(tab.id)}
+            >
+              {tab.label}
+            </div>
+          ))}
+          <div className='search-container'>
+                    <div className="search-box">
+
+                    <div className="search-icon">
+                        <FiSearch size={18} color="#8B8B8B" /> {/* Use FiSearch icon */}
+                    </div>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="search-input"
+                        />
+                    
+                    </div>
+                </div>
+        </div>
+        <div className="tab-content">
+            {activeTab === 1 && <ActiveTab />}
+            {activeTab === 2 && <PendingTab />}
+            {activeTab === 3 && <ClosedTab />}
+        </div>
+      </div>
+
+      
+
+            <style>
+                {`
+
+                .main-container {
+                    height: 100%;
+                    width: 960px;
+                    position: relative;
+                    left: 30px;
+                }
+
+                .dashboard{
+                    width: 85vw;
+                    height: 20vh;
+                    position: relative;
+                    top: -100px;
+                    left: 0px;
+                }
+
+                .inner-dashboard{
+                    width: 100%;
+                    height: 101px;
+                    display: flex;
+
+                }
+                .services-box {
+                    width: 180px;
+                    height: 101px;
+                    background-color: white;
+                    margin: 0 65.5px 0 0;
+                    text-align: center;
+                    border: 0.5px solid #CDCDCD;
+                    border-radius: 6px;
+                }
+
+                .request-box {
+                    width: 215.6px;
+                    height: 101px;
+                    background-color: white;
+                    margin: 0 65.5px 0 0;
+                    text-align: center;
+                    border: 0.5px solid #CDCDCD;
+                    border-radius: 6px;
+                }
+
+                .inner-dashboard h2{
+                    font-size: 24px;
+                    color: #071EC3;
+                    font-weight: 700;
+                }
+
+                .inner-dashboard h3{
+                    color: #595959;
+                    font-size: 17px;
+                    font-weight: 400;
+                }
+
+                .dashboard h1{
+                    padding-top: 35px;
+                    padding-left: 15px;
+                    font-size: 24px;
+                    color: ##595959;
+                    font-weight: 600;
+                }
+
+                .tabs-container{
+                    background-color: white;
+                    height:100%;
+                    position: relative;
+                    top: -90px;
+                    padding: 0 0 0 20px;
+                    border-radius: 6px;
+                    
+                }
+
+                .tabs-container h3{
+                    font-size:24px;
+                    color:#595959;
+                    font-weight: 600;
+                    padding-top: 15px;
+                }
+
+                .tab {
+                    cursor: pointer;
+                    width: 82px;
+                    height: 23px;
+                    font-size: 11px;
+                    font-weight:400;
+                    color: #595959;
+                    background-color: #f0f0f0;
+                    border: none;
+                    border-radius: 4px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;
+                    padding: 2px 20px;
+                    transition: background-color 0.3s, color 0.3s;
+                    z-index: 1000;
+                }
+
+                .tab.active {
+                background-color: #071EC3;
+                color: #fff;
+                }
+
+                .tab-content {
+                    position: relative;
+                    top: -90px;
+                }
+
+                .search-container{
+                    display:flex;
+                    justify-content: end;
+                    width: 100%;
+                    padding-right: 30px;
+                }
+
+                .search-box {
+                    display: flex;
+                    align-items: center;
+                    width: 276px;
+                    height: 23px;
+                    padding: 5px 4px 4px 10px;
+                    top: 30px;
+                    border: 0.50px #CDCDCD solid;
+                    border-radius: 4px;
+                    margin-top: -4px;
+                }
+
+                .search-input {
+                    flex: 1;
+                    border: none;
+                    outline: none;
+                    padding: 5px;
+                    height: 10px;
+                    width:100px;
+                    border-radius: 0px;
+                    color: #8B8B8B;
+                }
+
+                .search-icon {
+                    padding: 0px;
+                    border-radius: 0 5px 5px 0;
+                    cursor: pointer;
+                }
+
+                .search-icon i {
+                    font-size: 11px;
+                }
+                
+                .search-input::placeholder {
+                    color: #8B8B8B;
+                    font-size: 14px;
+                    font-weight: 400; 
+                    }
+
+
+                `}
+            </style>        
         </div>
     );
 };

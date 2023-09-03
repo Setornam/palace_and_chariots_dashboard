@@ -87,7 +87,7 @@ const Notification = () => {
       <button onClick={() => console.log('Settings saved')}>Save</button>
       <style jsx>{`
         .notification {
-          margin-left: 100px;
+          margin-left: 70px;
           padding-top: 1 0px;
         }
         .feature {
@@ -97,9 +97,7 @@ const Notification = () => {
           display: flex;
           align-items: center;
         }
-        .feature span {
-          margin-right: 10px;
-        }
+        
         .feature span h5 {
           color: #595959;
           font-size: 14px;
