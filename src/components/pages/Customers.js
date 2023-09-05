@@ -1,6 +1,7 @@
 import React from 'react';
 import {  FiSearch } from 'react-icons/fi';
-import CustomersTabContent from '../tabs/cutomersTabs/CustomersTabContent';
+import {  FiChevronRight, FiChevronDown } from 'react-icons/fi';
+
 
 const Customers = () => {
 
@@ -29,13 +30,131 @@ const Customers = () => {
                 </div>
             </div>
             <div className='table'>
-                {}
+                <h3>All Customers</h3>
             </div>
+            <table className="active-requests-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Country </th>
+            <th>City</th>
+            <th> Email Address</th>
+          </tr>
+          <div className='row-line'></div>
+        </thead>
+        <tbody>
+            <tr></tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packerzuckberg@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          <tr>
+            <td>James Packer</td>
+            <td> Ghana </td>
+            <td>Accra</td>
+            <td>packer@gmail.com</td>
+            <td>
+              <FiChevronRight className='icon'/>
+            </td>
+          </tr>
+          
+        
+          
+        </tbody>
+      </table>
+        </div>
+        
 
             <style jsx>
                 {`
                 .customers-container{
-                    display: flex;
+                    display: block;
                     background-color:#fff;
                     width: 989px;
                     height: 826px;
@@ -54,7 +173,7 @@ const Customers = () => {
                 
                 .heading-container{
                     width: 50%;
-                    padding-left: 30px;
+                    padding-left: 50px;
                 }
 
                 .heading-container h1{
@@ -105,11 +224,74 @@ const Customers = () => {
                     color: #8B8B8B;
                     font-size: 14px;
                     font-weight: 400; 
-                    }
+                }
+
+                .table {
+                    height: 43px;
+                    width: 989px;
+                    background-color: #0B41AA;
+                    display: flex;
+                    padding-left: 50px;
+                }
+
+                .table h3{
+                    color: white;
+                    justify-content: center;
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+
+                .active-requests-table{
+                width: 990px;
+                height: 489px;
+                position: relative;
+                top: 40px;
+                border-bottom: 1px solid #CDCDCD ;
+                padding-bottom: 30px;
+            }
+
+            .active-requests-table th{
+                color: #595959;
+                font-size: 14px;
+                font-weight: 600;
+                text-align: left;
+                width: 30%;
+                padding: 0 20px 0 50px;
+                position: relative;
+                top: -15px;
+            
+            }
+
+            .active-requests-table td{
+                color: #595959;
+                font-size: 14px;
+                font-weight: 400;
+                padding: 26px 20px 0 50px;
+
+            }
+
+            .row-line {
+                border-bottom: 1px solid #EBEBEB;
+                position: absolute;
+                left: -1px;
+                margin-top: 3px;
+                width: 990px;
+            }
+
+            
+
+            .icon{
+                font-size: 16px ;
+                position: relative;
+                top: 2px;
+                padding-left: 10px;
+                color: #CDCDCD;
+                ;
+            }
+                    
                 
                 `}
             </style>
-        </div>
         </div>
     );
 };

@@ -1,32 +1,9 @@
 import React, { useState } from 'react';
 import {  FiSearch } from 'react-icons/fi';
-import DashboardTabContent from '../DashboardTabContent';
 import ActiveTab from '../tabs/dashboardTabs/ActiveTab';
 import PendingTab from '../tabs/dashboardTabs/PendingTab';
 import ClosedTab from '../tabs/dashboardTabs/ClosedTab';
 
-
-// Create placeholder tab content components
-const Tab1Content = () => (
-    <div>
-      <h2>Tab 1 Content</h2>
-      <p>This is the content for Tab 1.</p>
-    </div>
-  );
-  
-  const Tab2Content = () => (
-    <div>
-      <h2>Tab 2 Content</h2>
-      <p>This is the content for Tab 2.</p>
-    </div>
-  );
-  
-  const Tab3Content = () => (
-    <div>
-      <h2>Tab 3 Content</h2>
-      <p>This is the content for Tab 3.</p>
-    </div>
-  );
 
 const Dashboard = () => {
 
