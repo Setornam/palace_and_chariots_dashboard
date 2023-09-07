@@ -1,6 +1,5 @@
 import React from 'react';
-import {  FiSearch } from 'react-icons/fi';
-import {  FiChevronRight, FiChevronDown } from 'react-icons/fi';
+import {  FiChevronRight, FiSearch } from 'react-icons/fi';
 
 
 const Customers = () => {
