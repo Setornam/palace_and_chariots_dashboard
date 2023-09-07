@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from "firebase/analytics";
-import { getAuth }from "firebase/auth";
+import { getAnalytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -22,8 +23,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app); 
-export const auth = getAuth(app);
-initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export { app, auth, db, analytics };
 
 export default app;

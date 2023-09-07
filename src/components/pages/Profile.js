@@ -55,7 +55,7 @@ const Profile = () => {
           background-color: #0B41AA;
           height: 43px;
           align-items: center;
-          width: 1001px;
+          width: 833px;
           padding: 0 100px 0 70px;
 
         }
@@ -63,7 +63,7 @@ const Profile = () => {
           color: white;
           font-size: 14px;
           font-weight: 400;
-          margin-right: 6%;
+          margin-right: 14.5%;
           cursor: pointer;
           transition: color 0.3s;
         }

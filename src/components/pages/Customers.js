@@ -228,7 +228,7 @@ const Customers = () => {
 
                 .table {
                     height: 43px;
-                    width: 989px;
+                    width: 940px;
                     background-color: #0B41AA;
                     display: flex;
                     padding-left: 50px;

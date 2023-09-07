@@ -8,29 +8,37 @@ import logoImage from '../../images/logo.png'; // Import the logo image
 const Signup = () => {
     const navigate = useNavigate();
  
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState(null);
+
+    const isPasswordValid = (password) => {
+        // Define your password rules here
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        return passwordRegex.test(password);
+      };
  
     const onSubmit = async (e) => {
       e.preventDefault()
      
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            navigate("/login")
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-            // ..
-        });
- 
-   
-    }
+      if (!isPasswordValid(password)) {
+        setError('Password must be at least 8 characters and contain at least one special character and one number.');
+        return;
+      }
+  
+      if (password !== confirmPassword) {
+        setError("Passwords don't match.");
+        return;
+      }
+  
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        navigate('/login');
+      } catch (error) {
+        setError(error.message);
+      }
+    };
 
     return (
         <main >        
@@ -72,19 +80,22 @@ const Signup = () => {
                                 />
                             </div>      
                             <div>
-                                <label htmlFor="password" style = {label}>
-                                    Re-enter Password
+                                <label htmlFor="confirm-password" style={label}>
+                                Re-enter Password
                                 </label>
                                 <input
-                                    type="password"
-                                    label="Create password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)} 
-                                    required                                 
-                                    placeholder=""  
-                                    style = {inputField}            
+                                type="password"
+                                label="Create password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                                placeholder=""
+                                style={inputField}
                                 />
-                            </div>                                         
+                            </div>
+                            {error && <p style={errorText}>{error}</p>}
+
+
                             
                             <button
                                 type="submit" 
@@ -133,6 +144,14 @@ const Signup = () => {
     //borderTopRightRadius: 10
 
   };
+
+  const errorText = {
+    color: 'red',
+    fontSize: '14px',
+    marginTop: '10px',
+    textAlign: 'left',
+  };
+  
 
   const subContainer = {
     width: '53%',
