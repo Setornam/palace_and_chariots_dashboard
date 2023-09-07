@@ -2,7 +2,7 @@ import React, {useState, Component} from 'react';
 import ReactDOM from "react-dom";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './firebase';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, redirect, useNavigate } from 'react-router-dom';
 import logoImage from '../../images/logo.png'; // Import the logo image
 
  
@@ -10,6 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
        
     const onLogin = (e) => {
         e.preventDefault();
@@ -18,12 +19,21 @@ const Login = () => {
             // Signed in
             const user = userCredential.user;
             navigate("/admin")
-            console.log(user);
         })
         .catch((error) => {
             const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage)
+            let errorMessage = error.message;
+
+            if (errorCode === "auth/user-not-found") {
+                errorMessage = "User not found. Please check your email.";
+              } else if (errorCode === "auth/wrong-password") {
+                errorMessage = "Incorrect password. Please try again.";
+              }
+             else if (errorCode === "auth/too-many-requests") {
+                errorMessage = "Too many failed login attempts. Please reset your password or try again later.";
+              }
+
+            setError(errorMessage);
         });
        
     }
@@ -68,6 +78,8 @@ const Login = () => {
                                     onChange={(e)=>setPassword(e.target.value)}
                                     style = {inputField}
                                 />
+                                                    {error && <div style={errorContainer}>{error}</div>}
+
                                 <div style={{width: 110, height: 24, color: '#505050', fontSize: 12, fontWeight: '400', marginBottom:10,}}>Forgot Password?</div>
                             </div>
                                                 
@@ -107,6 +119,7 @@ const Login = () => {
             
                         `}
                     </style>
+
                     </div>
                 </section>
             </main>
@@ -130,6 +143,12 @@ const logoContainer = {
     //borderTopRightRadius: 10
 
   };
+
+  const errorContainer = {
+    color: 'red',
+    fontSize: '14px',
+    marginTop: '10px',
+  }
 
   const subContainer = {
     width: '53%',
