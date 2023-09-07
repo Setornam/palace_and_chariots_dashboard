@@ -4,9 +4,18 @@ import { RiDashboardLine } from 'react-icons/ri';
 import { HiOutlineChartBar } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
 import logoImage from '../images/logo.png'; 
+import { signOut } from '@firebase/auth';
+import { auth } from './auth/firebase';
 
 
-
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    // Redirect or perform any additional logic after successful logout
+  } catch (error) {
+    console.error('Error signing out:', error);
+  }
+};
 
 
 
@@ -27,10 +36,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
       id: 'profile',
       label: 'Profile',
     },
-    {
-      id: 'logout',
-      label: 'Logout',
-    },
+    
   ];
 
   return (
@@ -69,6 +75,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
               </div>
             </li>
           ))}
+          <span className= 'logout-button'><FiLogOut className= 'logout-icon' /><li onClick={handleLogout}>Logout</li></span>
         </ul>
       </div>
 
@@ -88,7 +95,6 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
           }
           .menu-list {
             list-style: none;
-            padding-top: px;
             display: flex;
             flex-direction: column;
             align-items: flex-start; /* Left-align the menu items */
@@ -101,6 +107,25 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             font-weight: 400;
             cursor: pointer;
           }
+
+          .logout-button {
+              display: flex; 
+              color: white;
+              cursor: pointer;
+              padding: 0 0 40px 20px;
+
+            }
+            .logout-button li{
+              font-size: 14px;
+              font-weight: 400;
+            }
+
+            .logout-icon {
+              margin-right: 10px;
+              font-size:20px;
+            }
+
+
           .active-menu {
             font-weight: 600; /* Apply bold font weight to the active menu item */
           }
@@ -140,6 +165,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             height: auto; /* Maintain aspect ratio */
             }
 
+           
             
         `}
       </style>
