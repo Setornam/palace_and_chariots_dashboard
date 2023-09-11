@@ -32,6 +32,7 @@ const DashboardContent = ({ selectedMenu }) => {
       case 'profile':
         content = <Profile />;
         break;
+        
     default:
       content = <div>Select a menu</div>;
   }

@@ -2,8 +2,28 @@ import React from 'react'
 import {  FiSearch, FiPlusSquare, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { BiEditAlt } from 'react-icons/bi';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+
+
 
 const UserMgt = () => {
+
+    const navigate = useNavigate();
+
+    const handleIconClick = () => {
+        // Navigate to the CreateAccount component
+        navigate('/CreateAccount');
+    
+    };
+
+    const handleViewClick = () => {
+        // Navigate to the CreateAccount component
+        navigate('/ViewAccount');
+    
+    };
+
+    
   return (
     <div>
         <div>
@@ -29,7 +49,15 @@ const UserMgt = () => {
                 </div>
                     </span>
                     <span className="add-container">
-                        <FiPlusSquare size={32} color='#071EC3'/>
+                        
+                        <NavLink to="/create-account" >
+                            <FiPlusSquare 
+                            size={32} 
+                            color='#071EC3' 
+                            cursor='pointer'
+                            onClick={handleIconClick}
+                            />
+                        </NavLink>
                     </span>
                     
                 </div>
@@ -179,7 +207,9 @@ const UserMgt = () => {
                             <td>palaceandchariots@gmail.com</td>
                             <td>Standard User</td>
                             <td>
-                            <FiEye className='icon'/>
+                            <FiEye className='icon'
+                                onClick={handleViewClick}
+                            />
                             <BiEditAlt className='icon'/>
                             <RiDeleteBin6Line className='icon'/>
                             </td>
