@@ -3,7 +3,7 @@ import {  FiShoppingBag, FiUsers, FiUser, FiMessageSquare, FiLogOut} from 'react
 import { RiDashboardLine } from 'react-icons/ri';
 import { HiOutlineChartBar } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
-import logoImage from '../images/logo.png'; 
+import logoImage from './Images/logo.png'; 
 import { signOut } from '@firebase/auth';
 import { auth } from './auth/firebase';
 

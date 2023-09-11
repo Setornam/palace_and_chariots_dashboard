@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {  useNavigate } from 'react-router-dom';
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from './firebase';
-import logoImage from '../../images/logo.png'; // Import the logo image
+import logoImage from '../Images/logo.png';
 
  
 const Signup = () => {

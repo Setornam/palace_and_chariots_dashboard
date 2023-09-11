@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './firebase';
 import { NavLink, redirect, useNavigate } from 'react-router-dom';
-import logoImage from '../../images/logo.png'; // Import the logo image
+import logoImage from '../Images/logo.png'; // Import the logo image
 
  
 const Login = () => {

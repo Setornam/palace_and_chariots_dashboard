@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import logoImage from '../../images/logo.png'; // Import the logo image
+import logoImage from '../Images/logo.png'; // Import the logo image
 
 
 const PasswordReset = () => {
