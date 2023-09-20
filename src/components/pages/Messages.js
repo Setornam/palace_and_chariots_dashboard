@@ -406,6 +406,7 @@ const Messages = () => {
                 .message-div{
                     display: flex ;
                     height: 20px;
+                    padding-bottom: 10px;
                     align-items: center
                 }
 
