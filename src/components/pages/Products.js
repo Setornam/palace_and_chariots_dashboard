@@ -57,11 +57,12 @@ const Products = () => {
                 ))}
               </div>
             </div>
-          </div>
-          <div className='table-content'>
+            <div className='table-content'>
             {activeTab === 1 && <AllProducts />}
             {activeTab === 2 && <CreateProduct />}
           </div>
+          </div>
+          
         </div>
       </div>
 
@@ -72,10 +73,29 @@ const Products = () => {
                     background-color:#fff;
                     width: 989px;
                     height: 826px;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    scrollbar-width: thin;
+                    scrollbar-color: #071EC3 #F0F0F0;
                     position: relative;
                     left: 20px;
                     top: -50px;
                     border-radius:6px;
+                    
+                }
+
+                .customers-container::-webkit-scrollbar {
+                     width: 4px; 
+                }
+
+                .customers-container::-webkit-scrollbar-thumb {
+                    background-color: #0B41AA;
+                    border-radius: 10px;
+                }
+
+                .customers-container::-webkit-scrollbar-track {
+                    background-color: #cdcdcd;
+                    border-radius: 10px;
                 }
 
                 .top-bar{

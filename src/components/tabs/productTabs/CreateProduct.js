@@ -1,15 +1,68 @@
 import React, { useState } from 'react';
+import VehicleSaloon from './productCategories/VehicleSaloon';
+import PrivateJet from './productCategories/PrivateJet';
+import SalesVehicles from './productCategories/SalesVehicles';
+import SalesHouse from './productCategories/SalesHouse';
+import TravelTourism from './productCategories/TravelTourism';
+import AccommodationHotel from './productCategories/AccommodationHotel';
+
+
+
+
+  const handleImageUpload = (e) => {
+    const selectedImages = e.target.files;
+    // Process the selected images here, e.g., upload them to a server or store them in state
+  };
 
 const CreateProduct = () => {
   const [productName, setProductName] = useState('');
   const [status, setStatus] = useState('');
   const [selectedService, setSelectedService] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [additionalFields, setAdditionalFields] = useState(null);
   const [location, setLocation] = useState('');
+  
+  
 
-  const services = ['Rentals', 'Travel and Tour', 'Security', 'Sales'];
-  const statusOptions = ['Active', 'Inactive', 'Pending'];
-  const categories = ['Vehicles/Saloon', 'Accommodation', 'Bus'];
+  
+
+  const services = ['Rentals', 'Travel and Tourism', 'Security', 'Sales'];
+  const statusOptions = ['Available', 'Unavailable'];
+  const categories = ['Vehicles/Saloon', 'Vehicles/Bus', 'Vehicles/Private Jet', 'Accommodation/Hotels', 'Accommodation/Apartments','Events Services', 'Travel/Tourism', 'Sales/Vehicles','Sales/House'];
+
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  
+    // Set additional fields based on the selected category
+    if (category === 'Vehicles/Saloon') {
+      setAdditionalFields(<VehicleSaloon />);
+    } else if (category === 'Vehicles/Private Jet') {
+      setAdditionalFields(<PrivateJet />);
+    } else if (category === 'Sales/Vehicle') {
+        setAdditionalFields(<SalesVehicles />);
+    } else if (category === 'Sales/House') {
+        setAdditionalFields(<SalesHouse />);
+    } 
+      else if (category === 'Travel/Tourism') {
+        setAdditionalFields(<TravelTourism />);
+        
+    } else if (category === 'Accommodation/Hotels') {
+        setAdditionalFields(<AccommodationHotel />);
+        
+    } else if (category === 'Accommodation/Apartments') {
+      setAdditionalFields(<AccommodationHotel />);
+      
+    } else if (category === 'Vehicles/Bus') {
+      setAdditionalFields(<VehicleSaloon />);
+      
+    } else if (category === 'Events Services') {
+      setAdditionalFields(<TravelTourism />);
+      
+    } else {
+      setAdditionalFields(null); // Reset additional fields for other categories
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +71,7 @@ const CreateProduct = () => {
     console.log('Status:', status);
     console.log('Selected Service:', selectedService);
     console.log('Selected Category:', selectedCategory);
+    console.log('Additional Fields:', additionalFields);
     console.log('Location:', location);
   };
 
@@ -106,7 +160,36 @@ const CreateProduct = () => {
                 required
               />
             </div>
+
+            
           </div>
+          <div className='border'> </div>
+
+          {selectedCategory === 'Vehicles/Saloon' && <VehicleSaloon />}
+
+          {selectedCategory === 'Vehicles/Private Jet' && <PrivateJet />}
+
+          {selectedCategory === 'Sales/Vehicles' && <SalesVehicles />}
+
+          {selectedCategory === 'Sales/House' && <SalesHouse />}
+
+          {selectedCategory === 'Travel/Tourism' && <TravelTourism />}
+
+          {selectedCategory === 'Accommodation/Hotels' && <AccommodationHotel />}
+
+          {selectedCategory === 'Accommodation/Apartments' && <AccommodationHotel />}
+
+          {selectedCategory === 'Events Services' && <TravelTourism />}
+
+          {selectedCategory === 'Vehicles/Bus' && <VehicleSaloon />}
+
+
+            {additionalFields && (
+            <div>
+                <label>Additional Fields</label>
+                {additionalFields}
+            </div>
+          )}
 
           <button type='submit'>Save</button>
         </form>
@@ -131,11 +214,11 @@ const CreateProduct = () => {
         }
 
         .last-row select{
-            width: 268px;
+            width: 244px;
         }
 
         .last-row input{
-            width: 208px;
+            width: 244px;
         }
 
         .first-row select{
@@ -166,6 +249,7 @@ const CreateProduct = () => {
             height: 38px;
             border: 1px solid #CDCDCD;
             border-radius: 5px;
+            color: #595959;
         }
 
         select{
@@ -187,6 +271,130 @@ const CreateProduct = () => {
             border-radius: 5px;
             margin-top: 40px;
         }
+
+        .border{
+            
+            border-bottom: 1px solid #CDCDCD;
+            width: 990px;
+            position: relative;
+            left: -30px;
+            margin-top: 40px;
+        }
+
+        h2{
+            font-size: 20px;
+            color: #595959;
+            font-weight: 600;
+        }
+
+        .add-fields{
+            display: flex;
+        }
+
+        .add-fields input{
+            width: 230px;
+            position: relative;
+        }
+
+        .add-left-column{
+            width: 280px;
+        }
+
+        .add-left-column select{
+            width: 250px;
+            padding: 10px 5px;
+        }
+
+        .add-middle-column{
+            width: 340px;
+        }
+
+        .add-middle-column input{
+            width: 240px;
+            height: 37px;
+
+        }
+
+
+        button{
+            cursor  : pointer;
+        }
+        
+        #images {
+              color: white;
+              height:133px;
+              width: 305px;
+              
+        }
+
+        .file-input-outer-container{
+            height: 133px;
+            width: 305px;
+            border-radius: 5px;
+            border: solid 1px #CDCDCD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .custom-file-input {
+            display: none;
+        }
+
+        .custom-file-label {
+            width: 267px;
+            height: 101px;
+            background-color: #CDCDCD;
+            color: #595959;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 0px;
+        }
+
+        .custom-file-label:hover {
+            background-color: grey;
+            color: white;
+        }
+
+        .private-jet-left-column input{
+            width:500px;
+        }
+
+        .private-jet-left-column{
+            width:640px;
+        }
+
+
+        .checkboxes input{
+            width: 14px;
+            height: 14px;
+            border: 1px solid #CDCDCD;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .checkboxes label{
+            font-size: 14px;
+            font-weight: 400;
+            color: #595959;
+        }
+
+        .description{
+          width: 520px;
+          height: 156px;
+          background-color: #fff;
+          border: 1px solid #CDCDCD;
+          border-radius: 5px;
+        
+        }
+
+
+        
         
         `}
     </style>
