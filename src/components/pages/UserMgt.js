@@ -67,24 +67,24 @@ const UserMgt = () => {
                 {`
                 .customers-container{
                     background-color:#fff;
-                    width: 989px;
-                    height: 826px;
+                    width: 77.27vw;
+                    height: 95.16vh;
                     position: relative;
-                    left: 20px;
-                    top: -50px;
+                    left: 1.56vw;
+                    top: -5.76vh;
                     border-radius:6px;
                 }
 
                 .top-bar{
                     display: flex;
-                    height: 100px;
+                    height: 11.52vh;
                     width: 100%;
                     border-radius: 6px 6px 0 0;
                 }
                 
                 .heading-container{
                     width: 50%;
-                    padding-left: 50px;
+                    padding-left: 3.9vw;
                     flex: 1;
                 }
 
@@ -99,7 +99,7 @@ const UserMgt = () => {
                     font-size: 24px;
                     color: #595959;
                     font-weight: 600;
-                    padding-top: 20px;                    
+                    padding-top: 2.3vh;                    
                 }
 
                 .search-container{
@@ -111,11 +111,11 @@ const UserMgt = () => {
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 514px;
+                    width: 40.16vw;
                     height: 38px;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 5px;
-                    margin-top: 30px;
+                    margin-top: 3.456vh;
                 }
 
                 .search-input {
@@ -146,43 +146,43 @@ const UserMgt = () => {
                 }
 
                 .active-requests-table{
-                width: 990px;
-                height: 489px;
-                position: relative;
-                top: 40px;
-                border-bottom: 1px solid #CDCDCD ;
-                padding-bottom: 30px;
-            }
+                    width: 77.34vw;
+                    height: 56.3vh;
+                    position: relative;
+                    top: 4.608vh;
+                    border-bottom: 1px solid #CDCDCD ;
+                    padding-bottom: 3.456vh;
+                }
 
-            .active-requests-table th{
-                color: #595959;
-                font-size: 14px;
-                font-weight: 600;
-                text-align: left;
-                padding: 0 20px 0 50px;
-                position: relative;
-                top: -15px;
+                .active-requests-table th{
+                    color: #595959;
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-align: left;
+                    padding: 0 1.56vw 0 3.9vw;
+                    position: relative;
+                    top: -1.728vh;
+                
+                }
+
+                .active-requests-table td{
+                    color: #595959;
+                    font-size: 14px;
+                    font-weight: 400;
+                    padding: 2.995vh 1.56vw 0 3.9vw;
+                }
+
             
-            }
 
-            .active-requests-table td{
-                color: #595959;
-                font-size: 14px;
-                font-weight: 400;
-                padding: 26px 20px 0 50px;
-            }
-
-            
-
-            .icon{
-                font-size: 16px ;
-                position: relative;
-                top: 2px;
-                padding-left: 10px;
-                color: #2F2D2D;
-                padding-right: 5px;
-                cursor: pointer;
-            }
+                .icon{
+                    font-size: 16px ;
+                    position: relative;
+                    top: 2px;
+                    padding-left: 10px;
+                    color: #2F2D2D;
+                    padding-right: 5px;
+                    cursor: pointer;
+                }
 
                 
                 

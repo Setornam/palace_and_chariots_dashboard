@@ -39,24 +39,24 @@ const Profile = () => {
           color: #0B41AA;
           font-size: 24px;
           font-weight: 600;
-          margin-left: 70px;
+          margin-left: 5.46875vw;
         }
         .profile {
-            width: 1001px;
+            width: 78.2vw;
             height: 100%;
             background-color: #fff;
             border-radius: 7px 0 0 7px;
-            padding-top: 10px;
-            margin-left: 25px;
+            padding-top: 1.15vh;
+            margin-left: 1.95vw;
 
         }
         .tab-header {
           display: flex;
           background-color: #0B41AA;
-          height: 43px;
+          height: 4.95vh;
           align-items: center;
-          width: 833px;
-          padding: 0 100px 0 70px;
+          width: 65.078vw;
+          padding: 0 7.8vw 0 5.3vw;
 
         }
         .tab {

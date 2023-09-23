@@ -90,7 +90,7 @@ const Dashboard = () => {
 
                 .main-container {
                     height: 100%;
-                    width: 960px;
+                    width: 75vw;
                     position: relative;
                     left: 30px;
                 }
@@ -110,20 +110,20 @@ const Dashboard = () => {
 
                 }
                 .services-box {
-                    width: 180px;
-                    height: 101px;
+                    width: 14.06vw;
+                    height: 11.64vh;
                     background-color: white;
-                    margin: 0 65.5px 0 0;
+                    margin: 0 5.12vw 0 0;
                     text-align: center;
                     border: 0.5px solid #CDCDCD;
                     border-radius: 6px;
                 }
 
                 .request-box {
-                    width: 215.6px;
-                    height: 101px;
+                    width: 16.9vw;
+                    height: 11.63vh;
                     background-color: white;
-                    margin: 0 65.5px 0 0;
+                    margin: 0 5.12vw 0 0;
                     text-align: center;
                     border: 0.5px solid #CDCDCD;
                     border-radius: 6px;
@@ -142,8 +142,8 @@ const Dashboard = () => {
                 }
 
                 .dashboard h1{
-                    padding-top: 35px;
-                    padding-left: 15px;
+                    padding-top: 4.03vh;
+                    padding-left: 1.17vw;
                     font-size: 24px;
                     color: ##595959;
                     font-weight: 600;
@@ -163,13 +163,13 @@ const Dashboard = () => {
                     font-size:24px;
                     color:#595959;
                     font-weight: 600;
-                    padding-top: 15px;
+                    padding-top: 1.172vh;
                 }
 
                 .tab {
                     cursor: pointer;
-                    width: 82px;
-                    height: 23px;
+                    width: 6.41vw;
+                    height: 2.65vh;
                     font-size: 11px;
                     font-weight:400;
                     color: #595959;
@@ -180,7 +180,7 @@ const Dashboard = () => {
                     justify-content: center;
                     align-items: center;
                     margin-right: 10px;
-                    padding: 2px 20px;
+                    padding: 0.23vh 1.56vw;
                     transition: background-color 0.3s, color 0.3s;
                     z-index: 1000;
                 }
@@ -199,19 +199,19 @@ const Dashboard = () => {
                     display:flex;
                     justify-content: end;
                     width: 100%;
-                    padding-right: 30px;
+                    padding-right: 2.34vw;
                 }
 
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 276px;
-                    height: 23px;
+                    width: 21.6vw;
+                    height: 2.65vh;
                     padding: 5px 4px 4px 10px;
-                    top: 30px;
+                    top: 3.46vh;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 4px;
-                    margin-top: -4px;
+                    margin-top: -0.46vh;
                 }
 
                 .search-input {
@@ -219,8 +219,8 @@ const Dashboard = () => {
                     border: none;
                     outline: none;
                     padding: 5px;
-                    height: 10px;
-                    width:100px;
+                    height: 15px;
+                    width:7.81vw;
                     border-radius: 0px;
                     color: #8B8B8B;
                 }

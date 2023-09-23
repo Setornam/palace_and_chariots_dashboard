@@ -22,13 +22,28 @@ const CreateProduct = () => {
   const [additionalFields, setAdditionalFields] = useState(null);
   const [location, setLocation] = useState('');
   
-  
 
+  const categoryOptions = {
+    Rentals: ['Vehicles/Saloon', 'Vehicles/Bus', 'Vehicles/Private Jet', 'Accommodation/Hotels', 'Accommodation/Apartments'],
+    'Travel and Tourism': ['Travel/Tourism'],
+    Sales: ['Sales/Vehicles', 'Sales/House'],
+  };
+
+  // Handle service change
+  const handleServiceChange = (service) => {
+    setSelectedService(service);
+    
+    // Update available categories based on the selected service
+    setSelectedCategory('');
+    setAdditionalFields(null);
+  };
   
 
   const services = ['Rentals', 'Travel and Tourism', 'Security', 'Sales'];
   const statusOptions = ['Available', 'Unavailable'];
-  const categories = ['Vehicles/Saloon', 'Vehicles/Bus', 'Vehicles/Private Jet', 'Accommodation/Hotels', 'Accommodation/Apartments','Events Services', 'Travel/Tourism', 'Sales/Vehicles','Sales/House'];
+  
+   // Get available categories based on the selected service
+   const availableCategories = categoryOptions[selectedService] || [];
 
 
   const handleCategoryChange = (category) => {
@@ -116,7 +131,7 @@ const CreateProduct = () => {
             <select
               id='selectedService'
               value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
+              onChange={(e) => handleServiceChange(e.target.value)}
               required
             >
               <option value='' disabled>
@@ -141,8 +156,8 @@ const CreateProduct = () => {
               >
                 <option value='' disabled>
                   Select a category
-                </option>
-                {categories.map((category) => (
+                  </option>
+                {availableCategories.map((category) => (
                   <option key={category} value={category}>
                     {category}
                   </option>
@@ -210,7 +225,7 @@ const CreateProduct = () => {
 
         .last-row{
             display: flex;
-            width: 520px;
+            width: 40.63vw;
         }
 
         .last-row select{
@@ -260,6 +275,7 @@ const CreateProduct = () => {
             height: 38px;
             border: 1px solid #CDCDCD;
             border-radius: 5px;
+            
         }
 
         button{
@@ -275,7 +291,7 @@ const CreateProduct = () => {
         .border{
             
             border-bottom: 1px solid #CDCDCD;
-            width: 990px;
+            width: 77.34vw;
             position: relative;
             left: -30px;
             margin-top: 40px;
@@ -306,7 +322,7 @@ const CreateProduct = () => {
         }
 
         .add-middle-column{
-            width: 340px;
+            width: 24.56vw;
         }
 
         .add-middle-column input{
@@ -366,7 +382,7 @@ const CreateProduct = () => {
         }
 
         .private-jet-left-column{
-            width:640px;
+            width: 50vw;
         }
 
 
@@ -392,7 +408,11 @@ const CreateProduct = () => {
           border-radius: 5px;
         
         }
-
+        
+        .add-right-column{
+          position: relative;
+          left: 1.875vw;
+        }
 
         
         

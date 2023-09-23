@@ -271,8 +271,8 @@ const Messages = () => {
          }
 
          .message-right-span{
-            padding-left: 10px;
-            width: 415px;
+            padding-left: 0.78vw;
+            width: 32.42vw;
          }
 
          .admin-message-right-span{
@@ -295,9 +295,9 @@ const Messages = () => {
          }
 
          .message-post, .admin-message-post{
-            height: 56px;
-            width: 415px;
-            margin-top: -15px;
+            height: 6.45vh;
+            width: 32.42vw;
+            margin-top: -1.73vh;
             border-radius: 5px;
             background-color: #DFE2FA;
          }
@@ -314,7 +314,7 @@ const Messages = () => {
          .message-time{
             flex: 1;
             position: relative;
-            left: 90px;
+            left: 7.03vw;
          }
 
          
@@ -323,11 +323,11 @@ const Messages = () => {
          .customers-container{
              display: flex;
              background-color:#fff;
-             width: 989px;
-             height: 826px;
+             width: 77.27vw;
+             height: 95.16vh;
              position: relative;
-             left: 20px;
-             top: -50px;
+             left: 1.56vw;
+             top: -3.9vh;
              border-radius:6px;
          }
 
@@ -349,7 +349,7 @@ const Messages = () => {
              font-size: 24px;
              color: #595959;
              font-weight: 600;
-             padding-top: 20px;                    
+             padding-top: 2.3vh;
          }
 
          
@@ -358,18 +358,18 @@ const Messages = () => {
                     display:flex;
                     justify-content: start;
                     width: 100%;
-                    padding-right: 30px;
-                    margin-top: -25px;
+                    padding-right: 2.34vw;
+                    margin-top: -2.88vh;
                 }
 
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 247px;
+                    width: 19.297vw;
                     height: 38px;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 5px;
-                    margin-top: 30px;
+                    margin-top: 3.456vh;
                 }
 
                 .search-input {
@@ -400,14 +400,19 @@ const Messages = () => {
 
                 .message-list {
                     height: 100%;
-                    margin-top: 20px;
+                    margin-top: 2.3vh;
                 }
 
                 .message-div{
                     display: flex ;
-                    height: 20px;
-                    padding-bottom: 10px;
-                    align-items: center
+                    height: 2.30vh;
+                    padding-bottom: 1.15vh;
+                    align-items: center;
+                }
+
+                .message-div h6{
+                    padding-left: 0.5vw;                    
+
                 }
 
                 .message-number {
@@ -432,7 +437,7 @@ const Messages = () => {
 
                 .message-item {
                     background-color: white;
-                    padding: 15px 0px;
+                    padding: 1.73vh  0.5vw;
                     cursor: pointer;
                     border-radius: 5px;
                 }
@@ -456,7 +461,7 @@ const Messages = () => {
                 }
 
                 .middle-span h4, .middle-span p{
-                    padding: 0 0 0 15px;
+                    padding: 0 0 0 1.17vw;
                     margin: 0;
                     box-sizing: border-box;
                     color: #595959;
@@ -473,11 +478,11 @@ const Messages = () => {
                 }
 
                 .message-message{
-                    padding: 0 19px;
+                    padding: 0 1.48vw;
                 }
 
                 .right-span p{
-                    margin-top: 3px;
+                    margin-top: 0.35vh;
                 }
 
                 .profile-image {
@@ -486,8 +491,8 @@ const Messages = () => {
                 }
 
                 .message-list-container {
-                    padding: 0 20px 0 0;
-                    height: 690px; 
+                    padding: 0 1.56vh 0 0;
+                    height: 79.5vh; 
                     overflow: scroll ;
                     overflow-x: hidden;
                     scrollbar-width: thin;
@@ -564,9 +569,9 @@ const Messages = () => {
                 }
                 
                 .main-message{
-                    max-height: 732px;
+                    max-height: 84.33vh;
                     position: absolute;
-                    bottom: 180px;
+                    bottom: 20.7vh;
             
                 }
 
@@ -579,7 +584,7 @@ const Messages = () => {
                 }
 
                 .message-date hr{
-                    width: 251px;
+                    width: 19.6vw;
                     height: 0px;
                     border-bottom: 0.5px solid #CDCDCD; 
                     border-top: none;                
@@ -587,70 +592,75 @@ const Messages = () => {
 
                 .message-date p{
                     position: relative;
-                    top: -15px;
-                    padding: 0 20px;
+                    top: -1.73vh;
+                    padding: 0 1.56vw;
                     color: #595959;
                     font-size: 14px;
                     font-weight: 400;
                 }
 
                 .chat-box {
-                    margin-top: 40px;
-            width: 626px;
-            height: 112px;
-            border: 0.5px solid #CDCDCD;
-            padding: 10px;
-            border-radius: 5px;
-            position: fixed;
-            bottom:30px;
-          }
+                    margin-top: 4.61vh;
+                    width: 48.9vw;
+                    height: 12.9vh;
+                    border: 0.5px solid #CDCDCD;
+                    padding: 10px;
+                    border-radius: 5px;
+                    position: fixed;
+                    bottom:3.456vh;
+                }
 
-          .chat-log {
-            max-height: 112px;
-            overflow-y: hidden;
-          }
+                .chat-box textarea:focus {
+                    border: none !important;
+                    outline: none !important;
+                }
 
-          .chat-message {
-            background-color: #f0f0f0;
-            height: 112px;
-            margin: 5px;
-            padding: 5px;
-            border-radius: 5px;
-          }
+                .chat-log {
+                    max-height: 12.9vh;
+                    overflow-y: hidden;
+                }
 
-          .input-box {
-            display: flex;
-            flex-direction: column;
-          }
+                .chat-message {
+                    background-color: #f0f0f0;
+                    height: 12.9vh;
+                    margin: 5px;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
 
-          textarea {
-            flex: 1;
-            border: none;
-            padding: 5px;
-            resize: none;
-          }
+                .input-box {
+                    display: flex;
+                    flex-direction: column;
+                }
 
-          button {
-            background-color: #071EC3;
-            width: 76px;
-            height: 38px;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-          }
+                textarea {
+                    flex: 1;
+                    border: none;
+                    padding: 5px;
+                    resize: none;
+                }
 
-          .button-container{
-            display: flex;
-            flex-direction: column;
-            align-items: end;
+                button {
+                    background-color: #071EC3;
+                    width: 76px;
+                    height: 38px;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
 
-          }
+                .button-container{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: end;
 
-          .active-message{
-            background-color: #DFE2FA;
-          }
+                }
+
+                .active-message{
+                    background-color: #DFE2FA;
+                }
          
          `}
      </style>

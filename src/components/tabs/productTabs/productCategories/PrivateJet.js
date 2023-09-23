@@ -120,7 +120,7 @@ const PrivateJet = () => {
         />
         </div>
        
-        <div className='add-right-column'>
+        <div className='add-right-column' style={{width:'230px', position:'relative', left:'-22px'}}>
             <label >Images</label>
             <div className='file-input-outer-container'>
                 <div className='file-input-container'>

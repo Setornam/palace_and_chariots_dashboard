@@ -172,13 +172,13 @@ const PendingTab = () => {
       <style>
         {`
             .Pending-requests-table{
-                width: 885px;
-                height: 489px;
+                width: 71.14vw;
+                height: 56.33vh;
                 position: relative;
-                top: 40px;
+                top: 4.6vh;
                 border: 0.5px solid #EBEBEB;
                 border-radius: 5px;
-                padding: 15px;
+                padding: 1.17vh 1.24vw;
             }
 
             .Pending-requests-table th{
@@ -200,25 +200,29 @@ const PendingTab = () => {
                 position: absolute;
                 left: -1px;
                 margin-top: 3px;
-                width: 883px;
+                width: 71.1vw;
             }
 
            .icon{
             font-size: 16px;
             color: #595959;
             margin-top: 25%;
+            cursor: pointer;
+
            }
 
            .state{
             text-align: center;  
             border: 0.5px solid #CDCDCD;
-            height:21px;
-            width: 74.85px;
+            height: 2.42vh;
+            width: 5.85vw;
             border-radius: 4px;  
             display: flex;
             justify-content: center;
             align-items: center; 
-            margin-top: 10px;     
+            cursor: pointer;
+            margin-top: 1.15vh; 
+
             }
 
             .icon2{

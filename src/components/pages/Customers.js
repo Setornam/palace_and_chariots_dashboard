@@ -155,48 +155,48 @@ const Customers = () => {
                 .customers-container{
                     display: block;
                     background-color:#fff;
-                    width: 989px;
-                    height: 826px;
+                    width: 77.27vw;
+                    height: 95.16vh;
                     position: relative;
-                    left: 20px;
-                    top: -50px;
+                    left: 1.56vw;
+                    top: -5.76vh;
                     border-radius:6px;
                 }
 
                 .top-bar{
                     display: flex;
-                    height: 100px;
+                    height: 11.52vh;
                     width: 100%;
                     border-radius: 6px 6px 0 0;
                 }
                 
                 .heading-container{
                     width: 50%;
-                    padding-left: 50px;
+                    padding-left: 3.9vw;
                 }
 
                 .heading-container h1{
                     font-size: 24px;
                     color: #595959;
                     font-weight: 600;
-                    padding-top: 20px;                    
+                    padding-top: 2.3vh;                    
                 }
 
                 .search-container{
                     display:flex;
                     justify-content: end;
                     width: 100%;
-                    padding-right: 30px;
+                    padding-right: 2.34vw;
                 }
 
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 247px;
+                    width: 19.296875vw;
                     height: 38px;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 5px;
-                    margin-top: 30px;
+                    margin-top: 3.456vh;
                 }
 
                 .search-input {
@@ -226,11 +226,11 @@ const Customers = () => {
                 }
 
                 .table {
-                    height: 43px;
-                    width: 940px;
+                    height: 4.95vh;
+                    width: 73.44vw;
                     background-color: #0B41AA;
                     display: flex;
-                    padding-left: 50px;
+                    padding-left: 3.9vw;
                 }
 
                 .table h3{
@@ -241,12 +241,12 @@ const Customers = () => {
                 }
 
                 .active-requests-table{
-                width: 990px;
-                height: 489px;
+                width: 77.3vw;
+                height: 56.33vh;
                 position: relative;
-                top: 40px;
+                top: 4.6vh;
                 border-bottom: 1px solid #CDCDCD ;
-                padding-bottom: 30px;
+                padding-bottom: 3.456vh;
             }
 
             .active-requests-table th{
@@ -255,9 +255,9 @@ const Customers = () => {
                 font-weight: 600;
                 text-align: left;
                 width: 30%;
-                padding: 0 20px 0 50px;
+                padding: 0 1.56vw 0 3.9vw;
                 position: relative;
-                top: -15px;
+                top: -1.728vh;
             
             }
 
@@ -265,7 +265,7 @@ const Customers = () => {
                 color: #595959;
                 font-size: 14px;
                 font-weight: 400;
-                padding: 26px 20px 0 50px;
+                padding: 2.995vh 1.56vw 0 3.9vw;
 
             }
 
@@ -273,8 +273,8 @@ const Customers = () => {
                 border-bottom: 1px solid #EBEBEB;
                 position: absolute;
                 left: -1px;
-                margin-top: 3px;
-                width: 990px;
+                margin-top: 0.3456vh;
+                width: 77.34vw;
             }
 
             
@@ -282,8 +282,8 @@ const Customers = () => {
             .icon{
                 font-size: 16px ;
                 position: relative;
-                top: 2px;
-                padding-left: 10px;
+                top: 0.23vh;
+                padding-left: 0.78vw;
                 color: #CDCDCD;
                 ;
             }

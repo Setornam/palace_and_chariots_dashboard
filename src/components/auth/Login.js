@@ -41,8 +41,8 @@ const Login = () => {
     return(
         <>
             <main >        
-                <section style={mainContainer}>
-                    <div style = {subContainer}>
+                <section  style={mainContainer}>
+                    <div className='main-container' style = {subContainer}>
                     <div style={logoContainer}>
                         <img src={logoImage} alt="Logo" className="logo-image" />                    
                     </div>
@@ -116,13 +116,51 @@ const Login = () => {
                             height: auto; /* Maintain aspect ratio */
                             }
 
+                            @media (max-width: 999px) {
+                              main{
+                                    display: none;
+                              }
+
+                              .media-query {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                color: white;
+                                background-color: #071EC3;
+                                height: 100vh;
+                                width: 100vw;
+                              }
+
+                              .media-query h1{
+                                text-align: center;
+                                padding: 10px;
+                              }
+
+                            }
+
+                            @media (min-width:1280px) {
+                              .media-query {
+                                display: none !important;
+                              }
+                            }
+
             
                         `}
                     </style>
 
+                  
+
+                    
+
                     </div>
                 </section>
             </main>
+                    <div className='media-query'>
+                      <img src={logoImage} alt="Logo" />                    
+
+                      <h1>Please Login on a Laptop. Thank You.</h1>
+                    </div>
         </>
     )
 }
@@ -203,7 +241,7 @@ const logoContainer = {
   };
 
   const inputField = {
-    width: 325, 
+    width: '77.01%', 
     height: 39, 
     background: 'white', 
     borderRadius: 5, 
@@ -212,7 +250,7 @@ const logoContainer = {
   };
 
   const loginButton = {
-    width: 350, 
+    width: '82.938%', 
     height: 45, 
     background: '#071EC3', 
     borderRadius: 5, 
@@ -233,13 +271,13 @@ const logoContainer = {
   };
 
   const greyLine = {
-    width: 106, 
+    width: '25.12%', 
     height: 0, 
     border: '0.50px #CDCDCD solid'
   };
 
   const registerButton = {
-    width: 350, 
+    width: '82.938%', 
     height: 45, 
     background: '#fff', 
     borderRadius: 5, 
@@ -254,5 +292,7 @@ const logoContainer = {
     textDecoration: "none",
 
   }
+
+  
 
   

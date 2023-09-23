@@ -43,11 +43,11 @@ const AuditLogs = () => {
                     .customers-container {
                         display: block;
                         background-color: #fff;
-                        width: 989px;
-                        height: 826px;
+                        width: 77.27vw;
+                        height: 95.16vh;
                         position: relative;
-                        left: 20px;
-                        top: -50px;
+                        left: 1.56vw;
+                        top: -5.76vh;
                         border-radius: 6px;
                     }
 
@@ -67,13 +67,13 @@ const AuditLogs = () => {
                         font-size: 24px;
                         color: #595959;
                         font-weight: 600;
-                        padding: 20px 0 0 50px;
+                        padding: 2.3vh 0 0 3.9vw;
                     }
 
                     .tabs-container {
                         display: flex;
-                        width: 940px;
-                        padding: 20px 0 0 50px;
+                        width: 73.4vw;
+                        padding: 2.3vh 0 0 3.9vw;
                         border-bottom: 1px solid #CDCDCD;
                     }
 
@@ -82,7 +82,7 @@ const AuditLogs = () => {
                         font-size: 14px;
                         font-weight: 400;
                         color: #595959;
-                        margin-right: 20px;
+                        margin-right: 1.56vw;
                     }
 
 
@@ -93,49 +93,49 @@ const AuditLogs = () => {
 
                     .table {
                         position: relative;
-                        top: 20px;
-                        left: 30px;
+                        top: 2.3vh;
+                        left: 2.34375vw;
                     }
 
                     .active-requests-table{
-                width: 990px;
-                height: 489px;
-                position: relative;
-                top: 40px;
-                left: -30px;
-                border-bottom: 1px solid #CDCDCD ;
-                padding-bottom: 30px;
-            }
+                        width: 77.34vw;
+                        height: 56.3vh;
+                        position: relative;
+                        top: 4.6vh;
+                        left: -2.34vw;
+                        border-bottom: 1px solid #CDCDCD ;
+                        padding-bottom: 3.456vh;
+                    }
 
-            .active-requests-table th{
-                color: #595959;
-                font-size: 14px;
-                font-weight: 600;
-                text-align: left;
-                width: 5%;
-                position: relative;
-                top: -15px;
-                left: 50px;
-            
-            }
+                    .active-requests-table th{
+                        color: #595959;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-align: left;
+                        width: 5%;
+                        position: relative;
+                        top: -1.73vh;
+                        left: 3.9vw;
+                    
+                    }
 
-            .active-requests-table td{
-                color: #595959;
-                font-size: 14px;
-                font-weight: 400;
-                padding: 18.5px 0px 0 0px;
-                position: relative;
-                left: 50px;
+                    .active-requests-table td{
+                        color: #595959;
+                        font-size: 14px;
+                        font-weight: 400;
+                        padding: 2.13vh 0px 0 0px;
+                        position: relative;
+                        left: 3.9vw;
 
-            }
+                    }
 
-            .row-line {
-                border-bottom: 1px solid #CDCDCD;
-                position: absolute;
-                margin-top: 3px;
-                left: -1px;
-                width: 990px;
-            }
+                    .row-line {
+                        border-bottom: 1px solid #CDCDCD;
+                        position: absolute;
+                        margin-top: 0.346vh;
+                        left: -1px;
+                        width: 77.34vw;
+                    }
 
                 `}
             </style>

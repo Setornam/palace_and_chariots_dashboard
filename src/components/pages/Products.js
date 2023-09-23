@@ -71,15 +71,15 @@ const Products = () => {
                 .customers-container{
                     display: block;
                     background-color:#fff;
-                    width: 989px;
-                    height: 826px;
+                    width: 77.27vw;
+                    height: 95.2vh;
                     overflow-y: scroll;
                     overflow-x: hidden;
                     scrollbar-width: thin;
                     scrollbar-color: #071EC3 #F0F0F0;
                     position: relative;
-                    left: 20px;
-                    top: -50px;
+                    left: 1.56vw;
+                    top: -5.76vh;
                     border-radius:6px;
                     
                 }
@@ -100,35 +100,35 @@ const Products = () => {
 
                 .top-bar{
                     display: flex;
-                    height: 60px;
+                    height: 6.91vh;
                     width: 100%;
                     border-radius: 6px 6px 0 0;
                 }
                 
                 .heading-container{
                     width: 50%;
-                    padding-left: 30px;
+                    padding-left: 2.34vw;
                 }
 
                 .heading-container h1{
                     font-size: 24px;
                     color: #595959;
                     font-weight: 600;
-                    padding-top: 20px; 
+                    padding-top: 2.3vh; 
                 }
 
                 .search-container{
                     display:flex;
                     justify-content: end;
                     width: 100%;
-                    padding-right: 30px;
+                    padding-right: 2.34vw;
                 }
 
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 247px;
-                    height: 38px;
+                    width: 19.3vw;
+                    height: 4.4vh;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 5px;
                     margin-top: 30px;
@@ -163,10 +163,10 @@ const Products = () => {
                 .tab-header {
                     display: flex;
                     background-color: #0B41AA;
-                    height: 43px;
+                    height: 4.95vh;
                     align-items: center;
-                    width: 859px;
-                    padding: 0 100px 0 30px;
+                    width: 67.10vw;
+                    padding: 0 7.81vw 0 2.34vw;
 
                 }
                 .tab {
@@ -192,18 +192,17 @@ const Products = () => {
 
                 .table {
                         position: relative;
-                        top: 20px;
+                        top: 2.3vh;
                     }
 
                     .active-requests-table{
                 width: 100%;
-                height: 650px;
+                height: 74.88vh;
                 position: relative;
-                top: 20px;
+                top: 2.3vh;
                 border-radius: 5px;
-                padding-left: 30px;
-                padding-right: 10px;
-                background-color: re
+                padding-left: 2.34vw;
+                padding-right: 0.78vw;
             }
 
             .active-requests-table th{
@@ -225,33 +224,35 @@ const Products = () => {
             font-size: 16px;
             color: #595959;
             margin-top: 25%;
+            cursor: pointer;
            }
 
            .state{
             text-align: center;  
             border: 0.5px solid #CDCDCD;
-            height:21px;
-            width: 74.85px;
+            height:2.42vh;
+            width: 5.85vw;
             border-radius: 4px;  
             display: flex;
             justify-content: center;
             align-items: center; 
-            margin-top: 10px;     
+            margin-top: 1.15vh;     
             }
 
             .icon2{
                 font-size: 16px ;
                 position: relative;
-                top: 2px;
-                padding-left: 10px;
+                top: 0.23vh;
+                padding-left: 0.78vw;
+                
             }
 
             .row-line {
                 border-bottom: 1px solid #CDCDCD;
                 position: absolute;
-                margin-top: 3px;
+                margin-top: 0.35vh;
                 left: -1px;
-                width: 990px;
+                width: 77.34vw;
             }
             
             .hidden {
