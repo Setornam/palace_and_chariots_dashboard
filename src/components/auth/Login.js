@@ -80,7 +80,7 @@ const Login = () => {
                                 />
                                                     {error && <div style={errorContainer}>{error}</div>}
 
-                                <div style={{width: 110, height: 24, color: '#505050', fontSize: 12, fontWeight: '400', marginBottom:10,}}>Forgot Password?</div>
+                                <div style={{width: 110, height: 24, color: '#505050', fontSize: '0.857rem', fontWeight: '400', marginBottom:10,}}>Forgot Password?</div>
                             </div>
                                                 
                             <div>
@@ -94,7 +94,7 @@ const Login = () => {
                         </form>
                         <div style ={noAccount}>
                             <div style ={greyLine}></div>
-                            <div style={{width: 110, height: 24, textAlign: 'center', color: '#505050', fontSize: 12, FontFamily: 'Titillium Web', fontWeight: '400', wordWrap: 'break-word', paddingTop: 5}}>No Account?</div>
+                            <div style={{width: 110, height: 24, textAlign: 'center', color: '#505050', fontSize: '0.857rem', FontFamily: 'Titillium Web', fontWeight: '400', wordWrap: 'break-word', paddingTop: 5}}>No Account?</div>
                             <div style ={greyLine}></div> 
                         </div>         
 
@@ -111,39 +111,7 @@ const Login = () => {
                     <style>
                         {`
 
-                            .logo-image {
-                            width: 138px; /* Set the width of the logo */
-                            height: auto; /* Maintain aspect ratio */
-                            }
-
-                            @media (max-width: 999px) {
-                              main{
-                                    display: none;
-                              }
-
-                              .media-query {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
-                                align-items: center;
-                                color: white;
-                                background-color: #071EC3;
-                                height: 100vh;
-                                width: 100vw;
-                              }
-
-                              .media-query h1{
-                                text-align: center;
-                                padding: 10px;
-                              }
-
-                            }
-
-                            @media (min-width:1280px) {
-                              .media-query {
-                                display: none !important;
-                              }
-                            }
+                            
 
             
                         `}
@@ -184,7 +152,7 @@ const logoContainer = {
 
   const errorContainer = {
     color: 'red',
-    fontSize: '14px',
+    fontSize: '1rem',
     marginTop: '10px',
   }
 
@@ -224,7 +192,7 @@ const logoContainer = {
     FontFamily: 'Montserrat',
     color: '#071EC3',
     padding: '5% 0 2% 0',
-    fontSize: 24, 
+    fontSize: '1.7rem', 
     fontWeight: '700', 
     wordWrap: 'break-word',
     textTransform: 'uppercase',
@@ -236,7 +204,7 @@ const logoContainer = {
     color: '#505050',
     paddingTop: 0,
     paddingBottom: '5px',
-    fontSize: '14px',
+    fontSize: '1rem',
     fontWeight: '400', 
   };
 
@@ -257,7 +225,7 @@ const logoContainer = {
     border: '1.25px #D9D9D9 solid',
     color: '#FFFFFF',
     textAlign: 'center', 
-    fontSize: 14, 
+    fontSize: '1rem', 
     display: 'block', 
     fontWeight: 'bold',
     
@@ -285,7 +253,7 @@ const logoContainer = {
     textAlign: 'center', 
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 14, 
+    fontSize: '1rem', 
     display: 'flex', 
     border: '2px #071EC3 solid',
     fontWeight: 'bold',

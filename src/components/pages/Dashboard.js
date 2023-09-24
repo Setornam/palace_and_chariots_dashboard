@@ -130,21 +130,21 @@ const Dashboard = () => {
                 }
 
                 .inner-dashboard h2{
-                    font-size: 24px;
+                    font-size: 1.7rem;
                     color: #071EC3;
                     font-weight: 700;
                 }
 
                 .inner-dashboard h3{
                     color: #595959;
-                    font-size: 17px;
+                    font-size: 1.21rem;
                     font-weight: 400;
                 }
 
                 .dashboard h1{
                     padding-top: 4.03vh;
                     padding-left: 1.17vw;
-                    font-size: 24px;
+                    font-size: 1.7rem;
                     color: ##595959;
                     font-weight: 600;
                 }
@@ -160,7 +160,7 @@ const Dashboard = () => {
                 }
 
                 .tabs-container h3{
-                    font-size:24px;
+                    font-size:1.7rem;
                     color:#595959;
                     font-weight: 600;
                     padding-top: 1.172vh;
@@ -168,9 +168,9 @@ const Dashboard = () => {
 
                 .tab {
                     cursor: pointer;
-                    width: 6.41vw;
+                    width: 8vw;
                     height: 2.65vh;
-                    font-size: 11px;
+                    font-size: 0.79rem;
                     font-weight:400;
                     color: #595959;
                     background-color: #f0f0f0;
@@ -180,7 +180,7 @@ const Dashboard = () => {
                     justify-content: center;
                     align-items: center;
                     margin-right: 10px;
-                    padding: 0.23vh 1.56vw;
+                    padding: 0.23vh 0.56vw;
                     transition: background-color 0.3s, color 0.3s;
                     z-index: 1000;
                 }
@@ -188,11 +188,13 @@ const Dashboard = () => {
                 .tab.active {
                 background-color: #071EC3;
                 color: #fff;
+                
                 }
 
                 .tab-content {
                     position: relative;
                     top: -90px;
+                    
                 }
 
                 .search-container{
@@ -232,12 +234,12 @@ const Dashboard = () => {
                 }
 
                 .search-icon i {
-                    font-size: 11px;
+                    font-size: 0.79rem;
                 }
                 
                 .search-input::placeholder {
                     color: #8B8B8B;
-                    font-size: 14px;
+                    font-size: 1rem;
                     font-weight: 400; 
                     }
 

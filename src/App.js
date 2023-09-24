@@ -9,6 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './components/auth/firebase';
 import CreateAccount from './components/pages/CreateAccount';
 import ViewAccount from './components/pages/ViewAccount';
+import './App.css';
 
 const App = () => {
   const [loading, setLoading] = useState(true);

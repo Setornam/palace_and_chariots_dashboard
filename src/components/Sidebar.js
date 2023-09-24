@@ -103,7 +103,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             display: flex;
             align-items: center;
             padding: 0 0 40px 20px;
-            font-size: 14px;
+            font-size: 1rem;
             font-weight: 400;
             cursor: pointer;
           }
@@ -116,7 +116,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
 
             }
             .logout-button li{
-              font-size: 14px;
+              font-size: 1rem;
               font-weight: 400;
             }
 
@@ -136,7 +136,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             margin-right: 10px;
             width: 20px;
             height: 20px;
-            font-size: 20px;
+            font-size: 1.43rem;
         
           }
           .additional-menu {
@@ -179,7 +179,7 @@ const sidebarStyles = {
 
 const menuItemStyles = {
   color: 'white',
-  fontSize: 14,
+  fontSize: '1rem',
   fontFamily: 'Arial, sans-serif',
   wordWrap: 'break-word',
 };
