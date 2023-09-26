@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {  useNavigate } from 'react-router-dom';
-import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from './firebase';
 import logoImage from '../Images/logo.png';
 
@@ -34,7 +34,11 @@ const Signup = () => {
   
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        navigate('/login');
+
+        await signInWithEmailAndPassword(auth, email, password);
+
+        navigate('/admin');
+
       } catch (error) {
         setError(error.message);
       }
