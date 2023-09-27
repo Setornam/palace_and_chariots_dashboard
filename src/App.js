@@ -40,6 +40,7 @@ const App = () => {
         <Route path="/" element={loading ? <SplashScreen /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="*" element={<div>Page Not Found</div>} />
 
         {/* Protected route */}
         <Route

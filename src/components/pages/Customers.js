@@ -1,8 +1,31 @@
-import React from 'react';
-import {  FiChevronRight, FiSearch } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../auth/firebase';
+
+
+
+
 
 
 const Customers = () => {
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollection = collection(db, 'users');
+        const querySnapshot = await getDocs(usersCollection);
+        const userData = querySnapshot.docs.map((doc) => doc.data());
+        setUsers(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserData();
+  }, []); 
 
 
     
@@ -43,105 +66,18 @@ const Customers = () => {
         </thead>
         <tbody>
             <tr></tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packerzuckberg@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
-          <tr>
-            <td>James Packer</td>
-            <td> Ghana </td>
-            <td>Accra</td>
-            <td>packer@gmail.com</td>
-            <td>
-              <FiChevronRight className='icon'/>
-            </td>
-          </tr>
+            {users.map((user) => (
+    <tr key={user.id}>
+      <td>{`${user.first_name} ${user.last_name}`}</td>
+      {/* Include other user data fields here */}
+      <td> {user.country} </td>
+      <td>{user.city}</td>
+      <td>{user.email_address}</td>
+      <td>
+        <FiChevronRight className='icon'/>
+      </td>
+    </tr>
+  ))}
           
         
           
