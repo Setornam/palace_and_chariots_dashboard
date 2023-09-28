@@ -50,10 +50,8 @@ const ActiveTab = () => {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  // Filter data to display only the rows for the current page
   const pageData = orders.slice(startIndex, endIndex);
 
-  // Function to handle page change
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= Math.ceil(orders.length / rowsPerPage)) {
       setCurrentPage(newPage);

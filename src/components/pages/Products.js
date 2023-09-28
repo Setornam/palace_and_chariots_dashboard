@@ -259,6 +259,32 @@ const Products = () => {
                 display: none;
             }
 
+            .pagination {
+              display: flex;
+              color: #595959;
+              justify-content: end;
+              align-items: center;
+              margin-top: 15px;
+              margin-right: 3.5%;
+              font-weight: 600;
+              font-size: 11px;
+            }
+
+            .pagination .button {
+              margin: 0 5px;
+              cursor: pointer;
+              background-color: white;
+              width: 11px;
+              display: flex;
+              border: 2px solid #CDCDCD;
+              color: #CDCDCD;
+              border-radius: 5px;
+              padding: 1px 5px;
+              justify-content: center;
+              align-items: center;
+              font-size: 22px;
+            }
+
 
                 
                 `}
