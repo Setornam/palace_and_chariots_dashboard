@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../auth/firebase';
 
@@ -11,6 +12,8 @@ import { db } from '../auth/firebase';
 const Customers = () => {
 
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 11;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -26,6 +29,20 @@ const Customers = () => {
   
     fetchUserData();
   }, []); 
+
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+
+  // Filter data to display only the rows for the current page
+  const pageData = users.slice(startIndex, endIndex);
+
+  // Function to handle page change
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= Math.ceil(users.length / rowsPerPage)) {
+      setCurrentPage(newPage);
+    }
+  };
 
 
     
@@ -66,7 +83,7 @@ const Customers = () => {
         </thead>
         <tbody>
             <tr></tr>
-            {users.map((user) => (
+            {pageData.map((user) => (
     <tr key={user.id}>
       <td>{`${user.first_name} ${user.last_name}`}</td>
       {/* Include other user data fields here */}
@@ -83,6 +100,22 @@ const Customers = () => {
           
         </tbody>
       </table>
+
+      <div className="pagination">
+        
+          
+          <FaArrowLeft className='button'
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}/>
+
+          <span>Page {currentPage}</span>
+          
+            <FaArrowRight className='button'
+              disabled={currentPage === Math.ceil(users.length / rowsPerPage)}
+            onClick={() => handlePageChange(currentPage + 1)}
+            />
+          
+      </div>
         </div>
         
 
@@ -222,6 +255,32 @@ const Customers = () => {
                 padding-left: 0.78vw;
                 color: #CDCDCD;
                 ;
+            }
+
+            .pagination {
+              display: flex;
+              color: #595959;
+              justify-content: end;
+              align-items: center;
+              margin-top: 50px;
+              margin-right: 3.5%;
+              font-weight: 600;
+              font-size: 11px;
+            }
+
+            .pagination .button {
+              margin: 0 5px;
+              cursor: pointer;
+              background-color: white;
+              width: 11px;
+              display: flex;
+              border: 2px solid #CDCDCD;
+              color: #CDCDCD;
+              border-radius: 5px;
+              padding: 1px 5px;
+              justify-content: center;
+              align-items: center;
+              font-size: 22px;
             }
                     
                 
