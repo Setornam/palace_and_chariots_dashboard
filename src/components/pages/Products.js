@@ -1,15 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { FiSearch } from 'react-icons/fi';
+import { BiSolidDownArrow} from 'react-icons/bi';
 import AllProducts from '../tabs/productTabs/AllProducts';
 import CreateProduct from '../tabs/productTabs/CreateProduct';
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('');
   const searchInputRef = useRef(null);
 
   const tabData = [
     { id: 1, label: 'All Products' },
     { id: 2, label: 'Create Products' },
+    
   ];
 
   const handleTabChange = (tabId) => {
@@ -18,7 +22,20 @@ const Products = () => {
       searchInputRef.current.value = '';
       // Remove the search-container class when "Create Products" tab is selected
       document.querySelector('.search-container')?.classList.remove('search-container');
+       // Hide the filter dropdown when "Create Product" tab is selected
+       setShowFilterDropdown(false);
     }
+  };
+
+
+  const handleFilterButtonClick = () => {
+    setShowFilterDropdown(!showFilterDropdown);
+  };
+
+  const handleFilterOptionClick = (filterOption) => {
+    setSelectedFilter(filterOption);
+    setShowFilterDropdown(false);
+    // You can add logic to filter products based on the selected filter here
   };
 
   return (
@@ -41,11 +58,13 @@ const Products = () => {
               />
             </div>
           </div>
+          
         </div>
         <div className='table'>
           <div className="tab-content">
             <div className="tab-header">
               <div className="tabs-container">
+              
                 {tabData.map((tab) => (
                   <div
                     key={tab.id}
@@ -53,9 +72,46 @@ const Products = () => {
                     onClick={() => handleTabChange(tab.id)}
                   >
                     {tab.label}
+                    
                   </div>
+                  
                 ))}
+                
               </div>
+              
+              {activeTab === 1 && (
+                <div className="filter-container">
+                  <button className="filter-button" onClick={handleFilterButtonClick}>
+                    <BiSolidDownArrow />
+                  </button>
+                  {showFilterDropdown && (
+                    <div className="filter-dropdown">
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('All Products')}>
+                        All Products
+                      </div>
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('Vehicles')}>
+                        Vehicles
+                      </div>
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('Accommodation')}>
+                        Accommodation
+                      </div>
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('Sales')}>
+                        Sales
+                      </div>
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('Travel and Tourism')}>
+                        Travel and Tourism
+                      </div>
+                      <div className="filter-option" onClick={() => handleFilterOptionClick('Security')}>
+                        Security
+                      </div>
+                    </div>
+                  )}
+                  {selectedFilter && <div className="selected-filter">Selected: {selectedFilter}</div>}
+                </div>
+              )}
+              
+
+              
             </div>
             <div className='table-content'>
             {activeTab === 1 && <AllProducts />}
@@ -284,6 +340,51 @@ const Products = () => {
               align-items: center;
               font-size: 22px;
             }
+
+            .filter-container {
+            position: absolute;
+            left: 150px;
+          }
+
+          .filter-button {
+            background-color: #0B41AA;
+            position: relative;
+            top: 3px;
+            color: white;
+            width: 10px;
+            font-size: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+
+          .filter-dropdown {
+            position: absolute;
+            top: 33px;
+            right: -42px;
+            width: 161px;
+            height: 241.48px;
+            background-color: #E7E7F4;
+            border: none;
+            border-radius: 0 0 5px 5px;
+            z-index: 1;
+          }
+
+          .filter-option {
+            padding: 10.5px 12px;
+            cursor: pointer;
+            border-top: 1px solid #CDCDCD;
+            transition: background-color 0.3s;
+          }
+
+          .filter-option:hover {
+            font-weight: 600;
+          }
+
+          .selected-filter {
+            margin-top: 5px;
+            font-weight: bold;
+          }
 
             
 

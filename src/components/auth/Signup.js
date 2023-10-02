@@ -3,6 +3,9 @@ import {  useNavigate } from 'react-router-dom';
 import {  createUserWithEmailAndPassword, signInWithEmailAndPassword  } from 'firebase/auth';
 import { auth } from './firebase';
 import logoImage from '../Images/logo.png';
+import { db } from './firebase';
+import { collection, addDoc } from 'firebase/firestore';
+
 
  
 const Signup = () => {
@@ -26,24 +29,33 @@ const Signup = () => {
         setError('Password must be at least 8 characters and contain at least one special character and one number.');
         return;
       }
-  
+    
       if (password !== confirmPassword) {
         setError("Passwords don't match.");
         return;
       }
-  
+    
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-
+        // Create the user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+    
+        // Save user data to Firestore super admin collection
+        const superAdminsCollection = collection(db, 'superAdmins');
+        await addDoc(superAdminsCollection, {
+          uid: user.uid,
+          email: user.email,
+          // Add other user data you want to save here
+        });
+    
+        // Sign in the user
         await signInWithEmailAndPassword(auth, email, password);
-
+    
         navigate('/admin');
-
       } catch (error) {
         setError(error.message);
       }
     };
-
     return (
         <main >        
             <section style={mainContainer}>

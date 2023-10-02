@@ -7,8 +7,6 @@ import Admin from './components/Admin';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './components/auth/firebase';
-import CreateAccount from './components/pages/CreateAccount';
-import ViewAccount from './components/pages/ViewAccount';
 import './App.css';
 
 const App = () => {
@@ -47,14 +45,7 @@ const App = () => {
           path="/admin"
           element={isAuthenticated() ? <Admin /> : <Navigate to="/" />}
         />
-        <Route
-          path="/create-account"
-          element={isAuthenticated() ? <CreateAccount /> : <Navigate to="/create-account" />}
-        />
-        <Route
-          path="/view-account"
-          element={isAuthenticated() ? <ViewAccount /> : <Navigate to="/view-account" />}
-        />
+        
         
       </Routes>
     </Router>

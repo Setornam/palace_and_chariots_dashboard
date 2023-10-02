@@ -3,6 +3,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
+import Products from '../../pages/Products';
 
 const AllProducts = () => {
 

@@ -19,7 +19,7 @@ const handleLogout = async () => {
 
 
 
-const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
+const Sidebar = ({ menus, activeMenu, onMenuClick, accessRole }) => {
   const iconMap = {
     dashboard: <RiDashboardLine />,
     products: <FiShoppingBag />,
@@ -39,8 +39,11 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
     
   ];
 
+  
+
   return (
     <div className="sidebar" style={sidebarStyles}>
+     
         <div className="logo-container">
             <img src={logoImage} alt="Logo" className="logo-image" />
         </div>

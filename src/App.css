@@ -49,6 +49,12 @@ html {
 *{
   font-family: 'Montserrat', sans-serif;
 }
+
+
+button{
+  cursor: pointer !important;
+}
+
 .logo-image {
   width: 138px; /* Set the width of the logo */
   height: auto; /* Maintain aspect ratio */

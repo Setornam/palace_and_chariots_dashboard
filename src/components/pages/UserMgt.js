@@ -1,34 +1,239 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import {  FiSearch, FiPlusSquare, FiEye } from 'react-icons/fi';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import {  createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification } from 'firebase/auth';
+import { auth } from '../auth/firebase';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { BiEditAlt } from 'react-icons/bi';
-import { NavLink, useNavigate } from 'react-router-dom';
-
-
+import { db } from '../auth/firebase';
+import { collection, addDoc, getDocs, doc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../auth/firebase'; // Import Firebase Storage
+import 'firebase/firestore'; // 
 
 
 const UserMgt = () => {
 
-    const navigate = useNavigate();
-
-    const handleIconClick = () => {
-        // Navigate to the CreateAccount component
-        navigate('/CreateAccount');
+    const genderOptions = ['Male', 'Female', ];
+    const adminStatusOptions = ['Active', 'Inactive'];
+    const accessRoleOptions = ['Standard User', 'System Admin']
+    const [selectedProfilePhoto, setSelectedProfilePhoto] = useState(null);
+    const [admins, setAdmins] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 11;
     
-    };
 
-    const handleViewClick = () => {
-        // Navigate to the CreateAccount component
-        navigate('/ViewAccount');
+    // Fetch and display table data
+    const fetchAdminsData = async (collectionName) => {
+        const adminsCollection = collection(db, collectionName);
+        const snapshot = await getDocs(adminsCollection);
+        const adminsData = snapshot.docs.map((doc) => doc.data());
+        return adminsData;
+      };
+
+      useEffect(() => {
+        // Fetch data from different collections
+        const fetchData = async () => {
+          const superAdminsData = await fetchAdminsData('superAdmins');
+          const regularAdminsData = await fetchAdminsData('regular-admins');
+          
+          
+          // Combine the data from different collections into one array
+          const allAdminsData = [
+            ...superAdminsData,
+            ...regularAdminsData,
+           
+          ];
     
+          setAdmins(allAdminsData);
+        };
+    
+        fetchData();
+      }, []);
+
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      const pageData = admins.slice(startIndex, endIndex);
+    
+      const totalPages = Math.ceil(admins.length / rowsPerPage);
+
+      const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= Math.ceil(admins.length / rowsPerPage)) {
+          setCurrentPage(newPage);
+        }  };
+
+    
+
+
+
+    const [formData, setFormData] = useState({
+        firstName: '',
+        middleName:'',
+        lastName: '',
+        dateOfBirth: '',
+        gender: '',
+        dateEmployed: '',
+        status: '',
+        accessRole: '',
+        employeeId: '',
+        email: '',
+        workPhone: '',
+        profilePhoto: null, // For file upload
+        
+      });
+
+      
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+      };
+    
+      const handleProfilePhotoChange = (e) => {
+        const file = e.target.files[0];
+        setSelectedProfilePhoto(file);
+      };
+    
+      const generateRandomPassword = () => {
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+        let password = "";
+    
+        for (let i = 0; i < 12; i++) {
+          const randomIndex = Math.floor(Math.random() * charset.length);
+          password += charset.charAt(randomIndex);
+        }
+    
+        return password;
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+       
+      
+        
+      
+        try {
+            
+            // Create a user with email and password
+            const { user } = await createUserWithEmailAndPassword(auth, formData.email, generateRandomPassword());
+        
+            // Send a verification email to the user
+            await sendEmailVerification(user);
+        
+            // Create a new Firestore document with the form data
+            const regularAdminCollection = collection(db, 'superAdmins'); // Replace with your collection name
+        
+            // Set the document data
+            const docRef = await addDoc(regularAdminCollection, {
+              firstName: formData.firstName,
+              middleName: formData.middleName,
+              lastName: formData.lastName,
+              dateOfBirth: formData.dateOfBirth,
+              gender: formData.gender,
+              dateEmployed: formData.dateEmployed,
+              status: formData.status,
+              accessRole: formData.accessRole,
+              employeeId: formData.employeeId,
+              email: formData.email,
+              workPhone: formData.workPhone,
+              profilePhoto: formData.profilePhoto, 
+            });
+
+          
+      
+          // Clear the form
+          setFormData({
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            dateOfBirth: '',
+            gender: '',
+            dateEmployed: '',
+            status: '',
+            accessRole: '',
+            employeeId: '',
+            email: '',
+            workPhone: '',
+            profilePhoto: null,
+          });
+
+          // Send a password reset email to the user's email address
+         await sendPasswordResetEmail(auth, formData.email);
+      
+         console.log('User created successfully with ID: ', docRef.id);
+        console.log('Password reset email sent successfully!');
+  } catch (error) {
+        console.error('Error creating user or sending email: ', error);
+  }
+      };
+      
+
+  
+
+    const [isTabActive, setIsTabActive] = useState(false);
+
+
+    const toggleTab = () => {
+        setIsTabActive(!isTabActive);
+      };
+
+
+
+
+    const [profilePhoto, setProfilePhoto] = useState(null);
+
+    const handlePhotoChange = async (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          try {
+            const resizedImage = await resizeImage(selectedFile, 70, 70);
+            setProfilePhoto(URL.createObjectURL(resizedImage));
+          } catch (error) {
+            console.error('Error resizing image:', error);
+          }
+        } else {
+          // Clear the profile photo when no file is selected
+          setProfilePhoto(null);
+        }
+      };
+
+  
+
+  const resizeImage = (file, width, height) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          const resizedFile = new File([blob], file.name, { type: file.type });
+          resolve(resizedFile);
+        }, file.type);
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+      img.src = event.target.result;
     };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsDataURL(file);
+  });
+};
 
     
   return (
     <div>
         <div>
             <div className='customers-container'>
-                <div className='top-bar'>
+                <div className='top-bar' >
                     <span className="heading-container">
                         <h1>Employees</h1>
                     </span>
@@ -50,14 +255,12 @@ const UserMgt = () => {
                     </span>
                     <span className="add-container">
                         
-                        <NavLink to="/create-account" >
-                            <FiPlusSquare 
-                            size={32} 
-                            color='#071EC3' 
-                            cursor='pointer'
-                            onClick={handleIconClick}
-                            />
-                        </NavLink>
+                        <div
+                            className={`tab ${isTabActive ? 'active' : ''}`}
+                            onClick={toggleTab}
+                        >
+                            <FiPlusSquare size={32} color="#071EC3" cursor="pointer" />
+                        </div>
                     </span>
                     
                 </div>
@@ -75,11 +278,45 @@ const UserMgt = () => {
                     border-radius:6px;
                 }
 
+                .content-area{
+                    background-color: #fff;
+                    height: 96.16vh;
+                    width: 100%;
+                    position: relative;
+                    top: -11.86vh;
+                    border-radius:6px;
+                    overflow: scroll ;
+                    overflow-x: hidden;
+                    scrollbar-width: thin;
+                    scrollbar-color: #071EC3 #F0F0F0;
+
+                }
+
+
+                .content-area::-webkit-scrollbar {
+                     width: 4px; 
+                }
+
+                .content-area::-webkit-scrollbar-thumb {
+                    background-color: #0B41AA;
+                    border-radius: 10px;
+                }
+
+                .content-area::-webkit-scrollbar-track {
+                    background-color: #cdcdcd;
+                    border-radius: 10px;
+                }
+
                 .top-bar{
                     display: flex;
                     height: 11.52vh;
                     width: 100%;
                     border-radius: 6px 6px 0 0;
+                }
+
+                #top-bar-create{
+                    display: flex;
+                    flex-direction: column;
                 }
                 
                 .heading-container{
@@ -184,11 +421,392 @@ const UserMgt = () => {
                     cursor: pointer;
                 }
 
-                
+                .edit-profile {
+          margin-left: 50px;
+          display: flex;
+          width: 95%;
+        }
+
+        .left-column {
+          width: 50%;
+        }
+
+        .edit-profile label{
+          display: block ;
+          color: #505050;
+          font-size: 14px;
+          font-weight: 400;
+          padding-top: 20px;
+          padding-bottom: 5px;
+        }
+
+        .edit-profile input {
+          width: 370px;
+          height: 39px;
+          border: 0.35px #CDCDCD solid;
+          border-radius: 3.48px;
+          padding: 0 15px;
+        }
+
+        .left-column button{
+          width: 325px;
+          height: 38px;
+          margin: 30px 0;
+          background-color: #0B41AA;
+          color: white;
+          font-weight: 600;
+          border: none;
+          border-radius: 3.48px;
+          cursor: pointer;
+        }
+
+
+        .right-column {
+          width: 50%; 
+
+        }
+
+        .placeholder-profile-photo {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          width: 119px;
+          height: 117px;
+          margin-top: 20px;
+          margin-left: 0px;
+        }
+        .placeholder-profile-photo img {
+          width: 70px;
+          height: 70px;
+          opacity: 0.5;
+        }
+
+        .photo-upload{
+          position: relative;
+          left: 160px;
+        }
+
+        .photo-upload p{
+          color: #8B8B8B;
+          font-size: 14px;
+        }
+
+        .photo-upload input{
+          border: none;
+        
+        }
+
+        .file-input {
+          display: inline-block;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          border: none;
+        }
+
+        .file-input input[type="file"] {
+          display: none;
+        }
+
+        .file-input span {
+          display: inline-block;
+          text-align: center;
+          padding: 10px 0px;
+          color: white;
+          width: 140px;
+          background-color: #0B41AA;
+          border-radius: 3.48px;
+          border: none;
+          margin-left: -15px;
+          margin-top: -15px;
+          margin-bottom: 5px;
+        }
+
+        #date-of-birth, #date-employed{
+            width: 175px;
+        }
+
+        .dob{
+            display: flex;
+            align-content: center;
+            
+        }
+
+        .dob span{
+            margin-right: 20.83px;
+        }
+
+        select{
+            width: 175px;
+            height: 40px;
+            cursor: pointer;
+            border: 1px solid #cdcdcd;
+            border-radius:5px;
+            padding: 5px 10px;
+        }
+
+        .pagination {
+              display: flex;
+              color: #595959;
+              justify-content: end;
+              align-items: center;
+              margin-top: 50px;
+              margin-right: 3.5%;
+              font-weight: 600;
+              font-size: 11px;
+            }
+
+            .pagination .button {
+              margin: 0 5px;
+              cursor: pointer;
+              background-color: white;
+              width: 11px;
+              display: flex;
+              border: 2px solid #CDCDCD;
+              color: #CDCDCD;
+              border-radius: 5px;
+              padding: 1px 5px;
+              justify-content: center;
+              align-items: center;
+              font-size: 22px;
+            }
+
+            #access-role{
+                width: 402px;
+            }
                 
                 `}
             </style>
             <div className='table'>
+                {/* Content area that appears when the tab is active */}
+            {isTabActive && (
+              <div className="content-area">
+                {/* Content goes here */}
+                <div className='top-bar' id='top-bar-create'>
+                    <span className="heading-container">
+                        <h1>Create Employees / User Account</h1>
+                    </span>
+                    <div className='edit-profile'>
+                        <div className="left-column">
+                            <br></br>
+                            <form onSubmit={handleSubmit}>
+                                <div>
+                                    <label htmlFor="first-name">First Name</label>
+                                    <input
+                                    id="first-name"
+                                    name="firstName"
+                                    type="text"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder=""
+                                    />
+                                    
+                                    
+                                    <label htmlFor="middle-name">Middle Name</label>
+                                    <input
+                                    id="middle-name"
+                                    name="middleName"
+                                    value={formData.middleName}
+                                    onChange={handleChange}
+                                    type="text"
+                                    required
+                                    placeholder=""
+                                    />
+
+                                    <label htmlFor="last-name">Last Name</label>
+                                    <input
+                                    id="last-name"
+                                    name="lastName"
+                                    type="text"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder=""
+                                    />
+
+                                    <div className='dob'>
+                                        <span>
+                                            <label htmlFor="date-of-birth">Date of Birth</label>
+                                            <input
+                                            id="date-of-birth"
+                                            name="dateOfBirth"
+                                            type="date"
+                                            value={formData.dateOfBirth}
+                                    onChange={handleChange}
+                                            required
+                                            placeholder=""
+                                            />
+                                        </span>
+
+                                        <span className='gender'>
+                                            <label htmlFor='gender'>Gender</label>
+                                            <select
+                                                name="gender"
+                                                id='gender'
+                                                value={formData.gender}
+                                                onChange={handleChange}
+                                                required
+                                                >
+                                                <option value="" disabled>Gender</option>
+                                                {genderOptions.map((option, index) => (
+                                                    <option key={index} value={option}>
+                                                    {option}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </span>
+                                    </div>
+
+                                    <div className='dob'>
+                                        <span>
+                                            <label htmlFor="date-employed">Date Employed</label>
+                                            <input
+                                            id="date-employed"
+                                            name="dateEmployed"
+                                            type="date"
+                                            value={formData.dateEmployeed}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder=""
+                                            />
+                                        </span>
+
+                                        <span className='gender'>
+                                            <label htmlFor='admin-status'>Status</label>
+                                            <select
+                                                name='status'
+                                                id='admin-status'
+                                                value={formData.adminStatus}
+                                                onChange={handleChange}
+                                                required
+                                                
+                                            >
+                                                <option value= "" disabled >
+                                                Status
+                                                </option>
+                                                {adminStatusOptions.map((option) => (
+                                                <option key={option} value={option}>
+                                                    {option}
+                                                </option>
+                                                ))}
+                                            </select>
+                                        </span>
+                                    </div>
+
+                                    <label htmlFor='access-role'>Access Role</label>
+                                            <select
+                                                name='accessRole'
+                                                id='access-role'
+                                                value={formData.accessRole}
+                                                onChange={handleChange}
+                                                required
+                                                
+                                            >
+                                                <option value= "" disabled>
+                                                Role
+                                                </option>
+                                                {accessRoleOptions.map((option) => (
+                                                <option key={option} value={option}>
+                                                    {option}
+                                                </option>
+                                                ))}
+                                            </select>
+
+                                   
+
+                                    <label htmlFor="employee-id">Employee ID #</label>
+                                    <input
+                                    id="employee-id]"
+                                    name="employeeId"
+                                    type="text"
+                                    value={formData.employeeId}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder=""
+                                    />
+
+                                    <label htmlFor="email">Work Email (Primary Email)</label>
+                                    <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder=""
+                                    />
+
+                                    <label htmlFor="work-phone">Work Phone</label>
+                                    <input
+                                    id="work-phone"
+                                    name="workPhone"
+                                    type="tel"
+                                    value={formData.workPhone}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder=""
+                                    />
+
+                                    
+                        
+                                </div>
+
+                            <div>
+                                <button type="submit">Generate Password and Send</button>
+                            </div>
+                                           </form>
+                    </div>
+                    <div className="right-column">
+        <br></br>
+        <br></br>
+        
+        {profilePhoto ? (
+          <img
+            src={profilePhoto}
+            alt="Profile"
+            className="profile-photo"
+          />
+        ) : (
+          <div className="placeholder-profile-photo">
+            <img
+              src="/placeholder-profile.png" 
+              alt="Profile"
+            />
+
+            
+            <div className="photo-upload">
+              <p>photo_file_name.jpg</p>
+              <p>file size: 12kb</p>
+              <label className="file-input">
+                <input
+                  type="file"
+                  id="profilePhoto"
+                  name="profilePhoto"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+                <span>Choose File</span>
+                
+              </label>
+
+
+            </div>
+            
+          </div>
+        )}
+      </div>
+             
+                    </div>
+                    
+                    
+                </div>
+              </div>
+            )}
                     <table className="active-requests-table">
                         <thead>
                         <tr>
@@ -201,126 +819,46 @@ const UserMgt = () => {
                         </thead>
                         <tbody>
                             <tr></tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>Standard User</td>
+                            {pageData.map((admin, index) => (
+                            <tr key={index}>
+                            <td>{admin.lastName}</td>
+                            <td>{admin.status}</td>
+                            <td>{admin.email}</td>
+                            <td>{admin.accessRole}</td>
                             <td>
-                            <FiEye className='icon'
-                                onClick={handleViewClick}
-                            />
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
+                                <FiEye className='icon'/>
+                                <BiEditAlt className='icon'/>
+                                <RiDeleteBin6Line className='icon'/>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>Standard User</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>Standard User</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rice</td>
-                            <td> Jeffery  </td>
-                            <td>palaceandchariots@gmail.com</td>
-                            <td>System Admin</td>
-                            <td>
-                            <FiEye className='icon'/>
-                            <BiEditAlt className='icon'/>
-                            <RiDeleteBin6Line className='icon'/>
-                            </td>
-                        </tr>
+                            </tr>
+                        ))}
+                        
+                        
                         
                         
                         
                         
                         </tbody>
                     </table>
+                    
                 </div>
+                <div className="pagination">
+        
+          
+        <FaArrowLeft className='button'
+        disabled={currentPage === 1}
+        onClick={() => handlePageChange(currentPage - 1)}/>
+
+        <span>Page {currentPage}</span>
+        
+          <FaArrowRight className='button'
+            disabled={currentPage === Math.ceil(admins.length / rowsPerPage)}
+          onClick={() => handlePageChange(currentPage + 1)}
+          />
+        
+    </div>
         </div>
+        
         
         </div>
     </div>
