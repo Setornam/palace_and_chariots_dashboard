@@ -142,6 +142,11 @@ const ActiveTab = () => {
                 color: #595959;
                 font-size: 11px;
                 font-weight: 400;
+         
+            }
+
+            .active-requests-table tr{
+              height: 40px;
             }
         
 
@@ -169,14 +174,12 @@ const ActiveTab = () => {
             display: flex;
             justify-content: center;
             align-items: center; 
-            margin-top: 1.15vh;    
             cursor: pointer; 
             }
 
             .icon2{
                 font-size: 16px ;
                 position: relative;
-                top: 2px;
                 padding-left: 10px;
             }
 

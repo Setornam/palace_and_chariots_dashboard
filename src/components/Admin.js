@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
+import { collection, doc, getDoc, query, where} from 'firebase/firestore';
+import { db, auth } from './auth/firebase';
+import 'firebase/firestore'
 
 const Admin = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [accessRole, setAccessRole] = useState([]);
 
-  const menus = [
+  // Define different menus based on the user's access role
+  const standardMenu = [
+    { id: 'requests', label: 'Request' },
+    { id: 'messages', label: 'Messages' },
+  ];
+
+  const systemAdminMenu = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'products', label: 'Products' },
     { id: 'customers', label: 'Customers' },
-    { id: 'messages', label: 'Messages' }, // Add Messages menu
-    { id: 'audit-logs', label: 'Audit Logs' }, // Add Audit Logs menu
-    { id: 'user-management', label: 'User Management' }, // Add User Management menu
+    { id: 'messages', label: 'Messages' },
+    { id: 'audit-logs', label: 'Audit Logs' },
+    { id: 'user-management', label: 'User Management' },
   ];
 
+  // Determine which menu to use based on the user's access role
+  let menus;
+
+  if (accessRole === 'System Admin') {
+    menus = standardMenu;
+  } else {
+    menus = systemAdminMenu;
+  }
   const handleMenuClick = (menuId) => {
     setActiveMenu(menuId);
   };
+  
+
 
   return (
     <div className="admin">

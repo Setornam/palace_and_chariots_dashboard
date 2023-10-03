@@ -1,24 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {  FiSearch } from 'react-icons/fi';
 import ActiveTab from '../tabs/dashboardTabs/ActiveTab';
 import PendingTab from '../tabs/dashboardTabs/PendingTab';
 import ClosedTab from '../tabs/dashboardTabs/ClosedTab';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../auth/firebase'; // Adjust the import path as needed
+
 
 
 const Dashboard = () => {
-
     const tabData = [
-        { id: 1, label: 'Active (50)' },
-        { id: 2, label: 'Pending(15)' },
-        { id: 3, label: 'Closed(200)' },
-        // Add more tab data as needed
-      ];
-
-      const [activeTab, setActiveTab] = useState(1);
-
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-  };
+      { id: 1, label: 'Active (50)' },
+      { id: 2, label: 'Pending(15)' },
+      { id: 3, label: 'Closed(200)' },
+      // Add more tab data as needed
+    ];
+  
+    const [activeTab, setActiveTab] = useState(1);
+    const [orderCount, setOrderCount] = useState(0);
+    const [customerCount, setCustomerCount] = useState(0);
+  
+    const handleTabChange = (tabId) => {
+      setActiveTab(tabId);
+    };
+  
+    const fetchOrderCount = async () => {
+      try {
+        const ordersRef = collection(db, 'orders');
+        const querySnapshot = await getDocs(ordersRef);
+        const count = querySnapshot.size; // Get the number of documents in the collection
+        return count;
+      } catch (error) {
+        console.error('Error fetching order count:', error);
+        return 0; // Handle the error and set a default count
+      }
+    };
+  
+    const fetchCustomerCount = async () => {
+      try {
+        const customersRef = collection(db, 'users'); // Assuming 'users' is the collection name for customers
+        const querySnapshot = await getDocs(customersRef);
+        const count = querySnapshot.size; // Get the number of documents in the collection
+        return count;
+      } catch (error) {
+        console.error('Error fetching customer count:', error);
+        return 0; // Handle the error and set a default count
+      }
+    };
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        const orderCount = await fetchOrderCount();
+        const customerCount = await fetchCustomerCount();
+        setOrderCount(orderCount);
+        setCustomerCount(customerCount); // Set the customer count with the obtained value
+      };
+  
+      fetchData();
+    }, []);
 
     return (
         <div className='main-container'>
@@ -26,17 +65,17 @@ const Dashboard = () => {
                 <h1>Dashboard</h1> 
                 <div className='inner-dashboard'>
                     <div className='services-box'>
-                        <h2>12</h2>
+                        <h2>4</h2>
                         <h3>Services</h3>
                     </div>
 
                     <div className='request-box'>
-                        <h2>1000</h2>
+                        <h2>{orderCount}</h2>
                         <h3>Total Request</h3>
                     </div>
 
                     <div className='services-box'>
-                        <h2>56</h2>
+                        <h2>{customerCount}</h2>
                         <h3>Customers</h3>
                     </div>
 

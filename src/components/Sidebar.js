@@ -1,5 +1,5 @@
 import React from 'react';
-import {  FiShoppingBag, FiUsers, FiUser, FiMessageSquare, FiLogOut} from 'react-icons/fi';
+import {  FiShoppingBag, FiUsers, FiUser, FiMessageSquare, FiLogOut, FiClipboard } from 'react-icons/fi';
 import { RiDashboardLine } from 'react-icons/ri';
 import { HiOutlineChartBar } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
@@ -19,9 +19,10 @@ const handleLogout = async () => {
 
 
 
-const Sidebar = ({ menus, activeMenu, onMenuClick, accessRole }) => {
+const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
   const iconMap = {
     dashboard: <RiDashboardLine />,
+    requests: <FiClipboard />,
     products: <FiShoppingBag />,
     customers: <FiUsers />,
     messages: <FiMessageSquare />,
