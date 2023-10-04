@@ -30,7 +30,7 @@ const Admin = () => {
   if (accessRole === 'System Admin') {
     menus = standardMenu;
   } else {
-    menus = systemAdminMenu;
+    menus =  systemAdminMenu;
   }
   const handleMenuClick = (menuId) => {
     setActiveMenu(menuId);

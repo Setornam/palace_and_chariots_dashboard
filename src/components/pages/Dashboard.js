@@ -19,6 +19,7 @@ const Dashboard = () => {
     const [activeTab, setActiveTab] = useState(1);
     const [orderCount, setOrderCount] = useState(0);
     const [customerCount, setCustomerCount] = useState(0);
+    const [messageCount, setMessageCount] = useState(0);
   
     const handleTabChange = (tabId) => {
       setActiveTab(tabId);
@@ -47,14 +48,29 @@ const Dashboard = () => {
         return 0; // Handle the error and set a default count
       }
     };
+
+    
+  const fetchMessageCount = async () => {
+    try {
+      const chatsRef = collection(db, 'chats'); // Use 'chats' collection for messages
+      const querySnapshot = await getDocs(chatsRef);
+      const count = querySnapshot.size; // Get the number of documents in the collection
+      return count;
+    } catch (error) {
+      console.error('Error fetching message count:', error);
+      return 0; // Handle the error and set a default count
+    }
+  };
   
-    useEffect(() => {
-      const fetchData = async () => {
-        const orderCount = await fetchOrderCount();
-        const customerCount = await fetchCustomerCount();
-        setOrderCount(orderCount);
-        setCustomerCount(customerCount); // Set the customer count with the obtained value
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      const orderCount = await fetchOrderCount();
+      const customerCount = await fetchCustomerCount();
+      const messageCount = await fetchMessageCount(); // Fetch message count
+      setOrderCount(orderCount);
+      setCustomerCount(customerCount);
+      setMessageCount(messageCount); // Set the message count with the obtained value
+    };
   
       fetchData();
     }, []);
@@ -80,7 +96,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className='services-box'>
-                        <h2>200+</h2>
+                        <h2>{messageCount}</h2>
                         <h3>Messages</h3>
                     </div>
                 </div>
