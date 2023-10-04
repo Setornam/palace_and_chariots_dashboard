@@ -8,6 +8,7 @@ const Products = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const searchInputRef = useRef(null);
 
   const tabData = [
@@ -20,10 +21,7 @@ const Products = () => {
     setActiveTab(tabId);
     if (tabId === 2 && searchInputRef.current) {
       searchInputRef.current.value = '';
-      // Remove the search-container class when "Create Products" tab is selected
-      document.querySelector('.search-container')?.classList.remove('search-container');
-       // Hide the filter dropdown when "Create Product" tab is selected
-       setShowFilterDropdown(false);
+      setShowFilterDropdown(false);
     }
   };
 
@@ -36,6 +34,11 @@ const Products = () => {
     setSelectedFilter(filterOption);
     setShowFilterDropdown(false);
     // You can add logic to filter products based on the selected filter here
+  };
+  
+  const handleSearch = () => {
+    const query = searchInputRef.current.value;
+    setSearchQuery(query); 
   };
 
   return (
@@ -55,6 +58,7 @@ const Products = () => {
                 placeholder="Search..."
                 className="search-input"
                 ref={searchInputRef}
+                onChange={handleSearch}
               />
             </div>
           </div>
@@ -114,8 +118,8 @@ const Products = () => {
               
             </div>
             <div className='table-content'>
-            {activeTab === 1 && <AllProducts />}
-            {activeTab === 2 && <CreateProduct />}
+            {activeTab === 1 && <AllProducts searchQuery={searchQuery} />} {/* Pass searchQuery as a prop */}
+              {activeTab === 2 && <CreateProduct />}
           </div>
           </div>
           
@@ -247,11 +251,11 @@ const Products = () => {
                 }
 
                 .table {
-                        position: relative;
-                        top: 2.3vh;
-                    }
+                     position: relative;
+                     top: 2.3vh;
+                }
 
-                    .active-requests-table{
+                .active-requests-table{
                 width: 100%;
                 height: 74.88vh;
                 position: relative;
@@ -343,7 +347,8 @@ const Products = () => {
 
             .filter-container {
             position: absolute;
-            left: 150px;
+            left: 13%;
+
           }
 
           .filter-button {
@@ -360,14 +365,14 @@ const Products = () => {
 
           .filter-dropdown {
             position: absolute;
-            top: 33px;
+            top: 3.47vh;
             right: -42px;
             width: 161px;
             height: 241.48px;
             background-color: #E7E7F4;
             border: none;
             border-radius: 0 0 5px 5px;
-            z-index: 1;
+            z-index: 1000;
           }
 
           .filter-option {

@@ -3,23 +3,19 @@ import {  FiSearch } from 'react-icons/fi';
 import ActiveTab from '../tabs/dashboardTabs/ActiveTab';
 import PendingTab from '../tabs/dashboardTabs/PendingTab';
 import ClosedTab from '../tabs/dashboardTabs/ClosedTab';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,  query, where } from 'firebase/firestore';
 import { db } from '../auth/firebase'; // Adjust the import path as needed
 
 
 
 const Dashboard = () => {
-    const tabData = [
-      { id: 1, label: 'Active (50)' },
-      { id: 2, label: 'Pending(15)' },
-      { id: 3, label: 'Closed(200)' },
-      // Add more tab data as needed
-    ];
+
   
     const [activeTab, setActiveTab] = useState(1);
     const [orderCount, setOrderCount] = useState(0);
     const [customerCount, setCustomerCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
+    const [pendingOrderCount, setPendingOrderCount] = useState(0);
   
     const handleTabChange = (tabId) => {
       setActiveTab(tabId);
@@ -61,19 +57,43 @@ const Dashboard = () => {
       return 0; // Handle the error and set a default count
     }
   };
+
+   // Function to fetch the count of pending orders
+  const fetchPendingOrderCount = async () => {
+    try {
+      const ordersRef = collection(db, 'orders');
+      const q = query(ordersRef, where('order_status', '==', 'pending'));
+      const querySnapshot = await getDocs(q);
+      const count = querySnapshot.size; // Get the number of pending orders
+      return count;
+    } catch (error) {
+      console.error('Error fetching pending order count:', error);
+      return 0; // Handle the error and set a default count
+    }
+  };
   
   useEffect(() => {
     const fetchData = async () => {
       const orderCount = await fetchOrderCount();
       const customerCount = await fetchCustomerCount();
       const messageCount = await fetchMessageCount(); // Fetch message count
+      const pendingCount = await fetchPendingOrderCount();
+
       setOrderCount(orderCount);
       setCustomerCount(customerCount);
       setMessageCount(messageCount); // Set the message count with the obtained value
+      setPendingOrderCount(pendingCount); 
     };
   
       fetchData();
     }, []);
+
+    const tabData = [
+        { id: 1, label: `Active(${pendingOrderCount})` },
+        { id: 2, label: `Pending(${pendingOrderCount})` },
+        { id: 3, label: `Closed(${pendingOrderCount})` },
+        // Add more tab data as needed
+      ];
 
     return (
         <div className='main-container'>

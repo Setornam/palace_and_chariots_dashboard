@@ -5,7 +5,8 @@ import SalesVehicles from './productCategories/SalesVehicles';
 import SalesHouse from './productCategories/SalesHouse';
 import TravelTourism from './productCategories/TravelTourism';
 import AccommodationHotel from './productCategories/AccommodationHotel';
-
+import { addDoc, collection } from 'firebase/firestore'; 
+import { db } from '../../auth/firebase'; 
 
 
 
@@ -21,6 +22,22 @@ const CreateProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [additionalFields, setAdditionalFields] = useState(null);
   const [location, setLocation] = useState('');
+  const [model, setModel] = useState('');
+  const [brand, setBrand] = useState('');
+  const [condition, setCondition] = useState('');
+  const [color, setColor] = useState('');
+  const [seats, setSeats] = useState('');
+  const [horsePower, setHorsePower] = useState('');
+  const [interiorColor, setInteriorColor] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [yearOfManufacture, setYearOfManufacture] = useState('');
+  const [engineSize, setEngineSize] = useState('');
+  const [transmission, setTransmission] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+  const [productDiscount, setProductDiscount] = useState('');
+  const [productQuantity, setProductQuantity] = useState('');
+
+  
   
 
   const categoryOptions = {
@@ -48,46 +65,82 @@ const CreateProduct = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-  
+
     // Set additional fields based on the selected category
     if (category === 'Vehicles/Saloon') {
       setAdditionalFields(<VehicleSaloon />);
     } else if (category === 'Vehicles/Private Jet') {
       setAdditionalFields(<PrivateJet />);
-    } else if (category === 'Sales/Vehicle') {
-        setAdditionalFields(<SalesVehicles />);
+    } else if (category === 'Sales/Vehicles') {
+      setAdditionalFields(<SalesVehicles />);
     } else if (category === 'Sales/House') {
-        setAdditionalFields(<SalesHouse />);
-    } 
-      else if (category === 'Travel/Tourism') {
-        setAdditionalFields(<TravelTourism />);
-        
-    } else if (category === 'Accommodation/Hotels') {
-        setAdditionalFields(<AccommodationHotel />);
-        
-    } else if (category === 'Accommodation/Apartments') {
-      setAdditionalFields(<AccommodationHotel />);
-      
-    } else if (category === 'Vehicles/Bus') {
-      setAdditionalFields(<VehicleSaloon />);
-      
-    } else if (category === 'Events Services') {
+      setAdditionalFields(<SalesHouse />);
+    } else if (category === 'Travel/Tourism') {
       setAdditionalFields(<TravelTourism />);
-      
+    } else if (category === 'Accommodation/Hotels' || category === 'Accommodation/Apartments') {
+      setAdditionalFields(<AccommodationHotel />);
+    } else if (category === 'Vehicles/Bus' || category === 'Events Services') {
+      setAdditionalFields(<VehicleSaloon />);
     } else {
       setAdditionalFields(null); // Reset additional fields for other categories
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can access the form values here and perform actions like validation or submission to an API
-    console.log('Product Name:', productName);
-    console.log('Status:', status);
-    console.log('Selected Service:', selectedService);
-    console.log('Selected Category:', selectedCategory);
-    console.log('Additional Fields:', additionalFields);
-    console.log('Location:', location);
+
+    try {
+      // Check if the selected category is "Sales/Vehicles"
+      if (selectedCategory === 'Sales/Vehicles') {
+        // Create a new document in the "vehicles" collection
+        const docRef = await addDoc(collection(db, 'vehicles'), {
+          name: productName,
+          service: selectedService,
+          category: selectedCategory,
+          price: productPrice,
+          discount: productDiscount,
+          quantity: productQuantity,
+          product_status: status,
+          location,
+          model,
+          brand,
+          condition,
+          color,
+          seats,
+          horse_power: horsePower,
+          interior_color: interiorColor,
+          mileage,
+          year_of_manufacture: yearOfManufacture,
+          engine_size: engineSize,
+          transmission,
+        });
+
+        console.log('Document written with ID: ', docRef.id);
+      }
+
+        // Reset form fields after successful submission
+        setProductName('');
+        setStatus('');
+        setSelectedService('');
+        setSelectedCategory('');
+        setProductPrice(''); 
+        setProductDiscount(''); 
+        setProductQuantity(''); 
+        setLocation('');
+        setModel('');
+        setBrand('');
+        setCondition('');
+        setColor('');
+        setSeats('');
+        setHorsePower('');
+        setInteriorColor('');
+        setMileage('');
+        setYearOfManufacture('');
+        setEngineSize('');
+        setTransmission('');
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
   };
 
   return (
