@@ -16,6 +16,8 @@ const Dashboard = () => {
     const [customerCount, setCustomerCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
     const [pendingOrderCount, setPendingOrderCount] = useState(0);
+    const [activeOrderCount, setActiveOrderCount] = useState(0);
+    const [closedOrderCount, setClosedOrderCount] = useState(0);
   
     const handleTabChange = (tabId) => {
       setActiveTab(tabId);
@@ -71,6 +73,36 @@ const Dashboard = () => {
       return 0; // Handle the error and set a default count
     }
   };
+
+  // Function to fetch the count of active orders
+  const fetchActiveOrderCount = async () => {
+    try {
+      const ordersRef = collection(db, 'orders');
+      const q = query(ordersRef, where('order_status', '==', 'Active'));
+      const querySnapshot = await getDocs(q);
+      const count = querySnapshot.size; // Get the number of active orders
+      return count;
+    } catch (error) {
+      console.error('Error fetching pending order count:', error);
+      return 0; // Handle the error and set a default count
+    }
+  };
+
+   // Function to fetch the count of closed orders
+   const fetchClosedOrderCount = async () => {
+    try {
+      const ordersRef = collection(db, 'orders');
+      const q = query(ordersRef, where('order_status', '==', 'Closed'));
+      const querySnapshot = await getDocs(q);
+      const count = querySnapshot.size; // Get the number of closed orders
+      return count;
+    } catch (error) {
+      console.error('Error fetching pending order count:', error);
+      return 0; // Handle the error and set a default count
+    }
+  };
+
+  
   
   useEffect(() => {
     const fetchData = async () => {
@@ -78,20 +110,24 @@ const Dashboard = () => {
       const customerCount = await fetchCustomerCount();
       const messageCount = await fetchMessageCount(); // Fetch message count
       const pendingCount = await fetchPendingOrderCount();
+      const activeCount = await fetchActiveOrderCount();
+      const closedCount = await fetchClosedOrderCount();
 
       setOrderCount(orderCount);
       setCustomerCount(customerCount);
       setMessageCount(messageCount); // Set the message count with the obtained value
       setPendingOrderCount(pendingCount); 
+      setActiveOrderCount(activeCount); 
+      setClosedOrderCount(closedCount);
     };
   
       fetchData();
     }, []);
 
     const tabData = [
-        { id: 1, label: `Active(${pendingOrderCount})` },
+        { id: 1, label: `Active(${activeOrderCount})` },
         { id: 2, label: `Pending(${pendingOrderCount})` },
-        { id: 3, label: `Closed(${pendingOrderCount})` },
+        { id: 3, label: `Closed(${closedOrderCount})` },
         // Add more tab data as needed
       ];
 

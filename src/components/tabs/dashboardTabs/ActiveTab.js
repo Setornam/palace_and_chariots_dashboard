@@ -9,7 +9,6 @@ import { db } from '../../auth/firebase';
 const ActiveTab = () => {
 
   const [activeOrders, setActiveOrders] = useState([]);
-  const [usersMap, setUsersMap] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const rowsPerPage = 11;
@@ -27,7 +26,6 @@ const ActiveTab = () => {
           const userData = doc.data();
           usersData[userData.userId] = userData;
         });
-        setUsersMap(usersData);
 
         // Fetch orders
         const ordersCollection = collection(db, 'orders');
@@ -90,19 +88,20 @@ const ActiveTab = () => {
       <table className="active-requests-table">
         <thead>
           <tr>
-            <th></th>
-            <th>Date</th>
-            <th>Request ID</th>
-            <th>Customer Name</th>
-            <th>Request Category</th>
-            <th>Request</th>
-            <th >Status</th>
+            <th style={{width: '3%'}}></th>
+            <th style={{width: '10%'}}>Date</th>
+            <th style={{width: '15%'}}>Request ID</th>
+            <th style={{width: '23%'}}>Customer Name</th>
+            <th style={{width: '20%'}}>Request Category</th>
+            <th style={{width: '15%'}}>Request</th>
+            <th style={{width: '5%'}}>Status</th>
+            <th style={{width: '2%'}}></th>
           </tr>
           <div className='row-line'></div>
         </thead>
         <tbody>
             {pageData.map((order, index) => (
-            <tr key={index}>
+            <tr key={index} className='table-row'>
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
               <td>{order.order_id}</td>
@@ -132,10 +131,6 @@ const ActiveTab = () => {
             </tr>
             
           ))}
-         
-
-          
-          
           
         
           
@@ -171,7 +166,7 @@ const ActiveTab = () => {
                 top: 4.6vh;
                 border: 0.5px solid #EBEBEB;
                 border-radius: 5px;
-                padding: 1.17vh 1.24vw;
+                padding: 1.17vh 1.24vw ;
             }
 
             .active-requests-table th{
@@ -185,17 +180,13 @@ const ActiveTab = () => {
                 color: #595959;
                 font-size: 11px;
                 font-weight: 400;
-                position: relative;
-                top: 0;
-
+                
             }
-
             
-
             select{
               text-align: center;  
               border: 0.5px solid #CDCDCD;
-              height: 2.42vh;
+              height: 3.42vh;
               width: 5.85vw;
               cursor: pointer;
               border-radius: 4px; 
@@ -207,53 +198,44 @@ const ActiveTab = () => {
               border: 1px #CDCDCD solid;
               border-radius: 4px;
               height: 2.42vh;
-              width: 6.85vw;
+              width: 87px;
               display: flex;
               justify-content: center;
               align-items: center; 
               cursor: pointer;
-              z-index: 1000;
-            }
-
-            /* Style select options if needed */
-            .status-select option {
-              appearance: none;
-              
             }
         
 
             .row-line {
-                border-bottom: 0px solid #EBEBEB;
+                border-bottom: 0px solid #ebebeb;
                 position: absolute;
-                left: -1px;
+                left: -10px;
                 margin-top: 3px;
                 width: 71.1vw;
             }
 
             #bottom-line {
-              left: -1.38vw;
-              border-bottom: 1px solid #EBEBEB;
+              left: 0vw;
+              margin-bottom: 5px;
+              border-bottom: 1px solid #ebebeb;
               
             }
 
            .icon{
             font-size: 16px;
             color: #595959;
+            position: relative;
+            left: 2.05vw;
             margin-top: 25%;
             cursor: pointer;
            }
 
-           .state{
-            text-align: center;  
-            height: 2.42vh;
-            width: 5.85vw;
-            border-radius: 4px;  
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-            cursor: pointer; 
-            margin-top: 12px;
-            }
+           
+
+           .table-row{
+            vertical-align: middle;
+            height: 20px;
+           }
 
             .icon2{
                 font-size: 16px ;
