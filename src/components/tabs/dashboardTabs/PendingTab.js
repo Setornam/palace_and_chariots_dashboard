@@ -176,8 +176,8 @@ const PendingTab = ({ data, searchQuery }) => {
         {`
             .pending-requests-table{
                 width: 71.14vw;
-                height: 56.33vh;
-                position: relative;
+                height:1vh;
+                max-height: 56.3vh;                position: relative;
                 top: 4.6vh;
                 border: 0.5px solid #EBEBEB;
                 border-radius: 5px;
@@ -226,6 +226,17 @@ const PendingTab = ({ data, searchQuery }) => {
               border-radius: 4px; 
 
             }
+
+            .state{
+              display: flex;  
+              justify-content: center;
+              margin-top: 10px;
+            }
+
+            .table-row{
+            vertical-align: middle;
+            height: 30px;
+           }
            
             .status-select {
               color: #595959;

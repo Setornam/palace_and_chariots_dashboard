@@ -176,8 +176,8 @@ const ClosedTab = ({ data, searchQuery}) => {
         {`
             .closed-requests-table{
                 width: 71.14vw;
-                height: 56.33vh;
-                position: relative;
+                height:1vh;
+                max-height: 56.3vh;                position: relative;
                 top: 4.6vh;
                 border: 0.5px solid #EBEBEB;
                 border-radius: 5px;
@@ -205,6 +205,12 @@ const ClosedTab = ({ data, searchQuery}) => {
               cursor: pointer;
               border-radius: 4px; 
 
+            }
+
+            .state{
+              display: flex;  
+              justify-content: center;
+              margin-top: 10px;
             }
            
             .status-select {
@@ -255,8 +261,8 @@ const ClosedTab = ({ data, searchQuery}) => {
             }
 
             .table-row{
-            vertical-align: middle;
-            height: 20px;
+              vertical-align: middle;
+            height: 30px;
            }
 
             .icon2{

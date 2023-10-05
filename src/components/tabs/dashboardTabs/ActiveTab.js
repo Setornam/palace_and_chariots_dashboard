@@ -183,7 +183,8 @@ const ActiveTab = ({data , searchQuery}) => {
         {`
             .active-requests-table{
                 width: 71.14vw;
-                height: 56.3vh;
+                height:1vh;
+                max-height: 56.3vh;
                 position: relative;
                 top: 4.6vh;
                 border: 0.5px solid #EBEBEB;
@@ -203,6 +204,12 @@ const ActiveTab = ({data , searchQuery}) => {
                 font-size: 11px;
                 font-weight: 400;
                 
+            }
+
+            .state{
+              display: flex;  
+              justify-content: center;
+              margin-top: 10px;
             }
             
             select{
@@ -256,7 +263,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
            .table-row{
             vertical-align: middle;
-            height: 20px;
+            height: 30px;
            }
 
             .icon2{
