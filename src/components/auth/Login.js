@@ -3,16 +3,20 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logoImage from '../Images/logo.png';
+import SplashScreen from './SplashScreen';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
+
 
   useEffect(() => {
     // Check if the user is already authenticated
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
       if (user) {
         // User is signed in, redirect to the admin page or any other route
         navigate('/admin');
@@ -47,6 +51,11 @@ const Login = () => {
         setError(errorMessage);
       });
   };
+
+  if (loading) {
+    // Show a loading indicator here
+    return <SplashScreen />;
+  }
 
   return (
     <>
