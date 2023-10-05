@@ -4,7 +4,7 @@ import ActiveTab from '../tabs/dashboardTabs/ActiveTab';
 import PendingTab from '../tabs/dashboardTabs/PendingTab';
 import ClosedTab from '../tabs/dashboardTabs/ClosedTab';
 import { collection, getDocs,  query, where } from 'firebase/firestore';
-import { db } from '../auth/firebase'; // Adjust the import path as needed
+import { db } from '../auth/firebase'; 
 
 
 
@@ -18,6 +18,8 @@ const Dashboard = () => {
     const [pendingOrderCount, setPendingOrderCount] = useState(0);
     const [activeOrderCount, setActiveOrderCount] = useState(0);
     const [closedOrderCount, setClosedOrderCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
+
   
     const handleTabChange = (tabId) => {
       setActiveTab(tabId);
@@ -176,21 +178,23 @@ const Dashboard = () => {
                     <div className="search-box">
 
                     <div className="search-icon">
-                        <FiSearch size={18} color="#8B8B8B" /> {/* Use FiSearch icon */}
+                        <FiSearch size={18} color="#8B8B8B" /> 
                     </div>
                         <input
                             type="text"
                             placeholder="Search..."
                             className="search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     
                     </div>
                 </div>
         </div>
         <div className="tab-content">
-            {activeTab === 1 && <ActiveTab />}
-            {activeTab === 2 && <PendingTab />}
-            {activeTab === 3 && <ClosedTab />}
+            {activeTab === 1 && <ActiveTab searchQuery={searchQuery}/>}
+            {activeTab === 2 && <PendingTab searchQuery={searchQuery} />}
+            {activeTab === 3 && <ClosedTab searchQuery={searchQuery}/>}
         </div>
       </div>
 
@@ -332,10 +336,11 @@ const Dashboard = () => {
                     border: none;
                     outline: none;
                     padding: 5px;
-                    height: 15px;
+                    height: 20px;
                     width:7.81vw;
                     border-radius: 0px;
                     color: #8B8B8B;
+                    z-index: 1000;
                 }
 
                 .search-icon {

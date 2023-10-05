@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {  FiChevronRight, FiChevronDown } from 'react-icons/fi';
+import {  FiChevronRight,  } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 
 
-const ClosedTab = () => {
+const ClosedTab = ({ data, searchQuery}) => {
 
   const [closedOrders, setClosedOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const rowsPerPage = 11;
 
   useEffect(() => {
@@ -38,14 +39,19 @@ const ClosedTab = () => {
           user: usersData[order.user_Id] || {}, 
         }));
 
-        setClosedOrders(mergedData);
+        // Filter data based on search query
+        const filteredData = mergedData.filter((order) =>
+          `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+  
+        setFilteredData(filteredData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [searchQuery]); // Make sure to include searchQuery in the dependency array
 
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
@@ -75,8 +81,8 @@ const ClosedTab = () => {
     }
   };
 
-  const pageData = closedOrders.slice(startIndex, endIndex);
-  
+  const pageData = filteredData.slice(startIndex, endIndex);
+    
   return (
     <div>
       <table className="closed-requests-table">

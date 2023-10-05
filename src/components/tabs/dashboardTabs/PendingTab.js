@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {  FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { collection, getDocs, doc, updateDoc, where, query } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 
 
-const PendingTab = () => {
+const PendingTab = ({ data, searchQuery }) => {
 
   const [pendingOrders, setPendingOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const rowsPerPage = 11;
 
   useEffect(() => {
@@ -23,29 +24,35 @@ const PendingTab = () => {
           const userData = doc.data();
           usersData[userData.userId] = userData;
         });
-
+  
         // Fetch orders
         const ordersCollection = collection(db, 'orders');
         const ordersSnapshot = await getDocs(ordersCollection);
         const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
-
+  
         // Filter orders to only include "Pending" status
         const pendingOrders = ordersData.filter((order) => order.order_status === 'pending');
-
+  
         // Combine order data with user data
         const mergedData = pendingOrders.map((order) => ({
           ...order,
-          user: usersData[order.user_Id] || {}, 
+          user: usersData[order.user_Id] || {},
         }));
-
-        setPendingOrders(mergedData);
+  
+        // Filter data based on search query
+        const filteredData = mergedData.filter((order) =>
+          `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+  
+        setFilteredData(filteredData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [searchQuery]); // Make sure to include searchQuery in the dependency array
+  
 
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
@@ -75,7 +82,7 @@ const PendingTab = () => {
     }
   };
 
-  const pageData = pendingOrders.slice(startIndex, endIndex);
+  const pageData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div>

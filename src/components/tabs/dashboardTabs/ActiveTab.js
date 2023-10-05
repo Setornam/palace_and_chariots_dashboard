@@ -6,11 +6,12 @@ import { db } from '../../auth/firebase';
 
 
 
-const ActiveTab = () => {
+const ActiveTab = ({data , searchQuery}) => {
 
   const [activeOrders, setActiveOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const rowsPerPage = 11;
   
   
@@ -41,14 +42,21 @@ const ActiveTab = () => {
           user: usersData[order.user_Id] || {}, 
         }));
 
-        setActiveOrders(mergedData);
+        // Filter data based on search query
+        const filteredData = mergedData.filter((order) =>
+          `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+  
+        setFilteredData(filteredData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
+       
+
     fetchData();
-  }, []);
+  }, [searchQuery]);
   
 
 
@@ -80,7 +88,7 @@ const ActiveTab = () => {
     }
   };
 
-  const pageData = activeOrders.slice(startIndex, endIndex);
+  const pageData = filteredData.slice(startIndex, endIndex);
 
 
   return (
