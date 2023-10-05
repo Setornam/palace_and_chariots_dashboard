@@ -3,11 +3,11 @@ import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
-import Products from '../../pages/Products';
 
-const AllProducts = () => {
+const AllProducts = ({ searchQuery }) => {
 
   const [products, setProducts] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 11;
 
@@ -19,8 +19,9 @@ const AllProducts = () => {
   };
 
 
+  
   useEffect(() => {
-    // Fetch data from different collections
+    console.log('Search Query', searchQuery);
     const fetchData = async () => {
       const accommodationData = await fetchProductsData('accommodation');
       const carsData = await fetchProductsData('cars');
@@ -29,8 +30,7 @@ const AllProducts = () => {
       const tourismData = await fetchProductsData('tourism');
       const vehiclesData = await fetchProductsData('vehicles');
       const securityServicesData = await fetchProductsData('security-services');
-      
-      // Combine the data from different collections into one array
+
       const allProductsData = [
         ...accommodationData,
         ...carsData,
@@ -41,15 +41,22 @@ const AllProducts = () => {
         ...securityServicesData,
       ];
 
-      setProducts(allProductsData);
+      console.log('All Products Data', allProductsData);
+
+      // Filter data based on search query
+      const filteredData = allProductsData.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+
+      setProducts(filteredData); // Update the state with filtered data
     };
 
     fetchData();
-  }, []);
+  }, [searchQuery]); // Include searchQuery in the dependency array
 
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const pageData = products.slice(startIndex, endIndex);
 
   const totalPages = Math.ceil(products.length / rowsPerPage);
 
@@ -58,7 +65,7 @@ const AllProducts = () => {
       setCurrentPage(newPage);
     }  };
 
-
+    const pageData = filteredData.slice(startIndex, endIndex);
   
     return (
         <div>

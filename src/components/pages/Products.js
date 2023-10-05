@@ -3,12 +3,14 @@ import { FiSearch } from 'react-icons/fi';
 import { BiSolidDownArrow} from 'react-icons/bi';
 import AllProducts from '../tabs/productTabs/AllProducts';
 import CreateProduct from '../tabs/productTabs/CreateProduct';
+import { collection, getDocs,  query, where } from 'firebase/firestore';
+import { db } from '../auth/firebase'; 
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
 
   const tabData = [
@@ -36,10 +38,7 @@ const Products = () => {
     // You can add logic to filter products based on the selected filter here
   };
   
-  const handleSearch = () => {
-    const query = searchInputRef.current.value;
-    setSearchQuery(query); 
-  };
+  
 
   return (
     <div>
@@ -58,7 +57,8 @@ const Products = () => {
                 placeholder="Search..."
                 className="search-input"
                 ref={searchInputRef}
-                onChange={handleSearch}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
