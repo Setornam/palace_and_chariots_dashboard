@@ -261,8 +261,8 @@ const ClosedTab = ({ data, searchQuery}) => {
             }
 
             .table-row{
-              vertical-align: middle;
-            height: 30px;
+            vertical-align: middle;
+            height: 4.125vh;
            }
 
             .icon2{

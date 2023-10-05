@@ -235,7 +235,7 @@ const PendingTab = ({ data, searchQuery }) => {
 
             .table-row{
             vertical-align: middle;
-            height: 30px;
+            height: 4.125vh;
            }
            
             .status-select {

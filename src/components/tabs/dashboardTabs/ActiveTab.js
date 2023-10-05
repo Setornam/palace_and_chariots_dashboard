@@ -3,6 +3,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
+import ViewOrderTab from './ViewOrderTab';
 
 
 
@@ -12,7 +13,28 @@ const ActiveTab = ({data , searchQuery}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const rowsPerPage = 11;
+  const [activeTabs, setActiveTabs] = useState([]);  const rowsPerPage = 11;
+
+  const tabs = [
+    {
+      title: 'Tab 1',
+      content: <div>Tab 1 content goes here.</div>,
+    },
+
+  ];
+
+  const handleTabClick = (index) => {
+    // Check if the tab is not already open
+    if (!activeTabs.includes(index)) {
+      setActiveTabs([...activeTabs, index]);
+    }
+  };
+
+  const handleTabClose = (index) => {
+    // Remove the closed tab from the activeTabs array
+    const updatedTabs = activeTabs.filter((tabIndex) => tabIndex !== index);
+    setActiveTabs(updatedTabs);
+  };
   
   
 
@@ -25,7 +47,7 @@ const ActiveTab = ({data , searchQuery}) => {
         const usersData = {};
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
-          usersData[userData.userId] = userData;
+          usersData[userData.user_Id] = userData;
         });
 
         // Fetch orders
@@ -37,10 +59,14 @@ const ActiveTab = ({data , searchQuery}) => {
         const activeOrders = ordersData.filter((order) => order.order_status === 'Active');
 
         // Combine order data with user data
-        const mergedData = activeOrders.map((order) => ({
-          ...order,
-          user: usersData[order.user_Id] || {}, 
-        }));
+        const mergedData = activeOrders.map((order) => {
+          const user = usersData[order.user_Id] || {};
+          console.log('User Data for Order:', order.order_id, user);
+          return {
+            ...order,
+            user,
+          };
+        });
 
         // Filter data based on search query
       const filteredData = mergedData.filter((order) => {
@@ -147,7 +173,8 @@ const ActiveTab = ({data , searchQuery}) => {
                   </select>
               </td>
               <td>
-                <FiChevronRight className='icon' />
+                <FiChevronRight className='icon'
+                onClick={() => handleTabClick(index)} />
               </td>
               <div className='row-line' id="bottom-line"></div>
             </tr>
@@ -158,6 +185,17 @@ const ActiveTab = ({data , searchQuery}) => {
           
         </tbody>
       </table>
+      <div className="tabs-content">
+      {activeTabs.map((tabIndex) => (
+          <ViewOrderTab
+            key={tabIndex}
+            title={`Tab Title ${tabIndex + 1}`}
+            content={`Tab Content ${tabIndex + 1}`}
+            onClose={() => handleTabClose(tabIndex)}
+          />
+        ))}
+
+      </div>
 
       <div className="pagination">
         
@@ -203,7 +241,7 @@ const ActiveTab = ({data , searchQuery}) => {
                 color: #595959;
                 font-size: 11px;
                 font-weight: 400;
-                
+
             }
 
             .state{
@@ -263,7 +301,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
            .table-row{
             vertical-align: middle;
-            height: 30px;
+            height: 4.125vh;
            }
 
             .icon2{
