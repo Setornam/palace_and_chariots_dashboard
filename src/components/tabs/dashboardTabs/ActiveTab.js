@@ -43,9 +43,23 @@ const ActiveTab = ({data , searchQuery}) => {
         }));
 
         // Filter data based on search query
-        const filteredData = mergedData.filter((order) =>
-          `${order.user.first_name} ${order.user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+      const filteredData = mergedData.filter((order) => {
+        const fullName = `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
+        const orderName = order.name.toLowerCase();
+        const requestCategory = order.service.toLowerCase();
+        const orderId = order.order_id.toLowerCase();
+        const orderDate = order.order_date.toLowerCase();
+        const searchQueryLowerCase = searchQuery.toLowerCase();
+
+  // Check if any of the fields match the search query
+        return (
+          fullName.includes(searchQueryLowerCase) ||
+          orderName.includes(searchQueryLowerCase) ||
+          requestCategory.includes(searchQueryLowerCase) ||
+          orderId.includes(searchQueryLowerCase) ||
+          orderDate.includes(searchQueryLowerCase) 
         );
+      });
   
         setFilteredData(filteredData);
       } catch (error) {
