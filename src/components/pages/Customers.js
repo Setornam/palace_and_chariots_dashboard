@@ -4,15 +4,10 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../auth/firebase';
 
-
-
-
-
-
 const Customers = () => {
-
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const rowsPerPage = 11;
 
   useEffect(() => {
@@ -26,16 +21,12 @@ const Customers = () => {
         console.error('Error fetching user data:', error);
       }
     };
-  
+
     fetchUserData();
-  }, []); 
+  }, []);
 
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-
-
-  // Filter data to display only the rows for the current page
-  const pageData = users.slice(startIndex, endIndex);
 
   // Function to handle page change
   const handlePageChange = (newPage) => {
@@ -44,82 +35,92 @@ const Customers = () => {
     }
   };
 
+  // Function to handle search input change
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
 
-    
+  // Filter users based on search query
+  const filteredUsers = users.filter((user) => {
+    const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+    const userEmail = user.email_address.toLowerCase();
+
+    // Check if any of the fields match the search query
     return (
-        <div>
-           <div className='customers-container'>
-            <div className='top-bar'>
-                <div className="heading-container">
-                    <h1>Customers</h1>
-                </div>
-                <div className='search-container'>
-                    <div className="search-box">
+      fullName.includes(searchQuery) ||
+      userEmail.includes(searchQuery)
+    );
+  });
 
-                    <div className="search-icon">
-                        <FiSearch size={18} color="#8B8B8B" /> {/* Use FiSearch icon */}
-                    </div>
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            className="search-input"
-                        />
-                    
-                    </div>
-                </div>
+  // Slice the filtered users for the current page
+  const pageUsers = filteredUsers.slice(startIndex, endIndex);
+
+  return (
+    <div>
+      <div className='customers-container'>
+        <div className='top-bar'>
+          <div className='heading-container'>
+            <h1>Customers</h1>
+          </div>
+          <div className='search-container'>
+            <div className='search-box'>
+              <div className='search-icon'>
+                <FiSearch size={18} color='#8B8B8B' />
+              </div>
+              <input
+                type='text'
+                placeholder='Search...'
+                className='search-input'
+                value={searchQuery}
+                onChange={handleSearchInputChange} // Handle input change
+              />
             </div>
-            <div className='table'>
-                <h3>All Customers</h3>
-            </div>
-            <table className="active-requests-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Country </th>
-            <th>City</th>
-            <th> Email Address</th>
-          </tr>
-          <div className='row-line'></div>
-        </thead>
-        <tbody>
-            <tr></tr>
-            {pageData.map((user) => (
-    <tr key={user.id}>
-      <td>{`${user.first_name} ${user.last_name}`}</td>
-      {/* Include other user data fields here */}
-      <td> {user.country} </td>
-      <td>{user.city}</td>
-      <td>{user.email_address}</td>
-      <td>
-        <FiChevronRight className='icon'/>
-      </td>
-    </tr>
-  ))}
-          
-        
-          
-        </tbody>
-      </table>
-
-      <div className="pagination">
-        
-          
-          <FaArrowLeft className='button'
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}/>
-
-          <span>Page {currentPage}</span>
-          
-            <FaArrowRight className='button'
-              disabled={currentPage === Math.ceil(users.length / rowsPerPage)}
-            onClick={() => handlePageChange(currentPage + 1)}
-            />
-          
-      </div>
+          </div>
         </div>
-        
+        <div className='table'>
+          <h3>All Customers</h3>
+        </div>
+        <table className='active-requests-table'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Country</th>
+              <th>City</th>
+              <th>Email Address</th>
+            </tr>
+            <div className='row-line'></div>
+          </thead>
+          <tbody>
+            {pageUsers.map((user) => (
+              <tr key={user.id}>
+                <td>{`${user.first_name} ${user.last_name}`}</td>
+                {/* Include other user data fields here */}
+                <td>{user.country}</td>
+                <td>{user.city}</td>
+                <td>{user.email_address}</td>
+                <td>
+                  <FiChevronRight className='icon' />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className='pagination'>
+          <FaArrowLeft
+            className='button'
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          />
+          <span>Page {currentPage}</span>
+          <FaArrowRight
+            className='button'
+            disabled={currentPage === Math.ceil(filteredUsers.length / rowsPerPage)}
+            onClick={() => handlePageChange(currentPage + 1)}
+          />
+        </div>
+      </div>
 
-            <style jsx>
+      <style jsx>
                 {`
                 .customers-container{
                     display: block;
@@ -286,8 +287,8 @@ const Customers = () => {
                 
                 `}
             </style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Customers;
