@@ -1,139 +1,160 @@
-import React, {useState, Component} from 'react';
-import ReactDOM from "react-dom";
-import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-import { NavLink, redirect, useNavigate } from 'react-router-dom';
-import logoImage from '../Images/logo.png'; // Import the logo image
+import { NavLink, useNavigate } from 'react-router-dom';
+import logoImage from '../Images/logo.png';
 
- 
 const Login = () => {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
-       
-    const onLogin = (e) => {
-        e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            navigate("/admin")
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            let errorMessage = error.message;
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
-            if (errorCode === "auth/user-not-found") {
-                errorMessage = "User not found. Please check your email.";
-              } else if (errorCode === "auth/wrong-password") {
-                errorMessage = "Incorrect password. Please try again.";
-              }
-             else if (errorCode === "auth/too-many-requests") {
-                errorMessage = "Too many failed login attempts. Please reset your password or try again later.";
-              }
+  useEffect(() => {
+    // Check if the user is already authenticated
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, redirect to the admin page or any other route
+        navigate('/admin');
+      }
+    });
 
-            setError(errorMessage);
-        });
-       
-    }
- 
-    return(
-        <>
-            <main >        
-                <section  style={mainContainer}>
-                    <div className='main-container' style = {subContainer}>
-                    <div style={logoContainer}>
-                        <img src={logoImage} alt="Logo" className="logo-image" />                    
-                    </div>
-                    <div style={formContainer}>                                            
-                        <h1 style={title}> User Login </h1>                       
-                                                       
-                        <form>                                              
-                            <div>
-                                <label htmlFor="email-address" style = {label}>
-                                    Email
-                                </label>
-                                <input
-                                    id="email-address"
-                                    name="email"
-                                    type="email"                                    
-                                    required                                                                                
-                                    placeholder=""
-                                    onChange={(e)=>setEmail(e.target.value)}
-                                    style = {inputField}
-                                />
-                            </div>
+    // Unsubscribe from the auth state listener when the component unmounts
+    return () => unsubscribe();
+  }, [navigate]);
 
-                            <div>
-                                <label htmlFor="password" style = {label}>
-                                    Password
-                                </label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"                                    
-                                    required                                                                                
-                                    placeholder=""
-                                    onChange={(e)=>setPassword(e.target.value)}
-                                    style = {inputField}
-                                />
-                                                    {error && <div style={errorContainer}>{error}</div>}
+  const onLogin = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        navigate('/admin');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        let errorMessage = error.message;
 
-                                <div style={{width: 110, height: 24, color: '#505050', fontSize: '0.857rem', fontWeight: '400', marginBottom:10,}}>Forgot Password?</div>
-                            </div>
-                                                
-                            <div>
-                                <button                                    
-                                    onClick={onLogin}
-                                    style = {loginButton}                                        
-                                >      
-                                    Login                                                                  
-                                </button>
-                            </div>                               
-                        </form>
-                        <div style ={noAccount}>
-                            <div style ={greyLine}></div>
-                            <div style={{width: 110, height: 24, textAlign: 'center', color: '#505050', fontSize: '0.857rem', FontFamily: 'Titillium Web', fontWeight: '400', wordWrap: 'break-word', paddingTop: 5}}>No Account?</div>
-                            <div style ={greyLine}></div> 
-                        </div>         
+        if (errorCode === 'auth/user-not-found') {
+          errorMessage = 'User not found. Please check your email.';
+        } else if (errorCode === 'auth/wrong-password') {
+          errorMessage = 'Incorrect password. Please try again.';
+        } else if (errorCode === 'auth/too-many-requests') {
+          errorMessage =
+            'Too many failed login attempts. Please reset your password or try again later.';
+        }
 
-                        <p className="text-sm text-white text-center">
-                           
-                            <NavLink to="/signup" style={registerButton}>
-                                Register
-                            </NavLink>
-                        
-                        </p>
-                                                   
-                    </div>
+        setError(errorMessage);
+      });
+  };
 
-                    <style>
-                        {`
+  return (
+    <>
+      <main>
+        <section style={mainContainer}>
+          <div className="main-container" style={subContainer}>
+            <div style={logoContainer}>
+              <img src={logoImage} alt="Logo" className="logo-image" />
+            </div>
+            <div style={formContainer}>
+              <h1 style={title}> User Login </h1>
 
-                            
+              <form>
+                <div>
+                  <label htmlFor="email-address" style={label}>
+                    Email
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder=""
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={inputField}
+                  />
+                </div>
 
-            
-                        `}
-                    </style>
+                <div>
+                  <label htmlFor="password" style={label}>
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    placeholder=""
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={inputField}
+                  />
+                  {error && <div style={errorContainer}>{error}</div>}
 
-                  
+                  <div
+                    style={{
+                      width: 110,
+                      height: 24,
+                      color: '#505050',
+                      fontSize: '0.857rem',
+                      fontWeight: '400',
+                      marginBottom: 10,
+                    }}
+                  >
+                    Forgot Password?
+                  </div>
+                </div>
 
-                    
+                <div>
+                  <button
+                    onClick={onLogin}
+                    style={loginButton}
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+              <div style={noAccount}>
+                <div style={greyLine}></div>
+                <div
+                  style={{
+                    width: 110,
+                    height: 24,
+                    textAlign: 'center',
+                    color: '#505050',
+                    fontSize: '0.857rem',
+                    FontFamily: 'Titillium Web',
+                    fontWeight: '400',
+                    wordWrap: 'break-word',
+                    paddingTop: 5,
+                  }}
+                >
+                  No Account?
+                </div>
+                <div style={greyLine}></div>
+              </div>
 
-                    </div>
-                </section>
-            </main>
-                    <div className='media-query'>
-                      <img src={logoImage} alt="Logo" />                    
+              <p className="text-sm text-white text-center">
+                <NavLink to="/signup" style={registerButton}>
+                  Register
+                </NavLink>
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div className="media-query">
+        <img src={logoImage} alt="Logo" />
 
-                      <h1>Please Login on a Laptop. Thank You.</h1>
-                    </div>
-        </>
-    )
-}
- 
-export default Login
+        <h1>Please Login on a Laptop. Thank You.</h1>
+      </div>
+    </>
+  );
+};
+
+export default Login;
+
+// ... Rest of your styles
+
 
 const logoContainer = {
     display: 'flex',

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
-import { getAuth } from 'firebase/auth';
+import { getAuth, setPersistence, browserLocalPersistence  } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 
@@ -26,6 +26,16 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Enable local persistence
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    // Local persistence successfully enabled
+  })
+  .catch((error) => {
+    // Handle errors if persistence cannot be enabled
+    console.error('Error enabling local persistence:', error);
+  });
 
 export { app, auth, db, analytics };
 
