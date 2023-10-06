@@ -66,7 +66,7 @@ const Dashboard = () => {
   const fetchPendingOrderCount = async () => {
     try {
       const ordersRef = collection(db, 'orders');
-      const q = query(ordersRef, where('order_status', '==', 'pending'));
+      const q = query(ordersRef, where('order_status', '==', 'Pending'));
       const querySnapshot = await getDocs(q);
       const count = querySnapshot.size; // Get the number of pending orders
       return count;

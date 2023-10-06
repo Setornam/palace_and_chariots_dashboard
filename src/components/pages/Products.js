@@ -3,14 +3,12 @@ import { FiSearch } from 'react-icons/fi';
 import { BiSolidDownArrow} from 'react-icons/bi';
 import AllProducts from '../tabs/productTabs/AllProducts';
 import CreateProduct from '../tabs/productTabs/CreateProduct';
-import { collection, getDocs,  query, where } from 'firebase/firestore';
-import { db } from '../auth/firebase'; 
+
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
 
   const tabData = [
@@ -57,8 +55,7 @@ const Products = () => {
                 placeholder="Search..."
                 className="search-input"
                 ref={searchInputRef}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+               
               />
             </div>
           </div>
@@ -118,7 +115,7 @@ const Products = () => {
               
             </div>
             <div className='table-content'>
-            {activeTab === 1 && <AllProducts searchQuery={searchQuery} />} {/* Pass searchQuery as a prop */}
+            {activeTab === 1 && <AllProducts />} {/* Pass searchQuery as a prop */}
               {activeTab === 2 && <CreateProduct />}
           </div>
           </div>

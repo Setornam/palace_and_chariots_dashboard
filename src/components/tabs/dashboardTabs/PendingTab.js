@@ -31,7 +31,7 @@ const PendingTab = ({ data, searchQuery }) => {
         const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
   
         // Filter orders to only include "Pending" status
-        const pendingOrders = ordersData.filter((order) => order.order_status === 'pending');
+        const pendingOrders = ordersData.filter((order) => order.order_status === 'Pending');
   
         // Combine order data with user data
         const mergedData = pendingOrders.map((order) => ({

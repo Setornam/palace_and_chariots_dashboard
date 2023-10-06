@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, query, where, onSnapshot} from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
 
@@ -15,15 +15,12 @@ const ActiveTab = ({data , searchQuery}) => {
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabs, setActiveTabs] = useState([]);  const rowsPerPage = 11;
 
-  const tabs = [
-    {
-      title: 'Tab 1',
-      content: <div>Tab 1 content goes here.</div>,
-    },
+  const tabs = activeOrders.map((order, index) => ({
+    title: `Order ${index + 1}`,
+    content: <div>{/* Content for this order */}</div>,
+  }));
 
-  ];
-
-  const handleTabClick = (index) => {
+  const handleTabClick = ( index) => {
     // Check if the tab is not already open
     if (!activeTabs.includes(index)) {
       setActiveTabs([...activeTabs, index]);
@@ -57,6 +54,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
         // Filter orders to only include "Active" status
         const activeOrders = ordersData.filter((order) => order.order_status === 'Active');
+        setActiveOrders(activeOrders);
 
         // Combine order data with user data
         const mergedData = activeOrders.map((order) => {
@@ -67,6 +65,9 @@ const ActiveTab = ({data , searchQuery}) => {
             user,
           };
         });
+
+        // Setup a Firestore Listener
+        
 
         // Filter data based on search query
       const filteredData = mergedData.filter((order) => {
@@ -109,19 +110,30 @@ const ActiveTab = ({data , searchQuery}) => {
     }
   };
 
-  const handleStatusChange = async (orderId, orderIndex) => {
+  const handleStatusChange = async (orderId, orderIndex, newStatus) => {
+    console.log("index", orderIndex);
+
     try {
       // Find the order with the matching orderId
       const orderToUpdate = activeOrders.find((order) => order.order_id === orderId);
+      console.error(orderToUpdate)
 
       if (orderToUpdate) {
         // Update the order_status in Firestore
-        const orderDocRef = doc(db, 'orders', orderToUpdate.doc_id);
-        await updateDoc(orderDocRef, { order_status: selectedStatuses[orderIndex] });
+        const q = query(collection(db, "orders"), where("order_id", "==", orderToUpdate.order_id));
+        const docId = (await getDocs(q)).docs[0].id;
+        console.log("document id =>", docId);
+        console.log("updated status", newStatus)
+
+        const orderDocRef = doc(db, 'orders', docId);
+        await updateDoc(orderDocRef, { order_status: newStatus });
+
         // Remove the updated order from activeOrders
         const updatedActiveOrders = [...activeOrders];
         updatedActiveOrders.splice(orderIndex, 1);
         setActiveOrders(updatedActiveOrders);
+      } else {
+        console.error('Invalid order not found')
       }
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -164,13 +176,13 @@ const ActiveTab = ({data , searchQuery}) => {
                       const newStatuses = [...selectedStatuses];
                       newStatuses[index] = e.target.value;
                       setSelectedStatuses(newStatuses);
-                      handleStatusChange(order.order_id, index); // Update status on select change
+                      handleStatusChange(order.order_id, index,  e.target.value); // Update status on select change
                     }}
                   >
                     <option value="Active">Active</option>
                     <option value="Pending">Pending</option>
                     <option value="Closed">Closed</option>
-                  </select>
+                </select>
               </td>
               <td>
                 <FiChevronRight className='icon'
@@ -189,9 +201,20 @@ const ActiveTab = ({data , searchQuery}) => {
       {activeTabs.map((tabIndex) => (
           <ViewOrderTab
             key={tabIndex}
-            title={`Tab Title ${tabIndex + 1}`}
+            title={`Order ${tabIndex + 1}`} 
             content={`Tab Content ${tabIndex + 1}`}
             onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName="custom-top-bar"
+            contentClassName="custom-content"
+            greyAreaContainer="grey-area"
+            contentContainerAreaClassName="custom-content-container-area"
+            requestDetailsContainer="request-details-container"
+            bottomBorder="custom-bottom-border"
+            headingThree="heading-three"
+            secondSection='custom-second-section'
+            contactDetails='custom-contact-details'
+            form='form'
           />
         ))}
 
@@ -335,6 +358,160 @@ const ActiveTab = ({data , searchQuery}) => {
               align-items: center;
               font-size: 22px;
             }
+
+            .custom-tab-container{
+              background-color: #ECF0F4;
+              position: absolute;
+              top: -31.68vh;
+              right: 0vw;
+              height: 100vh;
+              width: 75.14vw;
+              z-index: 1000;
+              border-radius: 
+            }
+
+            .custom-tab-container h3{
+              font-size: 24px;
+              color: white;
+            }
+
+            .custom-top-bar{
+              position: relative;
+              top: -0.35vh;
+              left: -7.34vw;
+              height: 6.99vh;
+              width: 100vw;
+              background-color: white;
+              display: flex;
+              padding-left: 7.34vw;
+              align-items: center;
+              
+            }
+
+            .custom-top-bar h4{
+              font-size: 14px;
+              padding-left: 15px;
+              color: #595959
+            }
+
+            .grey-area{
+              background-color: #ECF0F4;
+              height: 25px;
+              width: 100%;
+              position: relative;
+              top: -0.3456vh;
+            }
+
+            .custom-content-container-area{
+              background-color: white;
+              height: 100vh;
+              width: 76.14vw;
+              position: relative;
+              top: 0px;
+              border-radius: 6px;
+              display: flex;
+              justify-content: center;
+            }
+
+            .custom-content{
+              width: 100%;
+            }
+
+            .custom-content ul{
+              list-style: none;
+            }
+
+            .custom-content ul li{
+              margin-bottom: 35px;
+              margin-left: -40px;
+            }
+
+            .form{
+              position: absolute;
+              bottom: 120px;
+            }
+
+            .form label{
+              display: block;
+              margin-bottom: 20px;
+            }
+
+            .form select{
+              width: 168.85px;
+              height: 21px;
+              text-align: left;
+              padding-left: 5px;
+            }
+
+            .form input{
+              display: block;
+              margin-top: 15px;
+              width: 166px;
+              height: 26px;
+              color: white;
+              background-color: #071EC3;
+              border: 1px solid #071EC3;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+
+            .request-details-container{
+              width: 70.14vw;
+            }
+
+            .request-details-container h4{
+              color: #595959;
+              font-size: 24px;
+              font-weight: 700;
+            }
+
+
+            .custom-bottom-border{
+              border-bottom: 1px solid #CDCDCD;
+              position: relative;
+              right: 3.0469vw;
+              width: 108.8%;
+              height: 40px;
+            }
+
+            .custom-second-section{
+              display: flex;
+              height: 380%;
+            }
+
+            .custom-second-section #request-span{
+              flex: 1.5;
+            }
+
+            .custom-second-section #customer-span{
+              flex: 1;
+            }
+
+            .custom-second-section h4{
+              font-size: 24px;
+              font-weight: 700;
+              color: #595959;
+            }
+
+            .custom-contact-details{
+              border: 1px solid #CDCDCD;
+              width: 345px;
+              height: 243px;
+              border-radius: 5px;
+
+            }
+
+            .custom-contact-details ul{
+              list-style: none;
+            }
+
+            .custom-contact-details ul li{
+              margin-bottom: 30px;
+            }
+
+          
+            
+            
         
         
         `}

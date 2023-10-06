@@ -95,6 +95,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             left: 0;
             top: 0;
             bottom: 0;
+            z-index: 100;
             
           }
           .menu-list {

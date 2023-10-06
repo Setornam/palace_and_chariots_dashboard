@@ -4,10 +4,9 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 
-const AllProducts = ({ searchQuery }) => {
+const AllProducts = () => {
 
   const [products, setProducts] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 11;
 
@@ -21,7 +20,7 @@ const AllProducts = ({ searchQuery }) => {
 
   
   useEffect(() => {
-    console.log('Search Query', searchQuery);
+    //Fetch Data from different collections
     const fetchData = async () => {
       const accommodationData = await fetchProductsData('accommodation');
       const carsData = await fetchProductsData('cars');
@@ -31,6 +30,7 @@ const AllProducts = ({ searchQuery }) => {
       const vehiclesData = await fetchProductsData('vehicles');
       const securityServicesData = await fetchProductsData('security-services');
 
+      //Combine the data from different collections into a single array
       const allProductsData = [
         ...accommodationData,
         ...carsData,
@@ -41,19 +41,13 @@ const AllProducts = ({ searchQuery }) => {
         ...securityServicesData,
       ];
 
-      console.log('All Products Data', allProductsData);
 
-      // Filter data based on search query
-      const filteredData = allProductsData.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      
 
-      setProducts(filteredData); // Update the state with filtered data
+      setProducts(allProductsData); // Update the state with filtered data
     };
 
     fetchData();
-  }, [searchQuery]); // Include searchQuery in the dependency array
+  }, []);
 
   const startIndex = (currentPage - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
@@ -65,7 +59,7 @@ const AllProducts = ({ searchQuery }) => {
       setCurrentPage(newPage);
     }  };
 
-    const pageData = filteredData.slice(startIndex, endIndex);
+    const pageData = products.slice(startIndex, endIndex);
   
     return (
         <div>
