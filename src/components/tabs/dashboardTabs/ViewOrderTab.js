@@ -16,9 +16,14 @@ const ViewOrderTab = ({ title,
   form,
   contactDetails,
   secondSection,
+  orderData,
+  checkInAndOut,
   headingThree }) => {
 
     const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const name = `${orderData.name ||  'Travel'}`
+    const checkIn = ` ${orderData.flight_departure_date || orderData.check_in || ''} `;
+    const checkOut = ` ${orderData.flight_return_date || orderData.check_out}`
 
   
   
@@ -33,7 +38,9 @@ const ViewOrderTab = ({ title,
         <div className={requestDetailsContainer}>
           <h4>Request Details</h4>
           <div className={contentClassName}>
-          {content}</div>
+            {orderData.name}<br/><br/>
+            {orderData.order_id}
+          </div>
           <div className={bottomBorder}></div>
 
           <div className={secondSection}>
@@ -43,13 +50,20 @@ const ViewOrderTab = ({ title,
               {/* <h4>{title}</h4> */}
               <div className={contentClassName}>
               <ul>
-                <li>{content}</li>
-                <li>{content}</li>
-                <li>{content}</li>
-                <li>{content}</li>
-                <li>{content}</li>
-                <li>{content}</li>
+                <li>{name}</li>
+                <div className={checkInAndOut}>
+                  <span>
+                    <li><p>Check In</p>{checkIn}</li>
+                  </span>
+                  <span>
+                    <li><p>Check Out</p>{checkOut}</li>
+                  </span>
+                </div>
+                <li>Date<br/>{orderData.order_date}</li>
+                <li style={{color:'#595959',fontSize:'14px'}}>Total<br/><b>US${orderData.price}</b></li>
+                
               </ul>
+              
               </div>
               <form className={form}>
                 <label for="status">Status</label>
@@ -66,11 +80,11 @@ const ViewOrderTab = ({ title,
               <h4>Customer Details</h4>
               <div className={contactDetails}>
                 <ul>
-                  <li>First Name: John</li>
-                  <li>Last Name: Fisher</li>
-                  <li>Email: johnfisher@gmail.com</li>
-                  <li>Country: Ghana</li>
-                  <li> Contact:  (+233) 207895442</li>
+                  <li>First Name:{orderData.first_name}</li>
+                  <li>Last Name: {orderData.last_name}</li>
+                  <li>Email: {orderData.email_address}</li>
+                  <li>Country: {orderData.country}</li>
+                  <li> Contact: {orderData.phone}</li>
                 </ul>
               </div>
             </span>

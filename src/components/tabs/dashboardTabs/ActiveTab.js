@@ -13,7 +13,8 @@ const ActiveTab = ({data , searchQuery}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [activeTabs, setActiveTabs] = useState([]);  const rowsPerPage = 11;
+  const [activeTabs, setActiveTabs] = useState([]);  
+  const rowsPerPage = 11;
 
   const tabs = activeOrders.map((order, index) => ({
     title: `Order ${index + 1}`,
@@ -165,7 +166,7 @@ const ActiveTab = ({data , searchQuery}) => {
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
               <td>{order.order_id}</td>
-              <td>{`${order.user.first_name} ${order.user.last_name}`}</td> {/* Access user data */}
+              <td>{`${order.user.first_name || ''} ${order.user.last_name || ''}`}</td> {/* Access user data */}
               <td>{order.service}</td>
               <td>{order.name}</td>
               <td className='state'>
@@ -202,6 +203,7 @@ const ActiveTab = ({data , searchQuery}) => {
           <ViewOrderTab
             key={tabIndex}
             title={`Order ${tabIndex + 1}`} 
+            orderData={filteredData[tabIndex]}
             content={`Tab Content ${tabIndex + 1}`}
             onClose={() => handleTabClose(tabIndex)}
             tabContainerClassName="custom-tab-container"
@@ -214,6 +216,7 @@ const ActiveTab = ({data , searchQuery}) => {
             headingThree="heading-three"
             secondSection='custom-second-section'
             contactDetails='custom-contact-details'
+            checkInAndOut='check-in-and-out'
             form='form'
           />
         ))}
@@ -370,6 +373,10 @@ const ActiveTab = ({data , searchQuery}) => {
               border-radius: 
             }
 
+            .custom-tab-container li, .custom-tab-container p {
+              color: #505050;
+            }
+
             .custom-tab-container h3{
               font-size: 24px;
               color: white;
@@ -509,6 +516,12 @@ const ActiveTab = ({data , searchQuery}) => {
               margin-bottom: 30px;
             }
 
+            .check-in-and-out{
+              background-color: red;
+              display: inline;
+            }
+
+            
           
             
             

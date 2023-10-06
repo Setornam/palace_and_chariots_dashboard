@@ -3,6 +3,8 @@ import {  FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs, doc, updateDoc, } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
+import ViewOrderTab from './ViewOrderTab';
+
 
 
 const PendingTab = ({ data, searchQuery }) => {
@@ -11,6 +13,7 @@ const PendingTab = ({ data, searchQuery }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [activeTabs, setActiveTabs] = useState([]);  
   const rowsPerPage = 11;
 
   useEffect(() => {
