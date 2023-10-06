@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {  FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { collection, getDocs, doc, updateDoc, } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, query, where,} from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
 
@@ -15,6 +15,25 @@ const PendingTab = ({ data, searchQuery }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabs, setActiveTabs] = useState([]);  
   const rowsPerPage = 11;
+
+  const tabs = pendingOrders.map((order, index) => ({
+    title: `Order ${index + 1}`,
+    content: <div>{/* Content for this order */}</div>,
+  }));
+
+  const handleTabClick = ( index) => {
+    // Check if the tab is not already open
+    if (!activeTabs.includes(index)) {
+      setActiveTabs([...activeTabs, index]);
+    }
+  };
+
+  const handleTabClose = (index) => {
+    // Remove the closed tab from the activeTabs array
+    const updatedTabs = activeTabs.filter((tabIndex) => tabIndex !== index);
+    setActiveTabs(updatedTabs);
+  };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,11 +55,15 @@ const PendingTab = ({ data, searchQuery }) => {
         // Filter orders to only include "Pending" status
         const pendingOrders = ordersData.filter((order) => order.order_status === 'Pending');
   
-        // Combine order data with user data
-        const mergedData = pendingOrders.map((order) => ({
+       // Combine order data with user data
+       const mergedData = pendingOrders.map((order) => {
+        const user = usersData[order.user_Id] || {};
+        console.log('User Data for Order:', order.order_id, user);
+        return {
           ...order,
-          user: usersData[order.user_Id] || {},
-        }));
+          user,
+        };
+      });
   
        // Filter data based on search query
       const filteredData = mergedData.filter((order) => {
@@ -80,19 +103,27 @@ const PendingTab = ({ data, searchQuery }) => {
     }
   };
 
-  const handleStatusChange = async (orderId, orderIndex) => {
+  const handleStatusChange = async (orderId, orderIndex, newStatus) => {
     try {
       // Find the order with the matching orderId
       const orderToUpdate = pendingOrders.find((order) => order.order_id === orderId);
 
       if (orderToUpdate) {
         // Update the order_status in Firestore
-        const orderDocRef = doc(db, 'orders', orderToUpdate.doc_id);
-        await updateDoc(orderDocRef, { order_status: selectedStatuses[orderIndex] });
+        const q = query(collection(db, "orders"), where("order_id", "==", orderToUpdate.order_id));
+        const docId = (await getDocs(q)).docs[0].id;
+        console.log("document id =>", docId);
+        console.log("updated status", newStatus)
+
+        const orderDocRef = doc(db, 'orders', docId);
+        await updateDoc(orderDocRef, { order_status: newStatus });
+
         // Remove the updated order from activeOrders
         const updatedPendingOrders = [...pendingOrders];
         updatedPendingOrders.splice(orderIndex, 1);
         setPendingOrders(updatedPendingOrders);
+      } else {
+        console.error('Invalid order not found')
       }
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -129,7 +160,7 @@ const PendingTab = ({ data, searchQuery }) => {
               <td className='state'>
                 <select
                     className="status-select"
-                    value={selectedStatuses[index]}
+                    value={selectedStatuses[index] || "Pending"}
                     onChange={(e) => {
                       const newStatuses = [...selectedStatuses];
                       newStatuses[index] = e.target.value;
@@ -137,8 +168,7 @@ const PendingTab = ({ data, searchQuery }) => {
                       handleStatusChange(order.order_id, index); // Update status on select change
                     }}
                   >
-                    <option value="Active">Active</option>
-                    <option value="Pending">Pending</option>
+                    <option value="Pending" disabled>Pending</option>
                     <option value="Closed">Closed</option>
                   </select>
               </td>

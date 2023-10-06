@@ -67,7 +67,6 @@ const ActiveTab = ({data , searchQuery}) => {
           };
         });
 
-        // Setup a Firestore Listener
         
 
         // Filter data based on search query
@@ -172,7 +171,7 @@ const ActiveTab = ({data , searchQuery}) => {
               <td className='state'>
                 <select
                     className="status-select"
-                    value={selectedStatuses[index]}
+                    value={selectedStatuses[index] || "Active"}
                     onChange={(e) => {
                       const newStatuses = [...selectedStatuses];
                       newStatuses[index] = e.target.value;
@@ -180,7 +179,7 @@ const ActiveTab = ({data , searchQuery}) => {
                       handleStatusChange(order.order_id, index,  e.target.value); // Update status on select change
                     }}
                   >
-                    <option value="Active">Active</option>
+                    <option value="Active" disabled>Active</option>
                     <option value="Pending">Pending</option>
                     <option value="Closed">Closed</option>
                 </select>
