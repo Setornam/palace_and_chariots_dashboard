@@ -46,6 +46,8 @@ const ActiveTab = ({data , searchQuery}) => {
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
           usersData[userData.user_id] = userData;
+          console.log('Users Data:', usersData);
+
         });
 
         // Fetch orders
@@ -59,7 +61,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
         // Combine order data with user data
         const mergedData = activeOrders.map((order) => {
-          const user = usersData[order.user_Id] || {};
+          const user = usersData[order.user_id] || {};
           console.log('User Data for Order:', order.order_id, user);
           return {
             ...order,
@@ -98,6 +100,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
     fetchData();
   }, [searchQuery]);
+
   
 
 
@@ -168,7 +171,7 @@ const ActiveTab = ({data , searchQuery}) => {
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
               <td>{order.order_id}</td>
-              <td>{`${order.user.first_name || ''} ${order.user.last_name || ''}`}</td> {/* Access user data */}
+              <td>{`${order.user.first_name || ''} ${order.user.last_name || ''}`}</td>
               <td>{order.service}</td>
               <td>{order.name}</td>
               <td className='state'>

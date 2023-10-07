@@ -45,6 +45,7 @@ const PendingTab = ({ data, searchQuery }) => {
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
           usersData[userData.user_id] = userData;
+
         });
 
   
@@ -53,19 +54,25 @@ const PendingTab = ({ data, searchQuery }) => {
         const ordersSnapshot = await getDocs(ordersCollection);
         const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
 
+
   
         // Filter orders to only include "Pending" status
         const pendingOrders = ordersData.filter((order) => order.order_status === 'Pending');
         setPendingOrders(pendingOrders);
+
   
        // Combine order data with user data
        const mergedData = pendingOrders.map((order) => {
         const user = usersData[order.user_Id] || {};
         console.log('User Data for Order:', order.order_id, user);
+        console.log('This is the merged data of pending orders and users',user)
+
         return {
           ...order,
           user,
+          
         };
+        
       });
   
        // Filter data based on search query
