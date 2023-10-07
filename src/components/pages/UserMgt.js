@@ -499,6 +499,12 @@ const UserMgt = () => {
         
         }
 
+        .table-row{
+            vertical-align: middle;
+            height: 4.125vh;
+            background-color: red;
+           }
+
         .file-input {
           display: inline-block;
           color: white;
@@ -820,7 +826,7 @@ const UserMgt = () => {
                         <tbody>
                             <tr></tr>
                             {pageData.map((admin, index) => (
-                            <tr key={index}>
+                            <tr className='table-row' key={index}>
                             <td>{admin.lastName}</td>
                             <td>{admin.status}</td>
                             <td>{admin.email}</td>

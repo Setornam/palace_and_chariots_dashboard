@@ -107,6 +107,11 @@ const AuditLogs = () => {
                         padding-bottom: 3.456vh;
                     }
 
+                    .table-row{
+                        vertical-align: middle;
+                        height: 4.125vh;
+                    }
+
                     .active-requests-table th{
                         color: #595959;
                         font-size: 14px;

@@ -82,7 +82,7 @@ const Customers = () => {
         </div>
         <table className='active-requests-table'>
           <thead>
-            <tr>
+            <tr className='table-row'>
               <th>Name</th>
               <th>Country</th>
               <th>City</th>
@@ -158,6 +158,11 @@ const Customers = () => {
                     width: 100%;
                     padding-right: 2.34vw;
                 }
+
+                .table-row{
+            vertical-align: middle;
+            height: 4.125vh;
+           }
 
                 .search-box {
                     display: flex;

@@ -276,7 +276,7 @@ const Products = () => {
                 top: 2.3vh;
                 border-radius: 5px;
                 padding-left: 2.34vw;
-                padding-right: 0.78vw;
+                padding-right: 0.48vw;
             }
 
             .active-requests-table th{
@@ -317,7 +317,7 @@ const Products = () => {
                 font-size: 16px ;
                 position: relative;
                 top: 0.23vh;
-                padding-left: 0.78vw;
+                padding-left: 0.48vw;
                 
             }
 
@@ -365,6 +365,11 @@ const Products = () => {
             top: 0%;
 
           }
+
+          .table-row{
+            vertical-align: middle;
+            height: 4.125vh;
+           }
 
           .filter-button {
             background-color: #0B41AA;

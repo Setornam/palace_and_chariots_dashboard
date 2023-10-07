@@ -102,15 +102,15 @@ const AllProducts = ({selectedFilter}) => {
         <div>
             <table className="active-requests-table">
             <thead>
-              <tr>
-                <th style={{width: "180px"}}>Product Name</th>
-                <th style={{width: "150px"}}>Service </th>
-                <th style={{width: "180px"}}>Category</th>
-                <th style={{width: "150px"}}>  Price </th>
-                <th style={{width: "150px"}}>Discount</th>
-                <th style={{width: "150px"}}>Quantity</th>
-                <th style={{width: "150px"}}>Status</th>
-                <th style={{width: "20px"}}></th>
+              <tr className='table-row'>
+                <th style={{width: "20%"}}>Product Name</th>
+                <th style={{width: "15%"}}>Service </th>
+                <th style={{width: "15%"}}>Category</th>
+                <th style={{width: "10%"}}>  Price </th>
+                <th style={{width: "7%"}}>Discount</th>
+                <th style={{width: "10%"}}>Quantity</th>
+                <th style={{width: "10%"}}>Status</th>
+                <th style={{width: "5%"}}></th>
               </tr>
               <div className='row-line'></div>
             </thead>

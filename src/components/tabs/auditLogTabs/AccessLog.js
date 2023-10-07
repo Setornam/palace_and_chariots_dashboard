@@ -5,7 +5,7 @@ const AccessLog = () => {
     <div>
         <table className="active-requests-table">
         <thead>
-          <tr>
+          <tr >
             <th>Employee</th>
             <th>Activity Performed </th>
             <th>Date/Time Stamp</th>
@@ -17,7 +17,7 @@ const AccessLog = () => {
         </thead>
         <tbody>
             <tr></tr>
-          <tr>
+          <tr className='table-row'>
             <td>James Packer</td>
             <td> Login </td>
             <td>29/8/2022 03:21 PM</td>

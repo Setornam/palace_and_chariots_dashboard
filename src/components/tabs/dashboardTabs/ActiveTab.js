@@ -45,7 +45,7 @@ const ActiveTab = ({data , searchQuery}) => {
         const usersData = {};
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
-          usersData[userData.user_Id] = userData;
+          usersData[userData.user_id] = userData;
         });
 
         // Fetch orders

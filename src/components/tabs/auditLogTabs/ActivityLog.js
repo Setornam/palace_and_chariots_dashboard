@@ -17,7 +17,7 @@ const ActivityLog = () => {
             </thead>
             <tbody>
                 <tr></tr>
-              <tr>
+              <tr className='table-row'>
                 <td>James Packer</td>
                 <td>Created a new user</td>
                 <td>29/8/2022 03:21 PM</td>

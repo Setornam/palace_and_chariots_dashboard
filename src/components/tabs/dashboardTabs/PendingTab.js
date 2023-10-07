@@ -44,16 +44,19 @@ const PendingTab = ({ data, searchQuery }) => {
         const usersData = {};
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
-          usersData[userData.userId] = userData;
+          usersData[userData.user_id] = userData;
         });
+
   
         // Fetch orders
         const ordersCollection = collection(db, 'orders');
         const ordersSnapshot = await getDocs(ordersCollection);
         const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
+
   
         // Filter orders to only include "Pending" status
         const pendingOrders = ordersData.filter((order) => order.order_status === 'Pending');
+        setPendingOrders(pendingOrders);
   
        // Combine order data with user data
        const mergedData = pendingOrders.map((order) => {
@@ -114,6 +117,8 @@ const PendingTab = ({ data, searchQuery }) => {
         const docId = (await getDocs(q)).docs[0].id;
         console.log("document id =>", docId);
         console.log("updated status", newStatus)
+        console.log('Pending orders to be updated',orderToUpdate)
+
 
         const orderDocRef = doc(db, 'orders', docId);
         await updateDoc(orderDocRef, { order_status: newStatus });
@@ -167,7 +172,7 @@ const PendingTab = ({ data, searchQuery }) => {
                       const newStatuses = [...selectedStatuses];
                       newStatuses[index] = e.target.value;
                       setSelectedStatuses(newStatuses);
-                      handleStatusChange(order.order_id, index); // Update status on select change
+                      handleStatusChange(order.order_id, index, e.target.value); // Update status on select change
                     }}
                   >
                     <option value="Pending" disabled>Pending</option>
