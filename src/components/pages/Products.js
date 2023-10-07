@@ -8,7 +8,8 @@ import CreateProduct from '../tabs/productTabs/CreateProduct';
 const Products = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('All Products');
+  const [isEditingLabel, setIsEditingLabel] = useState(false);
   const searchInputRef = useRef(null);
 
   const tabData = [
@@ -23,6 +24,21 @@ const Products = () => {
       searchInputRef.current.value = '';
       setShowFilterDropdown(false);
     }
+  };
+
+  const handleLabelClick = () => {
+    // Enable label editing mode when the label is clicked
+    setIsEditingLabel(true);
+  };
+
+  const handleLabelChange = (event) => {
+    // Handle changes to the label (e.g., when selecting a different option)
+    setSelectedFilter(event.target.value);
+  };
+
+  const handleLabelBlur = () => {
+    // Disable label editing mode when the select field loses focus
+    setIsEditingLabel(false);
   };
 
 
@@ -72,8 +88,8 @@ const Products = () => {
                     className={`tab ${activeTab === tab.id ? 'active-tab' : ''}`}
                     onClick={() => handleTabChange(tab.id)}
                   >
-                    {tab.label}
-                    
+                        {tab.id !== 1 ? tab.label : activeTab === 1 ? '' : tab.label}
+
                   </div>
                   
                 ))}
@@ -107,7 +123,7 @@ const Products = () => {
                       </div>
                     </div>
                   )}
-                  {selectedFilter && <div className="selected-filter">Selected: {selectedFilter}</div>}
+                  {selectedFilter && <div className="selected-filter">{selectedFilter}</div>}
                 </div>
               )}
               
@@ -115,7 +131,7 @@ const Products = () => {
               
             </div>
             <div className='table-content'>
-            {activeTab === 1 && <AllProducts />} {/* Pass searchQuery as a prop */}
+            {activeTab === 1 && selectedFilter === 'All Products' && <AllProducts />} {/* Pass searchQuery as a prop */}
               {activeTab === 2 && <CreateProduct />}
           </div>
           </div>
@@ -244,7 +260,8 @@ const Products = () => {
                 }
 
                 .active-tab {
-                    font-weight: 700;    
+                    font-weight: 700;
+                    margin-left: 14.5%;    
                 }
 
                 .table {
@@ -351,13 +368,15 @@ const Products = () => {
           .filter-button {
             background-color: #0B41AA;
             position: relative;
-            top: 3px;
+            top: 20px;
+            left: 30px;
             color: white;
             width: 10px;
             font-size: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 1000000000;
           }
 
           .filter-dropdown {
@@ -384,9 +403,18 @@ const Products = () => {
           }
 
           .selected-filter {
-            margin-top: 5px;
+            margin-top: 10px;
+            width: 200px;
+            {/* background-color: red; */}
             font-weight: bold;
+            color: white;
+            position: relative;
+            left: -100px;
+            top: -10px;
+            
           }
+          
+          
 
             
 
