@@ -173,7 +173,9 @@ const PendingTab = ({ data, searchQuery }) => {
                   </select>
               </td>
               <td>
-                <FiChevronRight className='icon' />
+                <FiChevronRight className='icon' 
+                  onClick={() => handleTabClick(index)}
+                />
               </td>
               <div className='row-line' id="bottom-line"></div>
             </tr>
@@ -184,6 +186,31 @@ const PendingTab = ({ data, searchQuery }) => {
           
         </tbody>
       </table>
+
+      <div className="tabs-content">
+      {activeTabs.map((tabIndex) => (
+          <ViewOrderTab
+            key={tabIndex}
+            title={`Order ${tabIndex + 1}`} 
+            orderData={filteredData[tabIndex]}
+            content={`Tab Content ${tabIndex + 1}`}
+            onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName="custom-top-bar"
+            contentClassName="custom-content"
+            greyAreaContainer="grey-area"
+            contentContainerAreaClassName="custom-content-container-area"
+            requestDetailsContainer="request-details-container"
+            bottomBorder="custom-bottom-border"
+            headingThree="heading-three"
+            secondSection='custom-second-section'
+            contactDetails='custom-contact-details'
+            checkInAndOut='check-in-and-out'
+            form='form'
+          />
+        ))}
+
+      </div>
 
       <div className="pagination">
         
@@ -317,6 +344,166 @@ const PendingTab = ({ data, searchQuery }) => {
               align-items: center;
               font-size: 22px;
             }
+
+            .custom-tab-container{
+              background-color: #ECF0F4;
+              position: absolute;
+              top: -31.68vh;
+              right: 0vw;
+              height: 100vh;
+              width: 75.14vw;
+              z-index: 1000;
+              border-radius: 
+            }
+
+            .custom-tab-container li, .custom-tab-container p {
+              color: #505050;
+            }
+
+            .custom-tab-container h3{
+              font-size: 24px;
+              color: white;
+            }
+
+            .custom-top-bar{
+              position: relative;
+              top: -0.35vh;
+              left: -7.34vw;
+              height: 6.99vh;
+              width: 100vw;
+              background-color: white;
+              display: flex;
+              padding-left: 7.34vw;
+              align-items: center;
+              
+            }
+
+            .custom-top-bar h4{
+              font-size: 14px;
+              padding-left: 15px;
+              color: #595959
+            }
+
+            .grey-area{
+              background-color: #ECF0F4;
+              height: 25px;
+              width: 100%;
+              position: relative;
+              top: -0.3456vh;
+            }
+
+            .custom-content-container-area{
+              background-color: white;
+              height: 100vh;
+              width: 76.14vw;
+              position: relative;
+              top: 0px;
+              border-radius: 6px;
+              display: flex;
+              justify-content: center;
+            }
+
+            .custom-content{
+              width: 100%;
+            }
+
+            .custom-content ul{
+              list-style: none;
+            }
+
+            .custom-content ul li{
+              margin-bottom: 35px;
+              margin-left: -40px;
+            }
+
+            .form{
+              position: absolute;
+              bottom: 120px;
+            }
+
+            .form label{
+              display: block;
+              margin-bottom: 20px;
+            }
+
+            .form select{
+              width: 168.85px;
+              height: 21px;
+              text-align: left;
+              padding-left: 5px;
+            }
+
+            .form input{
+              display: block;
+              margin-top: 15px;
+              width: 166px;
+              height: 26px;
+              color: white;
+              background-color: #071EC3;
+              border: 1px solid #071EC3;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+
+            .request-details-container{
+              width: 70.14vw;
+            }
+
+            .request-details-container h4{
+              color: #595959;
+              font-size: 24px;
+              font-weight: 700;
+            }
+
+
+            .custom-bottom-border{
+              border-bottom: 1px solid #CDCDCD;
+              position: relative;
+              right: 3.0469vw;
+              width: 108.8%;
+              height: 40px;
+            }
+
+            .custom-second-section{
+              display: flex;
+              height: 380%;
+            }
+
+            .custom-second-section #request-span{
+              flex: 1.5;
+            }
+
+            .custom-second-section #customer-span{
+              flex: 1;
+            }
+
+            .custom-second-section h4{
+              font-size: 24px;
+              font-weight: 700;
+              color: #595959;
+            }
+
+            .custom-contact-details{
+              border: 1px solid #CDCDCD;
+              width: 345px;
+              height: 243px;
+              border-radius: 5px;
+
+            }
+
+            .custom-contact-details ul{
+              list-style: none;
+            }
+
+            .custom-contact-details ul li{
+              margin-bottom: 30px;
+            }
+
+            .check-in-and-out{
+              background-color: red;
+              display: inline;
+            }
+
         
 
         

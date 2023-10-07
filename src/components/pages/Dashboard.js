@@ -19,11 +19,18 @@ const Dashboard = () => {
     const [activeOrderCount, setActiveOrderCount] = useState(0);
     const [closedOrderCount, setClosedOrderCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [closedOrders, setClosedOrders] = useState([]);
 
   
     const handleTabChange = (tabId) => {
       setActiveTab(tabId);
     };
+
+     // Function to handle moving orders to ClosedTab
+  const handleMoveToClosed = (order) => {
+    // Update the closed orders state with the new order
+    setClosedOrders([...closedOrders, order]);
+  };
   
     const fetchOrderCount = async () => {
       try {
@@ -192,10 +199,12 @@ const Dashboard = () => {
                 </div>
         </div>
         <div className="tab-content">
-            {activeTab === 1 && <ActiveTab searchQuery={searchQuery}/>}
-            {activeTab === 2 && <PendingTab searchQuery={searchQuery} />}
-            {activeTab === 3 && <ClosedTab searchQuery={searchQuery}/>}
-        </div>
+        {activeTab === 1 && <ActiveTab searchQuery={searchQuery} />}
+        {activeTab === 2 && (
+          <PendingTab searchQuery={searchQuery} onMoveToClosed={handleMoveToClosed} />
+        )}
+        {activeTab === 3 && <ClosedTab searchQuery={searchQuery} closedOrders={closedOrders} />}
+      </div>
       </div>
 
       
