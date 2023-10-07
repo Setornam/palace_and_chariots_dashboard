@@ -1,18 +1,57 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import placeholderProfile from '../Images/placeholder-profile.png'
-import Car from '../Images/car.png'
-import StarRating from '../Images/star-rating.png'
-
+import placeholderProfile from '../Images/placeholder-profile.png';
+import Car from '../Images/car.png';
+import StarRating from '../Images/star-rating.png';
+import { collection, getDocs, doc } from 'firebase/firestore';
+import { db } from '../auth/firebase';
 
 const Messages = () => {
-
+    const [mergedData, setMergedData] = useState([]); // State for merged data
     const [message, setMessage] = useState('');
-  const [chatLog, setChatLog] = useState([]);
+    const [chatLog, setChatLog] = useState([]);
 
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
+
+
+  // useEffect should be directly inside the functional component
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch users and create a map for efficient lookups
+        const usersCollection = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersData = {};
+        usersSnapshot.forEach((doc) => {
+          const userData = doc.data();
+          usersData[userData.user_Id] = userData;
+        });
+
+        // Fetch chats
+        const chatsCollection = collection(db, 'chats');
+        const chatsSnapshot = await getDocs(chatsCollection);
+        const chatsData = chatsSnapshot.docs.map((doc) => doc.data());
+
+        // Combine chats data with user data
+        const mergedData = chatsData.map((chat) => {
+          const user = usersData[chat.user_Id] || {}; // Get the user data
+          return {
+            ...chat,
+            user,
+          };
+        });
+
+        // Set the merged data in the state
+        setMergedData(mergedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run this effect once on component mount
 
   const handleSendClick = () => {
     if (message.trim() !== '') {
@@ -22,7 +61,6 @@ const Messages = () => {
       setMessage('');
     }
   };
-
     return (
         <div>
              <div>
@@ -47,123 +85,41 @@ const Messages = () => {
 
                 <div className="message-list-container">
                 <div className="message-list">
-                    <div className="message-div">
-                        <span><h6>Messages</h6></span>
-                        <span className="message-number">15</span>
-                    </div>
-                    <div className="message-item active-message">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
+                <div className="message-div">
+      <span><h6>Messages</h6></span>
+      <span className="message-number">15</span>
+    </div>
+                {mergedData.map((chat) => (
+                    
+  <div
+    key={chat.id}
+    className={`message-item ${chat.isActive ? 'active-message' : ''}`}
+  >
+    
+    <div className="message-dd">
+      <span className="left-span">
+        <img src={placeholderProfile} alt="Profile" className="profile-image" />
+      </span>
+      <span className="middle-span">
+        <h4>{chat.user.firstName}</h4>
+        <p>{chat.user.email_address}</p>
+      </span>
+      <span className="right-span">
+        {/* <p>{chat.chat_start_time}</p> */}
+      </span>
+    </div>
+    <div className="message-message">
+      <p>{chat.message}</p>
+    </div>
+  </div>
+))}
 
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
+                   
 
-                    <div className="message-item">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
 
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
+                    
 
-                    <div className="message-item">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
-
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
-
-                    <div className="message-item">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
-
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
-
-                    <div className="message-item">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
-
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
-
-                    <div className="message-item">
-                        <div className="message-dd">
-                            <span className="left-span">
-                                <img src={placeholderProfile} alt="Profile" className="profile-image"  />
-
-                            </span>
-                            <span className="middle-span">
-                                <h4>James Fisher</h4>
-                                <p>fisher@gmail.com</p>
-                            </span>
-                            <span className="right-span">
-                                <p>15min ago</p>
-                            </span>
-                        </div>
-                        <div className="message-message">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
+                   
                 </div>
                 </div>
          </div>
