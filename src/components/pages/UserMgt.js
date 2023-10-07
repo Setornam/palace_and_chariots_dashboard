@@ -44,7 +44,7 @@ const UserMgt = () => {
             ...regularAdminsData,
            
           ];
-    
+
           setAdmins(allAdminsData);
         };
     
@@ -384,7 +384,8 @@ const UserMgt = () => {
 
                 .active-requests-table{
                     width: 77.34vw;
-                    height: 56.3vh;
+                    height: 10vh;
+                    max-height: 56.3vh;
                     position: relative;
                     top: 4.608vh;
                     border-bottom: 1px solid #CDCDCD ;
@@ -500,9 +501,8 @@ const UserMgt = () => {
         }
 
         .table-row{
-            vertical-align: middle;
+            vertical-align: top;
             height: 4.125vh;
-            background-color: red;
            }
 
         .file-input {
@@ -828,7 +828,7 @@ const UserMgt = () => {
                             {pageData.map((admin, index) => (
                             <tr className='table-row' key={index}>
                             <td>{admin.lastName}</td>
-                            <td>{admin.status}</td>
+                            <td>{admin.firstName}</td>
                             <td>{admin.email}</td>
                             <td>{admin.accessRole}</td>
                             <td>
