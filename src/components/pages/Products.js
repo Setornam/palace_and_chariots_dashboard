@@ -361,7 +361,8 @@ const Products = () => {
 
             .filter-container {
             position: absolute;
-            left: 13%;
+            left: -5%;
+            top: 0%;
 
           }
 
@@ -369,7 +370,7 @@ const Products = () => {
             background-color: #0B41AA;
             position: relative;
             top: 20px;
-            left: 30px;
+            left: 240px;
             color: white;
             width: 10px;
             font-size: 10px;
@@ -381,7 +382,7 @@ const Products = () => {
 
           .filter-dropdown {
             position: absolute;
-            top: 3.47vh;
+            top: 4.87vh;
             right: -42px;
             width: 161px;
             height: 241.48px;
@@ -403,14 +404,15 @@ const Products = () => {
           }
 
           .selected-filter {
-            margin-top: 10px;
+            margin-top: 5.5px;
             width: 200px;
             {/* background-color: red; */}
             font-weight: bold;
             color: white;
             position: relative;
-            left: -100px;
+            left: 100px;
             top: -10px;
+            font-weight: 700;
             
           }
           

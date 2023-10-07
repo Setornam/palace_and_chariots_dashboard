@@ -131,6 +131,8 @@ const PendingTab = ({ data, searchQuery }) => {
   };
 
   const pageData = filteredData.slice(startIndex, endIndex);
+  let totalPages = Math.ceil(pageData.length / rowsPerPage) ;
+  totalPages = Math.ceil(totalPages) ;
 
   return (
     <div>
@@ -219,7 +221,7 @@ const PendingTab = ({ data, searchQuery }) => {
           className={`button ${currentPage === 1 ? 'disabled' : ''}`}
           onClick={() => handlePageChange(currentPage - 1)}/>
 
-          <span>Page {currentPage}</span>
+          <span>Page {currentPage} of { totalPages }</span>
           
             <FaArrowRight
   className={`button ${
