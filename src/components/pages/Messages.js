@@ -27,7 +27,10 @@ const Messages = () => {
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
           usersData[userData.user_Id] = userData;
+          console.log('This is the user',userData);
+
         });
+
 
         // Fetch chats
         const chatsCollection = collection(db, 'chats');
@@ -44,7 +47,8 @@ const Messages = () => {
         });
 
         // Set the merged data in the state
-        setMergedData(mergedData);
+        setMergedData(mergedData);         console.log('this is the merged data',mergedData);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }

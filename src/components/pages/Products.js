@@ -3,6 +3,12 @@ import { FiSearch } from 'react-icons/fi';
 import { BiSolidDownArrow} from 'react-icons/bi';
 import AllProducts from '../tabs/productTabs/AllProducts';
 import CreateProduct from '../tabs/productTabs/CreateProduct';
+import SecurityProducts from '../tabs/productTabs/SecurityProducts';
+import EventsServicesProducts from '../tabs/productTabs/EventsServicesProducts';
+import VehiclesProducts from '../tabs/productTabs/VehiclesProducts';
+import SalesProducts from '../tabs/productTabs/SalesProducts';
+import AccommodationProducts from '../tabs/productTabs/AccommodationProducts';
+import TravelAndTourProducts from '../tabs/productTabs/TravelAndTourProducts';
 
 
 const Products = () => {
@@ -103,22 +109,26 @@ const Products = () => {
                   </button>
                   {showFilterDropdown && (
                     <div className="filter-dropdown">
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('All Products')}>
+                      <div  className={`filter-option ${selectedFilter === 'All Products' ? 'active' : ''}`}
+                        onClick={() => handleFilterOptionClick('All Products')}>
                         All Products
                       </div>
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('Vehicles')}>
+                      <div className={`filter-option ${selectedFilter === 'Vehicles' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Vehicles')}>
                         Vehicles
                       </div>
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('Accommodation')}>
+                      <div className={`filter-option ${selectedFilter === 'Accommodation' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Accommodation')}>
                         Accommodation
                       </div>
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('Sales')}>
+                      <div className={`filter-option ${selectedFilter === 'Sales' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Sales')}>
                         Sales
                       </div>
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('Travel and Tourism')}>
+                      <div className={`filter-option ${selectedFilter === 'Travel and Tourism' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Travel and Tourism')}>
                         Travel and Tourism
                       </div>
-                      <div className="filter-option" onClick={() => handleFilterOptionClick('Security')}>
+                      <div className={`filter-option ${selectedFilter === 'Events Services' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Events Services')}>
+                        Events Services
+                      </div>
+                      <div className={`filter-option ${selectedFilter === 'Security' ? 'active' : ''}`} onClick={() => handleFilterOptionClick('Security')}>
                         Security
                       </div>
                     </div>
@@ -131,7 +141,17 @@ const Products = () => {
               
             </div>
             <div className='table-content'>
-            {activeTab === 1 && selectedFilter === 'All Products' && <AllProducts />} {/* Pass searchQuery as a prop */}
+            {activeTab === 1 && (
+  <div className="table-content">
+    {selectedFilter === 'All Products' && <AllProducts />}
+    {selectedFilter === 'Vehicles' && <VehiclesProducts />}
+    {selectedFilter === 'Accommodation' && <AccommodationProducts />}
+    {selectedFilter === 'Sales' && <SalesProducts />}
+    {selectedFilter === 'Travel and Tourism' && <TravelAndTourProducts />}
+    {selectedFilter === 'Events Services' && <EventsServicesProducts />}
+    {selectedFilter === 'Security' && <SecurityProducts />}
+  </div>
+)} {/* Pass searchQuery as a prop */}
               {activeTab === 2 && <CreateProduct />}
           </div>
           </div>
@@ -361,7 +381,7 @@ const Products = () => {
 
             .filter-container {
             position: absolute;
-            left: -5%;
+            left: -2.58vw;
             top: 0%;
 
           }
@@ -390,7 +410,7 @@ const Products = () => {
             top: 4.87vh;
             right: -42px;
             width: 161px;
-            height: 241.48px;
+            height: 281.48px;
             background-color: #E7E7F4;
             border: none;
             border-radius: 0 0 5px 5px;
@@ -402,6 +422,14 @@ const Products = () => {
             cursor: pointer;
             border-top: 1px solid #CDCDCD;
             transition: background-color 0.3s;
+          }
+
+          .filter-option:hover {
+            font-weight: 600; 
+          }
+
+          .filter-option.active {
+            font-weight: 700; 
           }
 
           .filter-option:hover {
