@@ -148,7 +148,7 @@ const AllProducts = ({selectedFilter}) => {
         disabled={currentPage === 1}
         onClick={() => handlePageChange(currentPage - 1)}/>
 
-        <span>Page {currentPage} of {totalPages} </span>
+        <span>Page {currentPage} </span>
         
           <FaArrowRight className='button'
             disabled={currentPage === Math.ceil(products.length / rowsPerPage)}

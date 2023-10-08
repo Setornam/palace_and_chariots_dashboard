@@ -235,7 +235,7 @@ const ActiveTab = ({data , searchQuery}) => {
           className={`button ${currentPage === 1 ? 'disabled' : ''}`}
           onClick={() => handlePageChange(currentPage - 1)}/>
 
-          <span>Page {currentPage} of {totalPages}</span>
+          <span>Page {currentPage}</span>
           
             <FaArrowRight
   className={`button ${
