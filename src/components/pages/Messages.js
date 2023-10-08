@@ -18,13 +18,7 @@ const Messages = () => {
     setMessage(e.target.value);
   };
 
-  const handleChatItemClick = (chatId) => {
-    // Set the active chat when a chat item is clicked
-    setActiveChatId(chatId);
-  };
 
-
-  // useEffect should be directly inside the functional component
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,47 +49,6 @@ const Messages = () => {
       setMessage('');
     }
   };
-
-
-   // Render chat content based on the active chat
-   const renderChatContent = () => {
-    if (activeChatId !== null) {
-      // Find the active chat in chatsData based on activeChatId
-      const activeChat = chatsData.find((chat) => chat.id === activeChatId);
-
-      if (activeChat) {
-        return (
-          <div className="message-content">
-            {/* Render content specific to the active chat */}
-            <div className="message-title">
-              <div>
-                <img src={Car} alt="Product" className="product-image" />
-              </div>
-              <div className="product-detail">
-                <h4>{activeChat.name}</h4>
-                <div className="details-span">
-                  <span>
-                    <p>{activeChat.productColor}</p>
-                  </span>
-                  <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
-                    <img src={StarRating} alt="Star Rating" className="star-rating" /> {activeChat.starRating}
-                  </p>
-                </div>
-                <h3>{activeChat.productPrice}</h3>
-              </div>
-            </div>
-            {/* Render other chat content */}
-            {/* ... */}
-          </div>
-        );
-      }
-    }
-
-    // Default content when no chat is active
-    return null;
-  };
-
-  
     return (
         <div>
              <div>
@@ -138,7 +91,7 @@ const Messages = () => {
                             <img src={placeholderProfile} alt="Profile" className="profile-image" />
                         </span>
                         <span className="middle-span">
-                            <h4>{chat.name}</h4>
+                            <h4>{chat.user_name || `Unnamed Customer`}</h4>
                             <p>{chat.user_email}</p>
                         </span>
                         <span className="right-span">
@@ -167,16 +120,26 @@ const Messages = () => {
         <img src={Car} alt="Product" className="product-image" />
       </div>
       <div className="product-detail">
-        <h4>Mercedes-Benz C300</h4>
-        <div className="details-span">
-          <span>
-            <p>Grey</p>
-          </span>
-          <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
-            <img src={StarRating} alt="Star Rating" className="star-rating" />4.5
-          </p>
-        </div>
-        <h3>GHS500,000</h3>
+        {/* Retrieve the chat data based on activeChatId */}
+        {chatsData.map((chat) => {
+          if (chat.id === activeChatId) {
+            return (
+              <React.Fragment key={chat.id}>
+                <h4>{chat.name}</h4>
+                <div className="details-span">
+                  <span>
+                    <p>{chat.color}</p>
+                  </span>
+                  <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
+                    <img src={StarRating} alt="Star Rating" className="star-rating" />{chat.rating}
+                  </p>
+                </div>
+                <h3>{chat.price}</h3>
+              </React.Fragment>
+            );
+          }
+          return null;
+        })}
       </div>
     </div>
     <div className="main-message">
@@ -185,7 +148,7 @@ const Messages = () => {
           <hr />
         </span>
         <span>
-          <p>Today</p>
+          <p>{activeChatId.name}</p> {/* Assuming you want to display the chat name here */}
         </span>
         <span>
           <hr />
@@ -198,14 +161,14 @@ const Messages = () => {
         <div className="message-right-span">
           <div className="inner-message">
             <span className="message-sender">
-              <p>James Fisher</p>
+              <p>James Fisher</p> {/* Replace with appropriate sender data */}
             </span>
             <span className="message-time">
-              <p>2:22pm</p>
+              <p>2:22pm</p> {/* Replace with appropriate time data */}
             </span>
           </div>
           <div className="message-post">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> {/* Replace with appropriate message content */}
           </div>
         </div>
       </div>
@@ -214,11 +177,11 @@ const Messages = () => {
         <div className="admin-message-right-span">
           <div className="admin-inner-message">
             <span className="message-time">
-              <p>Just Now</p>
+              <p>Just Now</p> {/* Replace with appropriate time data */}
             </span>
           </div>
           <div className="admin-message-post">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> {/* Replace with appropriate admin message content */}
           </div>
         </div>
       </div>
@@ -241,6 +204,7 @@ const Messages = () => {
     </div>
   </div>
 )}
+
 
          
      </div>
