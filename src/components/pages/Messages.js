@@ -7,12 +7,20 @@ import { collection, getDocs, doc } from 'firebase/firestore';
 import { db } from '../auth/firebase';
 
 const Messages = () => {
-    const [mergedData, setMergedData] = useState([]); // State for merged data
+    const [chatsData, setChatsData] = useState([]); 
     const [message, setMessage] = useState('');
     const [chatLog, setChatLog] = useState([]);
+    const [activeChatId, setActiveChatId] = useState(null);  
+    const [activeChatContent, setActiveChatContent] = useState(null);
+    const [chatCount, setChatCount] = useState(0); 
 
   const handleInputChange = (e) => {
     setMessage(e.target.value);
+  };
+
+  const handleChatItemClick = (chatId) => {
+    // Set the active chat when a chat item is clicked
+    setActiveChatId(chatId);
   };
 
 
@@ -20,35 +28,17 @@ const Messages = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch users and create a map for efficient lookups
-        const usersCollection = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersCollection);
-        const usersData = {};
-        usersSnapshot.forEach((doc) => {
-          const userData = doc.data();
-          usersData[userData.user_Id] = userData;
-          console.log('This is the user',userData);
-
-        });
-
-
         // Fetch chats
         const chatsCollection = collection(db, 'chats');
         const chatsSnapshot = await getDocs(chatsCollection);
         const chatsData = chatsSnapshot.docs.map((doc) => doc.data());
+        setChatsData(chatsData);
+        console.log('This is the purse chats data',chatsData);
 
-        // Combine chats data with user data
-        const mergedData = chatsData.map((chat) => {
-          const user = usersData[chat.user_Id] || {}; // Get the user data
-          return {
-            ...chat,
-            user,
-          };
-        });
+        // Set the count of chats
+        setChatCount(chatsSnapshot.size);
 
-        // Set the merged data in the state
-        setMergedData(mergedData);         console.log('this is the merged data',mergedData);
-
+    
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -65,6 +55,47 @@ const Messages = () => {
       setMessage('');
     }
   };
+
+
+   // Render chat content based on the active chat
+   const renderChatContent = () => {
+    if (activeChatId !== null) {
+      // Find the active chat in chatsData based on activeChatId
+      const activeChat = chatsData.find((chat) => chat.id === activeChatId);
+
+      if (activeChat) {
+        return (
+          <div className="message-content">
+            {/* Render content specific to the active chat */}
+            <div className="message-title">
+              <div>
+                <img src={Car} alt="Product" className="product-image" />
+              </div>
+              <div className="product-detail">
+                <h4>{activeChat.name}</h4>
+                <div className="details-span">
+                  <span>
+                    <p>{activeChat.productColor}</p>
+                  </span>
+                  <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
+                    <img src={StarRating} alt="Star Rating" className="star-rating" /> {activeChat.starRating}
+                  </p>
+                </div>
+                <h3>{activeChat.productPrice}</h3>
+              </div>
+            </div>
+            {/* Render other chat content */}
+            {/* ... */}
+          </div>
+        );
+      }
+    }
+
+    // Default content when no chat is active
+    return null;
+  };
+
+  
     return (
         <div>
              <div>
@@ -90,120 +121,127 @@ const Messages = () => {
                 <div className="message-list-container">
                 <div className="message-list">
                 <div className="message-div">
-      <span><h6>Messages</h6></span>
-      <span className="message-number">15</span>
-    </div>
-                {mergedData.map((chat) => (
+                    <span><h6>Messages</h6></span>
+                    <span className="message-number">{chatCount}</span>
+                </div>
+                    {chatsData.map((chat) => (
                     
-  <div
-    key={chat.id}
-    className={`message-item ${chat.isActive ? 'active-message' : ''}`}
-  >
-    
-    <div className="message-dd">
-      <span className="left-span">
-        <img src={placeholderProfile} alt="Profile" className="profile-image" />
-      </span>
-      <span className="middle-span">
-        <h4>{chat.user.firstName}</h4>
-        <p>{chat.user.email_address}</p>
-      </span>
-      <span className="right-span">
-        {/* <p>{chat.chat_start_time}</p> */}
-      </span>
+                    <div
+                        key={chat.id}
+                        className={`message-item ${chat.id === activeChatId ? 'active-message' : ''}`}
+                        onClick={() => setActiveChatId(chat.id)} 
+                    >
+                    {/* {"Chat content"} */}
+                        
+                        <div className="message-dd">
+                        <span className="left-span">
+                            <img src={placeholderProfile} alt="Profile" className="profile-image" />
+                        </span>
+                        <span className="middle-span">
+                            <h4>{chat.name}</h4>
+                            <p>{chat.user_email}</p>
+                        </span>
+                        <span className="right-span">
+                            {/* <p>{chat.chat_start_time}</p> */}
+                        </span>
+                        </div>
+                        <div className="message-message">
+                        <p>{chat.message}</p>
+                        </div>
+                    </div>
+                    ))}
+
+                   
+
+
+                    
+
+                   
+                </div>
+                </div>
+         </div>
+         {activeChatId !== null && (
+  <div className="message-content">
+    <div className="message-title">
+      <div>
+        <img src={Car} alt="Product" className="product-image" />
+      </div>
+      <div className="product-detail">
+        <h4>Mercedes-Benz C300</h4>
+        <div className="details-span">
+          <span>
+            <p>Grey</p>
+          </span>
+          <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
+            <img src={StarRating} alt="Star Rating" className="star-rating" />4.5
+          </p>
+        </div>
+        <h3>GHS500,000</h3>
+      </div>
     </div>
-    <div className="message-message">
-      <p>{chat.message}</p>
+    <div className="main-message">
+      <div className="message-date">
+        <span>
+          <hr />
+        </span>
+        <span>
+          <p>Today</p>
+        </span>
+        <span>
+          <hr />
+        </span>
+      </div>
+      <div className="message-string">
+        <span className="message-left-span">
+          <img src={placeholderProfile} alt="Profile" className="profile-image" />
+        </span>
+        <div className="message-right-span">
+          <div className="inner-message">
+            <span className="message-sender">
+              <p>James Fisher</p>
+            </span>
+            <span className="message-time">
+              <p>2:22pm</p>
+            </span>
+          </div>
+          <div className="message-post">
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="message-string">
+        <div className="admin-message-right-span">
+          <div className="admin-inner-message">
+            <span className="message-time">
+              <p>Just Now</p>
+            </span>
+          </div>
+          <div className="admin-message-post">
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="chat-box">
+        <div className="chat-log">
+          {chatLog.map((msg, index) => (
+            <div key={index} className="chat-message">
+              {msg}
+            </div>
+          ))}
+        </div>
+        <div className="input-box">
+          <textarea rows="4" placeholder="Type your message..." value={message} onChange={handleInputChange} />
+          <div className="button-container">
+            <button onClick={handleSendClick}>Send</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-))}
+)}
 
-                   
-
-
-                    
-
-                   
-                </div>
-                </div>
-         </div>
-         <div className="message-content">
-            <div className="message-title">
-                <div>
-                    <img src={Car} 
-                    alt="Product" 
-                    className="product-image"  />
-                </div>
-                <div className="product-detail">
-                    <h4>Mercedes-Benz C300</h4>
-                    <div className="details-span">
-                        <span><p>Grey</p></span>
-                        
-                        <p style={{color:'#5B5B5B', fontSize:'14px'}}><img src={StarRating} alt="Star Rating" className="star-rating"  />4.5</p>
-                    </div>
-                    <h3>GHS500,000</h3>
-                </div>
-            </div>
-            <div className="main-message">
-                <div className="message-date">
-                    <span><hr></hr></span>
-                    <span><p>Today</p></span>
-                    <span><hr></hr></span>
-                </div>
-                <div className="message-string">
-                    <span className="message-left-span">
-                        <img src={placeholderProfile} alt="Profile" className="profile-image"  />
-                    </span>
-                    <div className="message-right-span">
-                        <div className="inner-message">
-                            <span className="message-sender"><p>James Fisher</p></span>
-                            <span className="message-time"><p>2:22pm</p></span>
-                        </div>
-                        <div className="message-post">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div className="message-string">
-                   
-                    <div className="admin-message-right-span">
-                        <div className="admin-inner-message">
-                            
-                            <span className="message-time"><p>Just Now</p></span>
-                        </div>
-                        <div className="admin-message-post">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div className="chat-box">
-                    <div className="chat-log">
-                        {chatLog.map((msg, index) => (
-                        <div key={index} className="chat-message">
-                            {msg}
-                        </div>
-                        ))}
-                    </div>
-                    <div className="input-box">
-                        <textarea
-                        rows="4"
-                        placeholder="Type your message..."
-                        value={message}
-                        onChange={handleInputChange}
-                        />
-                        <div className="button-container">
-                            <button onClick={handleSendClick}>Send</button>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            
-         </div>
          
      </div>
      
@@ -325,7 +363,7 @@ const Messages = () => {
                 .search-box {
                     display: flex;
                     align-items: center;
-                    width: 19.297vw;
+                    width: 23.397vw;
                     height: 38px;
                     border: 0.50px #CDCDCD solid;
                     border-radius: 5px;
@@ -334,6 +372,7 @@ const Messages = () => {
 
                 .search-input {
                     flex: 1;
+                    width: 100%;
                     border: none;
                     outline: none;
                     padding: 5px;
@@ -374,6 +413,11 @@ const Messages = () => {
                     padding-left: 0.5vw;                    
 
                 }
+
+                .active-message {
+                    background-color: #DFE2FA;
+                    }
+
 
                 .message-number {
                     background-color: #071EC3;
