@@ -20,6 +20,8 @@ const Dashboard = () => {
     const [closedOrderCount, setClosedOrderCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [closedOrders, setClosedOrders] = useState([]);
+    const [serviceCounts, setServiceCounts] = useState({});
+
 
   
     const handleTabChange = (tabId) => {
@@ -68,6 +70,35 @@ const Dashboard = () => {
       return 0; // Handle the error and set a default count
     }
   };
+
+  // Fetch the number of different values in the services field
+  const fetchServiceCounts = async () => {
+    try {
+      const ordersRef = collection(db, 'orders');
+      const q = query(ordersRef);
+      const querySnapshot = await getDocs(q);
+  
+      // Initialize an object to store the counts for each service
+      const serviceCounts = {};
+  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const service = data.service;
+  
+        // If the service exists in the data, increment its count, otherwise initialize it to 1
+        if (service) {
+          serviceCounts[service] = (serviceCounts[service] || 0) + 1;
+        }
+      });
+  
+      return serviceCounts;
+    } catch (error) {
+      console.error('Error fetching service counts:', error);
+      return {}; // Handle the error and return an empty object
+    }
+  };
+
+  
 
    // Function to fetch the count of pending orders
   const fetchPendingOrderCount = async () => {
@@ -121,6 +152,8 @@ const Dashboard = () => {
       const pendingCount = await fetchPendingOrderCount();
       const activeCount = await fetchActiveOrderCount();
       const closedCount = await fetchClosedOrderCount();
+      const serviceCountsData = await fetchServiceCounts(); // Fetch service counts
+
 
       setOrderCount(orderCount);
       setCustomerCount(customerCount);
@@ -128,6 +161,8 @@ const Dashboard = () => {
       setPendingOrderCount(pendingCount); 
       setActiveOrderCount(activeCount); 
       setClosedOrderCount(closedCount);
+      setServiceCounts(serviceCountsData); // Set service counts
+
     };
   
       fetchData();
@@ -146,7 +181,7 @@ const Dashboard = () => {
                 <h1>Dashboard</h1> 
                 <div className='inner-dashboard'>
                     <div className='services-box'>
-                        <h2>4</h2>
+                        <h2>{Object.keys(serviceCounts).length}</h2>
                         <h3>Services</h3>
                     </div>
 
