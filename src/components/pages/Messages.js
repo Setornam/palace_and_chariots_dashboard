@@ -139,6 +139,7 @@ const Messages = () => {
                     </div>
                 </div>
             </div>
+          
                 
               </React.Fragment>
             );
@@ -152,7 +153,7 @@ const Messages = () => {
           <hr />
         </span>
         <span>
-          <p>{activeChatId.name}</p> {/* Assuming you want to display the chat name here */}
+          <p>Today</p> {/* Assuming you want to display the chat name here */}
         </span>
         <span>
           <hr />
@@ -167,7 +168,7 @@ const Messages = () => {
             <span className="message-sender">
               <p>James Fisher</p> {/* Replace with appropriate sender data */}
             </span>
-            <span className="message-time">
+            <span className="message-time" id="first-time">
               <p>2:22pm</p> {/* Replace with appropriate time data */}
             </span>
           </div>
@@ -274,7 +275,7 @@ const Messages = () => {
          }
 
          .admin-message-post{
-            margin-left: 40%;
+            margin-left: 16.41vw;
          }
 
          .message-post p, .admin-message-post p{
@@ -285,7 +286,7 @@ const Messages = () => {
          .message-time{
             flex: 1;
             position: relative;
-            left: 7.03vw;
+            left: 2.03vw;
          }
 
          
@@ -321,6 +322,10 @@ const Messages = () => {
              color: #595959;
              font-weight: 600;
              padding-top: 2.3vh;
+         }
+
+         #first-time{
+            left: 6.5vw;
          }
 
          
@@ -547,6 +552,7 @@ const Messages = () => {
                 
                 .main-message{
                     max-height: 84.33vh;
+                    width: 49.218vw;
                     position: absolute;
                     bottom: 20.7vh;
             
@@ -561,10 +567,10 @@ const Messages = () => {
                 }
 
                 .message-date hr{
-                    width: 19.6vw;
+                    width: 22.6vw;
                     height: 0px;
                     border-bottom: 0.5px solid #CDCDCD; 
-                    border-top: none;                
+                    border-top: none;
                 }
 
                 .message-date p{
@@ -578,7 +584,7 @@ const Messages = () => {
 
                 .chat-box {
                     margin-top: 4.61vh;
-                    width: 48.9vw;
+                    width: 47.5vw;
                     height: 12.9vh;
                     border: 0.5px solid #CDCDCD;
                     padding: 10px;
@@ -603,11 +609,13 @@ const Messages = () => {
                     margin: 5px;
                     padding: 5px;
                     border-radius: 5px;
+
                 }
 
                 .input-box {
                     display: flex;
                     flex-direction: column;
+
                 }
 
                 textarea {
@@ -615,6 +623,8 @@ const Messages = () => {
                     border: none;
                     padding: 5px;
                     resize: none;
+                    width: 95%;
+
                 }
 
                 button {
