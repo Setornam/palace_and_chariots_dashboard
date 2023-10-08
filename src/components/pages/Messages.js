@@ -115,33 +115,37 @@ const Messages = () => {
          </div>
          {activeChatId !== null && (
   <div className="message-content">
-    <div className="message-title">
-      <div>
-        <img src={Car} alt="Product" className="product-image" />
-      </div>
+    
       <div className="product-detail">
         {/* Retrieve the chat data based on activeChatId */}
         {chatsData.map((chat) => {
           if (chat.id === activeChatId) {
             return (
               <React.Fragment key={chat.id}>
-                <h4>{chat.name}</h4>
-                <div className="details-span">
-                  <span>
-                    <p>{chat.color}</p>
-                  </span>
-                  <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
-                    <img src={StarRating} alt="Star Rating" className="star-rating" />{chat.rating}
-                  </p>
+              <div className="message-title">
+                <div>
+                    <img src={chat.image} alt="Product" className="product-image" />
+                    <div className='flex-with'>
+                        <h4>{chat.name}</h4>
+                        <div className="details-span">
+                        <span>
+                            <p>{chat.color}</p>
+                        </span>
+                        <p style={{ color: '#5B5B5B', fontSize: '14px' }}>
+                            <img src={StarRating} alt="Star Rating" className="star-rating" />{chat.rating}
+                        </p>
+                        </div>
+                        <h3>GHS {chat.price}</h3>
+                    </div>
                 </div>
-                <h3>{chat.price}</h3>
+            </div>
+                
               </React.Fragment>
             );
           }
           return null;
         })}
       </div>
-    </div>
     <div className="main-message">
       <div className="message-date">
         <span>
@@ -230,6 +234,11 @@ const Messages = () => {
             justify-content: center;
             align-items: center;
 
+         }
+
+         .flex-with{
+            position: relative;
+            left: 20px;
          }
 
          .message-right-span{
@@ -484,6 +493,7 @@ const Messages = () => {
                 .product-image{
                     width: 77px;
                     height: 66px;
+                    float: left;
                 }
 
                 .product-detail{
@@ -525,7 +535,6 @@ const Messages = () => {
                     color: #071EC3;
                 }
                 .message-title{
-                    display: flex;
                     height: 100%;
                 }
 
