@@ -93,7 +93,7 @@ const Customers = () => {
           </thead>
           <tbody>
             {pageUsers.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.id} className='table-row'>
                 <td>{`${user.first_name} ${user.last_name}`}</td>
                 {/* Include other user data fields here */}
                 <td>{user.country}</td>
@@ -218,7 +218,8 @@ const Customers = () => {
 
                 .active-requests-table{
                 width: 77.3vw;
-                height: 56.33vh;
+                height: 1vh;
+                max-height: 56.33vh;
                 position: relative;
                 top: 4.6vh;
                 border-bottom: 1px solid #CDCDCD ;
