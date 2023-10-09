@@ -3,8 +3,10 @@ import { FiSearch } from 'react-icons/fi';
 import placeholderProfile from '../Images/placeholder-profile.png';
 import Car from '../Images/car.png';
 import StarRating from '../Images/star-rating.png';
-import { collection, getDocs, doc } from 'firebase/firestore';
+import { collection, doc, getDoc, query, getDocs, where } from 'firebase/firestore';
 import { db } from '../auth/firebase';
+import { formatDistanceToNow } from 'date-fns';
+
 
 const Messages = () => {
     const [chatsData, setChatsData] = useState([]); 
@@ -13,11 +15,32 @@ const Messages = () => {
     const [activeChatId, setActiveChatId] = useState(null);  
     const [activeChatContent, setActiveChatContent] = useState(null);
     const [chatCount, setChatCount] = useState(0); 
+    const [messages, setMessages] = useState([]); // State variable for messages
+    const chatId = 'your_chat_document_id'
 
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
 
+   // Function to fetch messages for the selected chat
+   const fetchMessagesForChat = async (chatId) => {
+    try {
+      const messagesCollection = collection(db, 'messages'); // Replace 'messages' with your Firestore collection name for messages
+      const messagesQuery = query(messagesCollection, where('chatId', '==', chatId));
+      const messagesSnapshot = await getDocs(messagesQuery);
+      const messagesData = messagesSnapshot.docs.map((doc) => doc.data());
+      setMessages(messagesData);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  // Use useEffect to fetch messages when the selected chat changes
+  useEffect(() => {
+    if (activeChatId !== null) {
+      fetchMessagesForChat(activeChatId);
+    }
+  }, [activeChatId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +63,18 @@ const Messages = () => {
 
     fetchData();
   }, []); // Empty dependency array to run this effect once on component mount
+
+
+// Define a function to format the time as "time ago" (e.g., "2 minutes ago")
+function formatTimeAgo(timestamp) {
+  const now = new Date(); // Current date and time
+  const date = timestamp.toDate(); // Convert Firestore timestamp to JavaScript Date object
+  const timeAgo = formatDistanceToNow(date, { addSuffix: true }); // Format as "time ago" with suffix
+
+  return timeAgo;
+}
+
+
 
   const handleSendClick = () => {
     if (message.trim() !== '') {
@@ -95,7 +130,7 @@ const Messages = () => {
                             <p>{chat.user_email}</p>
                         </span>
                         <span className="right-span">
-                            {/* <p>{chat.chat_start_time}</p> */}
+                            <p>{formatTimeAgo(chat.chat_start_time)}</p>
                         </span>
                         </div>
                         <div className="message-message">
@@ -220,6 +255,7 @@ const Messages = () => {
 
          .inner-message{
             display: flex;
+            
          }
 
          .message-string{
@@ -452,6 +488,7 @@ const Messages = () => {
                 .middle-span h4{
                     font-size: 14px;                    
                     font-weight: 700;
+                    width: 13vw;
                 }
 
                 .middle-span p, .right-span p, .message-message{
@@ -465,6 +502,11 @@ const Messages = () => {
 
                 .right-span p{
                     margin-top: 0.35vh;
+                    width: 100%;
+                    position: relative;
+                    left: 2vw;
+                    top: -1vh;
+
                 }
 
                 .profile-image {
@@ -564,6 +606,7 @@ const Messages = () => {
                     align-items: bottom;
                     position: relative;
                     top: 0px;
+
                 }
 
                 .message-date hr{
@@ -580,6 +623,7 @@ const Messages = () => {
                     color: #595959;
                     font-size: 14px;
                     font-weight: 400;
+                    
                 }
 
                 .chat-box {
@@ -591,6 +635,7 @@ const Messages = () => {
                     border-radius: 5px;
                     position: fixed;
                     bottom:3.456vh;
+                    
                 }
 
                 .chat-box textarea:focus {
@@ -601,6 +646,7 @@ const Messages = () => {
                 .chat-log {
                     max-height: 12.9vh;
                     overflow-y: hidden;
+                    
                 }
 
                 .chat-message {
@@ -609,6 +655,7 @@ const Messages = () => {
                     margin: 5px;
                     padding: 5px;
                     border-radius: 5px;
+
 
                 }
 

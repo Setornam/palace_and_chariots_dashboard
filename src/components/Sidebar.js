@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {  FiShoppingBag, FiUsers, FiUser, FiMessageSquare, FiLogOut, FiClipboard } from 'react-icons/fi';
 import { RiDashboardLine } from 'react-icons/ri';
 import { HiOutlineChartBar } from 'react-icons/hi';
@@ -19,6 +19,9 @@ import { Timestamp } from 'firebase/firestore';
 
 
 const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
+
+
+  
   const iconMap = {
     dashboard: <RiDashboardLine />,
     requests: <FiClipboard />,
@@ -45,6 +48,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
     try {
       // Record logout time
       const logoutTime = new Date();
+      
 
       // Create access log data for logout
       const accessLogData = {

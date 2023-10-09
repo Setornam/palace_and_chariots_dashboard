@@ -35,6 +35,43 @@ const Admin = () => {
   const handleMenuClick = (menuId) => {
     setActiveMenu(menuId);
   };
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Successfully obtained the location
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+          
+          // You can now use the latitude and longitude for your purposes
+        },
+        (error) => {
+          // Handle errors
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.log("User denied the request for geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.log("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.log("The request to get user location timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              console.log("An unknown error occurred.");
+              break;
+            default:
+              console.log("An error occurred.");
+          }
+        }
+      );
+    } else {
+      // Geolocation is not available in this browser
+      console.log("Geolocation is not supported in this browser.");
+    }
+  }, []);
   
 
 

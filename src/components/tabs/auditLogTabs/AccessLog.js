@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../auth/firebase'; // Import the Firebase configuration for Firestore
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import MobileDetect from 'mobile-detect';
+import Sidebar from '../../Sidebar';
 import {
   BrowserView,
   MobileView,
@@ -142,12 +143,8 @@ const AccessLog = () => {
                     <span>{browserName}</span>
                     <span> on </span>
                     <span>{osName}</span>
-                    
-                      
-                   
-                
                 </td>
-                <td>{log.location}</td>
+                <td>{log.locatio}</td>
               </tr>
             );
           })}
