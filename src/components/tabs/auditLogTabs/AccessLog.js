@@ -66,11 +66,21 @@ const AccessLog = () => {
               
             {accessLogs.map((log, index) => {
             const user = users[log.userId];
+            const userName = typeof user?.name === 'string' ? user.name : 'Unknown User';
+            // Convert Firestore timestamps to JavaScript Date objects
+            const loginTime = log.loginTime ? new Date(log.loginTime.seconds * 1000) : null;
+            const logoutTime = log.logoutTime ? new Date(log.logoutTime.seconds * 1000) : null;
+
             return (
               <tr key={index} className='table-row'>
-                <td>{user ? user.name : 'Unknown User'}</td>
+              <td>{userName}</td>
                 <td>{log.status}</td>
-                <td>{log.logoutTime}</td>
+                <td> {log.status === 'Login' && loginTime && !isNaN(loginTime)
+          ? loginTime.toLocaleString() // Display login time for login events
+          : log.status === 'Logout' && logoutTime && !isNaN(logoutTime)
+          ? logoutTime.toLocaleString() // Display logout time for logout events
+          : 'N/A' // Handle cases where time is not available or invalid
+        }</td>
                 <td>{log.deviceType}</td>
                 <td>{log.deviceName}</td>
                 <td>{log.location}</td>
