@@ -14,19 +14,20 @@ const AccessLog = () => {
     const fetchAccessLogs = async () => {
       try {
         const accessLogsCollection = collection(db, 'AccessLogs'); // Replace 'AccessLogs' with the actual name of your collection
-        const querySnapshot = await getDocs(accessLogsCollection);
-
+        const querySnapshot = await getDocs(query(accessLogsCollection,  orderBy('time', 'desc')));
+    
         const logsData = [];
         querySnapshot.forEach((doc) => {
           const log = doc.data();
           logsData.push(log);
         });
-
+    
         setAccessLogs(logsData);
       } catch (error) {
         console.error('Error fetching access logs:', error);
       }
     };
+    
 
     const fetchUsers = async () => {
       try {

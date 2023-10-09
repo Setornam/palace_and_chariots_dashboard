@@ -50,6 +50,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
       const accessLogData = {
         userId: auth.currentUser.uid,
         status: 'Logout',
+        time: new Date(),
         logoutTime:Timestamp.fromDate(logoutTime), // Convert to Firestore Timestamp
         deviceType: 'Web', // You can detect this client-side
         deviceName: navigator.userAgent, // You can detect this client-side

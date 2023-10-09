@@ -52,6 +52,7 @@ const Login = () => {
         const accessLogData = {
           userId: user.uid,
           status: 'Login',
+          time: new Date(),
           loginTime: new Date(),
           deviceType: 'Web', // You can detect this client-side
           deviceName: navigator.userAgent, // You can detect this client-side
