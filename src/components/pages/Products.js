@@ -9,6 +9,8 @@ import VehiclesProducts from '../tabs/productTabs/VehiclesProducts';
 import SalesProducts from '../tabs/productTabs/SalesProducts';
 import AccommodationProducts from '../tabs/productTabs/AccommodationProducts';
 import TravelAndTourProducts from '../tabs/productTabs/TravelAndTourProducts';
+import { collection, getDocs,  query, where } from 'firebase/firestore';
+import { db } from '../auth/firebase'; 
 
 
 const Products = () => {
@@ -16,6 +18,7 @@ const Products = () => {
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('All Products');
   const [isEditingLabel, setIsEditingLabel] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
 
   const tabData = [
@@ -143,13 +146,13 @@ const Products = () => {
             <div className='table-content'>
             {activeTab === 1 && (
   <div className="table-content">
-    {selectedFilter === 'All Products' && <AllProducts />}
-    {selectedFilter === 'Vehicles' && <VehiclesProducts />}
-    {selectedFilter === 'Accommodation' && <AccommodationProducts />}
-    {selectedFilter === 'Sales' && <SalesProducts />}
-    {selectedFilter === 'Travel and Tourism' && <TravelAndTourProducts />}
-    {selectedFilter === 'Events Services' && <EventsServicesProducts />}
-    {selectedFilter === 'Security' && <SecurityProducts />}
+    {selectedFilter === 'All Products' && <AllProducts searchQuery={searchQuery}/>}
+    {selectedFilter === 'Vehicles' && <VehiclesProducts searchQuery={searchQuery} />}
+    {selectedFilter === 'Accommodation' && <AccommodationProducts searchQuery={searchQuery}/>}
+    {selectedFilter === 'Sales' && <SalesProducts searchQuery={searchQuery}/>}
+    {selectedFilter === 'Travel and Tourism' && <TravelAndTourProducts searchQuery={searchQuery} />}
+    {selectedFilter === 'Events Services' && <EventsServicesProducts searchQuery={searchQuery}/>}
+    {selectedFilter === 'Security' && <SecurityProducts searchQuery={searchQuery} />}
   </div>
 )} {/* Pass searchQuery as a prop */}
               {activeTab === 2 && <CreateProduct />}

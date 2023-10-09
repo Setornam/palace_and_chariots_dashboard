@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,  doc, updateDoc, query, where, } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewProductsTab from './ViewProductsTab';
 
-const AllProducts = ({selectedFilter}) => {
+const AllProducts = ({selectedFilter, searchQuery}) => {
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,6 +54,10 @@ const AllProducts = ({selectedFilter}) => {
   
       setProducts(filteredData); // Update the state with filtered data
     };
+
+    
+
+    
   
     fetchData();
   }, [selectedFilter]);
