@@ -83,10 +83,11 @@ const Customers = () => {
         <table className='active-requests-table'>
           <thead>
             <tr className='table-row'>
-              <th>Name</th>
-              <th>Country</th>
-              <th>City</th>
-              <th>Email Address</th>
+              <th style={{width: '25%'}}>Name</th>
+              <th style={{width: '23%'}}>Country</th>
+              <th style={{width: '23%'}}>City</th>
+              <th style={{width: '25%'}}>Email Address</th>
+              <th style={{width: '4%'}}></th>
             </tr>
             <div className='row-line'></div>
           </thead>
