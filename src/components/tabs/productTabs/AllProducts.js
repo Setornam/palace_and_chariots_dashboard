@@ -102,7 +102,7 @@ const AllProducts = ({selectedFilter}) => {
         <div>
             <table className="active-requests-table">
             <thead>
-              <tr className='table-row'>
+              <tr >
                 <th style={{width: "20%"}}>Product Name</th>
                 <th style={{width: "15%"}}>Service </th>
                 <th style={{width: "15%"}}>Category</th>
@@ -117,7 +117,7 @@ const AllProducts = ({selectedFilter}) => {
             <tbody>
 
             {pageData.map((product, index) => (
-            <tr key={index}>
+            <tr key={index} className='table-row'>
               <td>{product.name}</td>
               <td>{product.service}</td>
               <td>{product.category}</td>

@@ -177,6 +177,8 @@ const Products = () => {
                     
                 }
 
+              
+
                 .customers-container::-webkit-scrollbar {
                      width: 4px; 
                 }
@@ -291,7 +293,8 @@ const Products = () => {
 
                 .active-requests-table{
                 width: 100%;
-                height: 74.88vh;
+                height: 1vh
+                max-height: 74.88vh;
                 position: relative;
                 top: 2.3vh;
                 border-radius: 5px;
@@ -358,7 +361,7 @@ const Products = () => {
               color: #595959;
               justify-content: end;
               align-items: center;
-              margin-top: 15px;
+              margin-top: 30px;
               margin-right: 3.5%;
               font-weight: 600;
               font-size: 11px;
@@ -388,7 +391,7 @@ const Products = () => {
 
           .table-row{
             vertical-align: middle;
-            height: 4.125vh;
+            height: 5.725vh;
            }
 
           .filter-button {
