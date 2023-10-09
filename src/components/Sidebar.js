@@ -9,6 +9,8 @@ import { auth } from './auth/firebase';
 import { useNavigate } from 'react-router-dom';
 import { db } from './auth/firebase'; // Import the Firebase configuration for Firestore
 import { addDoc, collection } from 'firebase/firestore';
+import firebase from 'firebase/app'; 
+import { Timestamp } from 'firebase/firestore';
 
 
 
@@ -48,7 +50,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
       const accessLogData = {
         userId: auth.currentUser.uid,
         status: 'Logout',
-        logoutTime: logoutTime.toISOString(), // Convert to ISO string format
+        logoutTime:Timestamp.fromDate(logoutTime), // Convert to Firestore Timestamp
         deviceType: 'Web', // You can detect this client-side
         deviceName: navigator.userAgent, // You can detect this client-side
         // Location data should be handled based on user consent and privacy considerations.
