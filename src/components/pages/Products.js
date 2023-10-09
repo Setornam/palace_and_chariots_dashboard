@@ -451,6 +451,32 @@ const Products = () => {
             font-weight: 700;
             
           }
+
+          .custom-tab-container{
+              background-color: white;
+              position: absolute;
+              top: 0vh;
+              right: 0vw;
+              height: 100vh;
+              width: 85.14vw;
+              z-index: 100000000000000000;
+              border-radius: 
+            }
+
+            .custom-top-bar{
+              height: 43px;
+              width: 100%;
+              background-color: #0B41AA;
+              position: relative;
+            }
+
+            .custom-top-bar h4{
+              color: white;
+              font-size: 14px;
+              position: absolute;
+              left: 11vw;
+              top: -0.6vh;
+            }
           
           
 

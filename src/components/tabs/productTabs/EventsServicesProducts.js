@@ -3,12 +3,14 @@ import { FiChevronRight } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
+import ViewProductsTab from './ViewProductsTab';
 
 
 const EventsServicesProducts = () => {
   const [products, setProducts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTabs, setActiveTabs] = useState([]);  
   const rowsPerPage = 11;
 
    const fetchProductsData = async (collectionName) => {
@@ -17,6 +19,19 @@ const EventsServicesProducts = () => {
     const productsData = snapshot.docs.map((doc) => doc.data());
     return productsData;
     
+  };
+
+  const handleTabClick = ( index) => {
+    // Check if the tab is not already open
+    if (!activeTabs.includes(index)) {
+      setActiveTabs([...activeTabs, index]);
+    }
+  };
+
+  const handleTabClose = (index) => {
+    // Remove the closed tab from the activeTabs array
+    const updatedTabs = activeTabs.filter((tabIndex) => tabIndex !== index);
+    setActiveTabs(updatedTabs);
   };
 
 
@@ -117,7 +132,8 @@ const EventsServicesProducts = () => {
               <td>{product.quantity}</td>
               <td>{product.status}</td>
               <td>
-                <FiChevronRight className='icon' />
+              <FiChevronRight className='icon'
+                onClick={() => handleTabClick(index)} />
               </td>
             </tr>
           ))}
@@ -131,6 +147,18 @@ const EventsServicesProducts = () => {
               
             </tbody>
           </table>
+
+          <div className='tabs-content'>
+            {activeTabs.map((tabIndex) => (
+              <ViewProductsTab
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName='custom-top-bar'
+
+
+              />
+            ))}
+          </div>
 
           <div className="pagination">
         
