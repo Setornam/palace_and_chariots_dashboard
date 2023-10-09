@@ -24,24 +24,24 @@ const Messages = () => {
 
    // Function to fetch messages for the selected chat
    const fetchMessagesForChat = async (chatId) => {
-    try {
-      const messagesCollection = collection(db, 'messages');
-      const messagesQuery = query(messagesCollection, where('chatId', '==', chatId));
-      const messagesSnapshot = await getDocs(messagesQuery);
-      const messagesData = messagesSnapshot.docs.map((doc) => doc.data());
-  
-      // Fetch the sender's name and profile image from the "chats" subcollection
-      const chatDocRef = doc(db, 'chats', chatId);
-      const chatDocSnapshot = await getDoc(chatDocRef);
-      const chatData = chatDocSnapshot.data();
-  
-      setMessages(messagesData);
-      setActiveChatContent(chatData); // Set the active chat content including name and profile image
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-  
+  try {
+    const messagesCollection = collection(db, 'messages');
+    const messagesQuery = query(messagesCollection, where('chatId', '==', chatId));
+    const messagesSnapshot = await getDocs(messagesQuery);
+    const messagesData = messagesSnapshot.docs.map((doc) => doc.data());
+
+    // Fetch the sender's name and profile image from the "chats" subcollection
+    const chatDocRef = doc(db, 'chats', chatId);
+    const chatDocSnapshot = await getDoc(chatDocRef);
+    const chatData = chatDocSnapshot.data();
+
+    setMessages(messagesData);
+    setActiveChatContent(chatData); // Set the active chat content including name and profile image
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+  }
+};
+
 
   // Use useEffect to fetch messages when the selected chat changes
   useEffect(() => {
@@ -204,16 +204,12 @@ function formatTimeAgo(timestamp) {
       </div>
       <div className="message-string">
         <span className="message-left-span">
-          <img src={activeChatContent.profile_picture} alt="Profile" className="profile-image" />
+          <img src={placeholderProfile} alt="Profile" className="profile-image" />
         </span>
         <div className="message-right-span">
           <div className="inner-message">
             <span className="message-sender">
-              <p> {activeChatContent.user_name ? (
-          <h4>{activeChatContent.user_name}</h4>
-        ) : (
-          <h4>{activeChatContent.user_sendBy}</h4>
-        )}</p> {/* Replace with appropriate sender data */}
+              <p>James Fisher</p> {/* Replace with appropriate sender data */}
             </span>
             <span className="message-time" id="first-time">
               <p>2:22pm</p> {/* Replace with appropriate time data */}
