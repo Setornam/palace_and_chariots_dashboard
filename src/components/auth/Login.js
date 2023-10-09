@@ -4,13 +4,18 @@ import { auth } from './firebase';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logoImage from '../Images/logo.png';
 import SplashScreen from './SplashScreen';
+import { db } from './firebase'; // Import the Firebase configuration for Firestore
+import { addDoc, collection } from 'firebase/firestore'; // Firestore functions
+
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginTime, setLoginTime] = useState(null);
 
 
   useEffect(() => {
@@ -23,6 +28,8 @@ const Login = () => {
       }
     });
 
+    
+
     // Unsubscribe from the auth state listener when the component unmounts
     return () => unsubscribe();
   }, [navigate]);
@@ -33,12 +40,38 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+
+        // Record login time
+      const currentTime = new Date();
+      setLoginTime(currentTime);
+
+      // Set user as logged in
+      setIsLoggedIn(true);
+  
+        // Record access log in Firestore
+        const accessLogData = {
+          userId: user.uid,
+          status: 'Login',
+          loginTime: new Date(),
+          deviceType: 'Web', // You can detect this client-side
+          deviceName: navigator.userAgent, // You can detect this client-side
+          // Location data should be handled based on user consent and privacy considerations.
+          // You may use browser's geolocation API to obtain location data.
+          // latitude: ..., // Get latitude data if available
+          // longitude: ..., // Get longitude data if available
+        };
+  
+        // Add a new document to the 'AccessLogs' collection
+        const accessLogsCollection = collection(db, 'AccessLogs');
+        addDoc(accessLogsCollection, accessLogData);
+  
+        // Redirect to the admin page
         navigate('/admin');
       })
       .catch((error) => {
         const errorCode = error.code;
         let errorMessage = error.message;
-
+  
         if (errorCode === 'auth/user-not-found') {
           errorMessage = 'User not found. Please check your email.';
         } else if (errorCode === 'auth/wrong-password') {
@@ -47,15 +80,20 @@ const Login = () => {
           errorMessage =
             'Too many failed login attempts. Please reset your password or try again later.';
         }
-
+  
         setError(errorMessage);
       });
   };
+
+  
+  
 
   if (loading) {
     // Show a loading indicator here
     return <SplashScreen />;
   }
+
+  
 
   return (
     <>

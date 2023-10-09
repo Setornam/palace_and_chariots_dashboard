@@ -83,29 +83,61 @@ const AuditLogs = () => {
                         font-weight: 400;
                         color: #595959;
                         margin-right: 1.56vw;
+                        
                     }
 
 
                     .active-tab {
                         border-bottom: 3px solid  #595959;
                         
+                        
                     }
 
                     .table {
                         position: relative;
-                        top: 2.3vh;
-                        left: 2.34375vw;
+                        top: 3vh;
+                        left:2vw;
+                        height: 79.9vh;
+                        width: 75.4vw;
+                        overflow: scroll;
+                        overflow-x: hidden;
+                        scrollbar-width: thin;
+                        scrollbar-color: #071EC3 #F0F0F0;
+
                     }
+
+                    .table::-webkit-scrollbar {
+                        width: 4px;
+                        position: relative;
+                        
+                    }
+
+                    .table::-webkit-scrollbar-thumb {
+                    background-color: #0B41AA;
+                    border-radius: 10px;
+                }
+
+                .table::-webkit-scrollbar-track {
+                    background-color: #cdcdcd;
+                    border-radius: 10px;
+                }
 
                     .active-requests-table{
                         width: 77.34vw;
-                        height: 56.3vh;
+                        height: 1vh;
+                        max-height: 56.3vh;
                         position: relative;
                         top: 4.6vh;
                         left: -2.34vw;
                         border-bottom: 1px solid #CDCDCD ;
                         padding-bottom: 3.456vh;
+                        
+
                     }
+
+                    .active-request-table::-webkit-scrollbar {
+                     width: 4px; 
+                }
 
                     .table-row{
                         vertical-align: middle;

@@ -6,16 +6,13 @@ import { CgProfile } from 'react-icons/cg';
 import logoImage from './Images/logo.png'; 
 import { signOut } from '@firebase/auth';
 import { auth } from './auth/firebase';
+import { useNavigate } from 'react-router-dom';
+import { db } from './auth/firebase'; // Import the Firebase configuration for Firestore
+import { addDoc, collection } from 'firebase/firestore';
 
 
-const handleLogout = async () => {
-  try {
-    await signOut(auth);
-    // Redirect or perform any additional logic after successful logout
-  } catch (error) {
-    console.error('Error signing out:', error);
-  }
-};
+
+
 
 
 
@@ -39,6 +36,41 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
     },
     
   ];
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Record logout time
+      const logoutTime = new Date();
+
+      // Create access log data for logout
+      const accessLogData = {
+        userId: auth.currentUser.uid,
+        status: 'Logout',
+        logoutTime: logoutTime.toISOString(), // Convert to ISO string format
+        deviceType: 'Web', // You can detect this client-side
+        deviceName: navigator.userAgent, // You can detect this client-side
+        // Location data should be handled based on user consent and privacy considerations.
+        // You may use the browser's geolocation API to obtain location data.
+        // latitude: ..., // Get latitude data if available
+        // longitude: ..., // Get longitude data if available
+      };
+
+      // Add a new document to the 'AccessLogs' collection
+      const accessLogsCollection = collection(db, 'AccessLogs');
+      await addDoc(accessLogsCollection, accessLogData);
+
+      // Sign out the user
+      await signOut(auth);
+
+      // Redirect or perform any additional logic after successful logout
+      navigate('/'); // Redirect to the login page after logout
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
 
   
 
