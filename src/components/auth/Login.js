@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import logoImage from '../Images/logo.png';
 import SplashScreen from './SplashScreen';
 import { db } from './firebase'; // Import the Firebase configuration for Firestore
-import { addDoc, collection } from 'firebase/firestore'; // Firestore functions
+import { addDoc, collection, getDoc, doc } from 'firebase/firestore'; // Firestore functions
 
 
 const Login = () => {
@@ -16,6 +16,23 @@ const Login = () => {
   const [loading, setLoading] = useState(true); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginTime, setLoginTime] = useState(null);
+
+  const fetchUserFullName = async (userId) => {
+    try {
+      const superAdminsCollection = collection(db, 'superAdmins'); // Replace 'superAdmins' with the actual name of your collection
+      const superAdminDoc = await getDoc(doc(superAdminsCollection, userId));
+  
+      if (superAdminDoc.exists()) {
+        const userData = superAdminDoc.data();
+        return `${userData.firstName} ${userData.lastName}`;
+      } else {
+        return 'Unknown User';
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return 'Unknown User';
+    }
+  };
 
 
   useEffect(() => {
@@ -37,29 +54,25 @@ const Login = () => {
   const onLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
+      .then(async (userCredential) => {
         const user = userCredential.user;
-
-        // Record login time
-      const currentTime = new Date();
-      setLoginTime(currentTime);
-
-      // Set user as logged in
-      setIsLoggedIn(true);
   
-        // Record access log in Firestore
+        // Fetch user's full name
+        const userFullName = await fetchUserFullName(user.uid);
+  
+        // Record login time
+        const currentTime = new Date();
+        setLoginTime(currentTime);
+  
+        // Record access log in Firestore with user's full name
         const accessLogData = {
           userId: user.uid,
           status: 'Login',
           time: new Date(),
           loginTime: new Date(),
-          deviceType: 'Web', // You can detect this client-side
-          deviceName: navigator.userAgent, // You can detect this client-side
-          // Location data should be handled based on user consent and privacy considerations.
-          // You may use browser's geolocation API to obtain location data.
-          // latitude: ..., // Get latitude data if available
-          // longitude: ..., // Get longitude data if available
+          deviceType: 'Web',
+          deviceName: navigator.userAgent,
+          name: userFullName, // Store the user's full name
         };
   
         // Add a new document to the 'AccessLogs' collection

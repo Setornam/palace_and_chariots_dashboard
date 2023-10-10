@@ -21,9 +21,12 @@ const AccessLog = () => {
 
   const [accessLogs, setAccessLogs] = useState([]);
   const [users, setUsers] = useState({});
+  const [superAdmins, setSuperAdmins] = useState({});
   const [deviceType, setDeviceType] = useState(null);
   const [browser, setBrowser] = useState('');
   const [os, setOS] = useState('');
+  const [error, setError] = useState(null);
+
 
 
   useEffect(() => {
@@ -70,40 +73,43 @@ const AccessLog = () => {
     const fetchAccessLogs = async () => {
       try {
         const accessLogsCollection = collection(db, 'AccessLogs'); // Replace 'AccessLogs' with the actual name of your collection
-        const querySnapshot = await getDocs(query(accessLogsCollection,  orderBy('time', 'desc')));
-    
+        const querySnapshot = await getDocs(query(accessLogsCollection, orderBy('time', 'desc')));
+
         const logsData = [];
         querySnapshot.forEach((doc) => {
           const log = doc.data();
           logsData.push(log);
         });
-    
+
         setAccessLogs(logsData);
       } catch (error) {
         console.error('Error fetching access logs:', error);
+        setError('Error fetching access logs. Please try again later.'); // Handle the error
       }
     };
+
     
 
-    const fetchUsers = async () => {
+    const fetchSuperAdmins = async () => {
       try {
-        const usersCollection = collection(db, 'users'); // Replace 'users' with the actual name of your collection
-        const querySnapshot = await getDocs(usersCollection);
+        const superAdminsCollection = collection(db, 'superAdmins'); // Replace 'superAdmins' with the actual name of your collection
+        const querySnapshot = await getDocs(superAdminsCollection);
 
-        const usersData = {};
+        const superAdminsData = {};
         querySnapshot.forEach((doc) => {
-          const user = doc.data();
-          usersData[user.userId] = user;
+          const superAdmin = doc.data();
+          superAdminsData.push(superAdmin);
         });
 
-        setUsers(usersData);
+        setSuperAdmins(superAdminsData);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching superAdmins:', error);
+        setError('Error fetching superAdmins. Please try again later.'); // Handle the error
       }
     };
 
     fetchAccessLogs();
-    fetchUsers();
+    fetchSuperAdmins();
   }, []);
 
    return (
@@ -122,15 +128,16 @@ const AccessLog = () => {
             <tbody>
               
             {accessLogs.map((log, index) => {
-            const user = users[log.userId];
-            const userName = typeof user?.name === 'string' ? user.name : 'Unknown User';
-            // Convert Firestore timestamps to JavaScript Date objects
+            const user = users[log.userId];   console.log('SuperAdmins:', superAdmins);
+
+            const superAdmin = superAdmins[log.employeeId]; // Get superAdmin data
+            const employeeName =  superAdmin?.firstName || 'Unknown User'; // Use superAdmin name if available
             const loginTime = log.loginTime ? new Date(log.loginTime.seconds * 1000) : null;
             const logoutTime = log.logoutTime ? new Date(log.logoutTime.seconds * 1000) : null;
 
             return (
               <tr key={index} className='table-row'>
-              <td>{userName}</td>
+              <td>{employeeName}</td>
                 <td>{log.status}</td>
                 <td> {log.status === 'Login' && loginTime && !isNaN(loginTime)
           ? loginTime.toLocaleString() // Display login time for login events
