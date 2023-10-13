@@ -3,7 +3,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 
 
 
-const ViewOrderTab = ({ title, 
+const ViewOrderTabA = ({ title, 
   content, 
   onClose, 
   tabContainerClassName, 
@@ -54,19 +54,22 @@ const ViewOrderTab = ({ title,
                 <li>Request: {name}</li>
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Check In: <p>date{orderData.check_in}</p>
+                    Pick-up Date: <p>date{orderData.check_in}</p>
                   </span>
                   <span>
-                    Check Out: {checkOut}
+                    Pick-up Time: {checkOut}
                   </span>
                 </div>
+
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Guest: <p>date{orderData.check_in}</p>
+                    Drop-off Date: <p>date{orderData.check_in}</p>
                   </span>
-                  
+                  <span>
+                    Drop-off Time: {checkOut}
+                  </span>
                 </div>
-                <li>Dates<br/>{orderData.order_date}</li>
+                
                 <li style={{color:'#595959',fontSize:'14px'}}>Total<br/><b>US${orderData.price}</b></li>
                 
               </ul>
@@ -85,6 +88,17 @@ const ViewOrderTab = ({ title,
             </span>
             <span id='customer-span'>
               <h4>Customer Details</h4>
+              <div className={contactDetails}>
+                <ul>
+                  <li>First Name:{orderData.first_name}</li>
+                  <li>Last Name: {orderData.last_name}</li>
+                  <li>Email: {orderData.email_address}</li>
+                  <li>Country: {orderData.country}</li>
+                  <li> Contact: {orderData.phone}</li>
+                </ul>
+              </div>
+
+               <h4>Driver Details</h4>
               <div className={contactDetails}>
                 <ul>
                   <li>First Name:{orderData.first_name}</li>
@@ -128,4 +142,4 @@ const ViewOrderTab = ({ title,
     </div>  )
 }
 
-export default ViewOrderTab
+export default ViewOrderTabA

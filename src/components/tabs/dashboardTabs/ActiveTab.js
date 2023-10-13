@@ -4,6 +4,8 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs, doc, updateDoc, query, where, onSnapshot} from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
+import ViewOrderTabA from './ViewOrderTabA';
+import ViewOrderTabB from './ViewOrderTabB';
 
 
 
@@ -14,6 +16,9 @@ const ActiveTab = ({data , searchQuery}) => {
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabs, setActiveTabs] = useState([]);  
+  const [usersData, setUsersData] = useState({});
+  
+
   const rowsPerPage = 11;
 
   const tabs = activeOrders.map((order, index) => ({
@@ -34,44 +39,50 @@ const ActiveTab = ({data , searchQuery}) => {
     setActiveTabs(updatedTabs);
   };
   
-  
-
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsers = async () => {
       try {
-        // Fetch users and create a map for efficient lookups
         const usersCollection = collection(db, 'users');
         const usersSnapshot = await getDocs(usersCollection);
         const usersData = {};
         usersSnapshot.forEach((doc) => {
           const userData = doc.data();
           usersData[userData.user_id] = userData;
-          console.log('Users Data:', usersData);
-
         });
+        setUsersData(usersData);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
 
-        // Fetch orders
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
         const ordersCollection = collection(db, 'orders');
         const ordersSnapshot = await getDocs(ordersCollection);
         const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
-
-        // Filter orders to only include "Active" status
         const activeOrders = ordersData.filter((order) => order.order_status === 'Active');
         setActiveOrders(activeOrders);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
 
-        // Combine order data with user data
-        const mergedData = activeOrders.map((order) => {
-          const user = usersData[order.user_id] || {};
-          console.log('User Data for Order:', order.order_id, user);
-          return {
-            ...order,
-            user,
-          };
-        });
+    fetchOrders();
+  }, []);
 
-        
+  useEffect(() => {
+    // Combine order data with user data
+    const mergedData = activeOrders.map(order => ({
+      ...order,
+      user: usersData[order.user_id] || {},
+    }));
+    
 
-        // Filter data based on search query
+      // Filter data based on search query
       const filteredData = mergedData.filter((order) => {
         const fullName = `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
         const orderName = order.name.toLowerCase();
@@ -79,27 +90,87 @@ const ActiveTab = ({data , searchQuery}) => {
         const orderId = order.order_id.toLowerCase();
         const orderDate = order.order_date.toLowerCase();
         const searchQueryLowerCase = searchQuery.toLowerCase();
-
-  // Check if any of the fields match the search query
+  
         return (
           fullName.includes(searchQueryLowerCase) ||
           orderName.includes(searchQueryLowerCase) ||
           requestCategory.includes(searchQueryLowerCase) ||
           orderId.includes(searchQueryLowerCase) ||
-          orderDate.includes(searchQueryLowerCase) 
+          orderDate.includes(searchQueryLowerCase)
         );
       });
   
-        setFilteredData(filteredData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+      setFilteredData(filteredData);
+    }, [searchQuery, activeOrders, usersData]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Fetch users and create a map for efficient lookups
+  //       const usersCollection = collection(db, 'users');
+  //   const usersSnapshot = await getDocs(usersCollection);
+  //   console.log('usersSnapshot', usersSnapshot);
+
+  //   const usersData = {};
+  //   usersSnapshot.forEach((doc) => {
+  //     const userData = doc.data();
+  //     usersData[userData.user_id] = userData;
+  //   });
+
+  //       // Fetch orders
+  //       const ordersCollection = collection(db, 'orders');
+  //       const ordersSnapshot = await getDocs(ordersCollection);
+  //       const ordersData = ordersSnapshot.docs.map((doc) => doc.data());
+
+  //       // Filter orders to only include "Active" status
+  //       const activeOrders = ordersData.filter((order) => order.order_status === 'Active');
+  //       setActiveOrders(activeOrders);
+
+  //       // Combine order data with user data
+  //       const mergedData = activeOrders.map((order) => {
+  //         const user = usersData[order.user_id] || {}; // Get user data based on user_id
+  //         console.log('List of Orders', order)
+  //         console.log('List of Users', user)
+  //         return {
+  //           ...order,
+  //           user: {
+  //             ...user,
+  //             // Add additional user-related properties as needed
+  //           },
+  //         };
+  //       });
+
+        
+
+  //       // Filter data based on search query
+  //     const filteredData = mergedData.filter((order) => {
+  //       const fullName = `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
+  //       const orderName = order.name.toLowerCase();
+  //       const requestCategory = order.service.toLowerCase();
+  //       const orderId = order.order_id.toLowerCase();
+  //       const orderDate = order.order_date.toLowerCase();
+  //       const searchQueryLowerCase = searchQuery.toLowerCase();
+
+  // // Check if any of the fields match the search query
+  //       return (
+  //         fullName.includes(searchQueryLowerCase) ||
+  //         orderName.includes(searchQueryLowerCase) ||
+  //         requestCategory.includes(searchQueryLowerCase) ||
+  //         orderId.includes(searchQueryLowerCase) ||
+  //         orderDate.includes(searchQueryLowerCase) 
+  //       );
+  //     });
+  
+  //       setFilteredData(filteredData);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
 
        
 
-    fetchData();
-  }, [searchQuery]);
+  //   fetchData();
+  // }, [searchQuery]);
 
   
 
@@ -170,7 +241,7 @@ const ActiveTab = ({data , searchQuery}) => {
             <tr key={index} className='table-row'>
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
-              <td>{order.order_id}</td>
+              <td>{order.order_id.slice(6, 14)}</td>
               <td>{`${order.user.first_name || ''} ${order.user.last_name || ''}`}</td>
               <td>{order.service}</td>
               <td>{order.name}</td>
@@ -204,8 +275,60 @@ const ActiveTab = ({data , searchQuery}) => {
         </tbody>
       </table>
       <div className="tabs-content">
-      {activeTabs.map((tabIndex) => (
-          <ViewOrderTab
+      {activeTabs.map((tabIndex) => {
+          const orderData = filteredData[tabIndex];
+          const requestCategory = orderData.service.toLowerCase();
+
+          if (requestCategory === 'accommodation-rentals') {
+            return (
+              <ViewOrderTab
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabA
+              />
+            );
+          } else if (requestCategory === 'vehicle-rentals') {
+            return (
+              <ViewOrderTabA
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          } else {
+            return (
+          <ViewOrderTabB
             key={tabIndex}
             title={`Order ${tabIndex + 1}`} 
             orderData={filteredData[tabIndex]}
@@ -224,7 +347,9 @@ const ActiveTab = ({data , searchQuery}) => {
             checkInAndOut='check-in-and-out'
             form='form'
           />
-        ))}
+          );
+          }
+      })}
 
       </div>
 
@@ -423,7 +548,28 @@ const ActiveTab = ({data , searchQuery}) => {
               border-radius: 6px;
               display: flex;
               justify-content: center;
+              overflow: scroll;
+              overflow-x: hidden;
+              scrollbar-width: thin;
+              scrollbar-color: #071EC3 #F0F0F0;
+
             }
+
+            .custom-content-container-area::-webkit-scrollbar {
+                     width: 4px; 
+                     
+                }
+
+                
+                .custom-content-container-area::-webkit-scrollbar-thumb {
+                    background-color: #0B41AA;
+                    border-radius: 10px;
+                }
+
+                .custom-content-container-area::-webkit-scrollbar-track {
+                    background-color: #cdcdcd;
+                    border-radius: 10px;
+                }
 
             .custom-content{
               width: 100%;
@@ -434,7 +580,7 @@ const ActiveTab = ({data , searchQuery}) => {
             }
 
             .custom-content ul li{
-              margin-bottom: 35px;
+              margin-bottom: 25px;
               margin-left: -40px;
             }
 
@@ -488,7 +634,8 @@ const ActiveTab = ({data , searchQuery}) => {
 
             .custom-second-section{
               display: flex;
-              height: 380%;
+              width: 937px;
+              height: 90%;
             }
 
             .custom-second-section #request-span{
@@ -522,8 +669,10 @@ const ActiveTab = ({data , searchQuery}) => {
             }
 
             .check-in-and-out{
-              background-color: red;
-              display: inline;
+              margin-left: -40px;
+              margin-bottom: 25px;
+              display: flex;
+              margin-right: 30px;
             }
 
             

@@ -4,6 +4,8 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs, doc, updateDoc, query, where,} from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
+import ViewOrderTabA from './ViewOrderTabA';
+import ViewOrderTabB from './ViewOrderTabB';
 
 
 
@@ -167,7 +169,7 @@ const PendingTab = ({ data, searchQuery }) => {
             <tr key={index} className='table-row'>
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
-              <td>{order.order_id}</td>
+              <td>{order.order_id.slice(6, 14)}</td>
               <td>{`${order.user.first_name} ${order.user.last_name}`}</td> {/* Access user data */}
               <td>{order.service}</td>
               <td>{order.name}</td>
@@ -202,8 +204,60 @@ const PendingTab = ({ data, searchQuery }) => {
       </table>
 
       <div className="tabs-content">
-      {activeTabs.map((tabIndex) => (
-          <ViewOrderTab
+      {activeTabs.map((tabIndex) => {
+          const orderData = filteredData[tabIndex];
+          const requestCategory = orderData.service.toLowerCase();
+
+          if (requestCategory === 'accommodation-rentals') {
+            return (
+              <ViewOrderTab
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabA
+              />
+            );
+          } else if (requestCategory === 'vehicle-rentals') {
+            return (
+              <ViewOrderTabA
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          } else {
+            return (
+          <ViewOrderTabB
             key={tabIndex}
             title={`Order ${tabIndex + 1}`} 
             orderData={filteredData[tabIndex]}
@@ -222,7 +276,9 @@ const PendingTab = ({ data, searchQuery }) => {
             checkInAndOut='check-in-and-out'
             form='form'
           />
-        ))}
+          );
+          }
+      })}
 
       </div>
 
@@ -415,7 +471,28 @@ const PendingTab = ({ data, searchQuery }) => {
               border-radius: 6px;
               display: flex;
               justify-content: center;
+              overflow: scroll;
+              overflow-x: hidden;
+              scrollbar-width: thin;
+              scrollbar-color: #071EC3 #F0F0F0;
+
             }
+
+            .custom-content-container-area::-webkit-scrollbar {
+                     width: 4px; 
+                     
+                }
+
+                
+                .custom-content-container-area::-webkit-scrollbar-thumb {
+                    background-color: #0B41AA;
+                    border-radius: 10px;
+                }
+
+                .custom-content-container-area::-webkit-scrollbar-track {
+                    background-color: #cdcdcd;
+                    border-radius: 10px;
+                }
 
             .custom-content{
               width: 100%;
@@ -480,7 +557,7 @@ const PendingTab = ({ data, searchQuery }) => {
 
             .custom-second-section{
               display: flex;
-              height: 380%;
+              height: 90%;
             }
 
             .custom-second-section #request-span{
@@ -514,8 +591,10 @@ const PendingTab = ({ data, searchQuery }) => {
             }
 
             .check-in-and-out{
-              background-color: red;
-              display: inline;
+              margin-left: -40px;
+              margin-bottom: 25px;
+              display: flex;
+              margin-right: 30px;
             }
 
         

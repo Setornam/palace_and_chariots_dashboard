@@ -2,6 +2,8 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth, setPersistence, browserLocalPersistence  } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
 
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -26,6 +28,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
+
 
 // Enable local persistence
 setPersistence(auth, browserLocalPersistence)
@@ -37,6 +41,6 @@ setPersistence(auth, browserLocalPersistence)
     console.error('Error enabling local persistence:', error);
   });
 
-export { app, auth, db, analytics };
+export { app, auth, db, analytics, storage };
 
 export default app;

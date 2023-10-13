@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VehicleSaloon from './productCategories/VehicleSaloon';
 import PrivateJet from './productCategories/PrivateJet';
 import SalesVehicles from './productCategories/SalesVehicles';
@@ -10,34 +10,40 @@ import { db } from '../../auth/firebase';
 
 
 
-  const handleImageUpload = (e) => {
-    const selectedImages = e.target.files;
-    // Process the selected images here, e.g., upload them to a server or store them in state
-  };
+
+ 
 
 const CreateProduct = () => {
   const [productName, setProductName] = useState('');
   const [status, setStatus] = useState('');
   const [selectedService, setSelectedService] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [additionalFields, setAdditionalFields] = useState(null);
   const [location, setLocation] = useState('');
-  const [model, setModel] = useState('');
-  const [brand, setBrand] = useState('');
-  const [condition, setCondition] = useState('');
-  const [color, setColor] = useState('');
-  const [seats, setSeats] = useState('');
-  const [horsePower, setHorsePower] = useState('');
-  const [interiorColor, setInteriorColor] = useState('');
-  const [mileage, setMileage] = useState('');
-  const [yearOfManufacture, setYearOfManufacture] = useState('');
-  const [engineSize, setEngineSize] = useState('');
-  const [transmission, setTransmission] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [productDiscount, setProductDiscount] = useState('');
-  const [productQuantity, setProductQuantity] = useState('');
+  const [additionalFields, setAdditionalFields] = useState(null);
+  const [additionalFieldData, setAdditionalFieldData] = useState({});
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    // When the success message changes, set a timer to clear it after 2 seconds
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+      }, 2000); // 2 seconds in milliseconds
+
+      // Clear the timer when the component unmounts or when successMessage changes
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
 
   
+
+  const handleAdditionalFieldsChange = (field, value) => {
+    setAdditionalFields({
+      ...additionalFields,
+      [field]: value,
+    });
+  };
   
 
   const categoryOptions = {
@@ -66,56 +72,59 @@ const CreateProduct = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
 
-    // Set additional fields based on the selected category
-    if (category === 'Vehicles/Saloon') {
-      setAdditionalFields(<VehicleSaloon />);
-    } else if (category === 'Vehicles/Private Jet') {
-      setAdditionalFields(<PrivateJet />);
-    } else if (category === 'Sales/Vehicles') {
-      setAdditionalFields(<SalesVehicles />);
-    } else if (category === 'Sales/House') {
-      setAdditionalFields(<SalesHouse />);
-    } else if (category === 'Travel/Tourism') {
-      setAdditionalFields(<TravelTourism />);
-    } else if (category === 'Accommodation/Hotels' || category === 'Accommodation/Apartments') {
-      setAdditionalFields(<AccommodationHotel />);
-    } else if (category === 'Vehicles/Bus' || category === 'Events Services') {
-      setAdditionalFields(<VehicleSaloon />);
-    } else {
-      setAdditionalFields(null); // Reset additional fields for other categories
-    }
-  };
+      // Set additional fields based on the selected category
+  if (category === 'Vehicles/Saloon') {
+    setAdditionalFields(<VehicleSaloon />);
+  } else if (category === 'Vehicles/Private Jet') {
+    setAdditionalFields(<PrivateJet />);
+  } else if (category === 'Sales/Vehicles') {
+    setAdditionalFields(<SalesVehicles />);
+  } else if (category === 'Sales/House') {
+    setAdditionalFields(<SalesHouse />);
+  } else if (category === 'Travel/Tourism') {
+    setAdditionalFields(<TravelTourism />);
+  } else if (category === 'Accommodation/Hotels' || category === 'Accommodation/Apartments') {
+    setAdditionalFields(<AccommodationHotel />);
+  } else if (category === 'Vehicles/Bus' || category === 'Events Services') {
+    setAdditionalFields(<VehicleSaloon />);
+  } else {
+    setAdditionalFields(null); // Reset additional fields for other categories
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Check if the selected category is "Sales/Vehicles"
-      if (selectedCategory === 'Sales/Vehicles') {
+      let dataToSubmit = {
+        name: productName,
+        service: selectedService,
+        category: selectedCategory,
+        product_status: status,
+        location: location,
+        ...additionalFieldData, // Include additional fields from previous implementation
+        ...additionalFields, // Include additional fields here
+      };
+
+
+
+     // Check if the selected category is "Accommodation Apartments" or "Accommodation Hotels"
+    if (selectedCategory === 'Accommodation/Apartments' || selectedCategory === 'Accommodation/Hotels') {
+      // Access the additional fields from the AccommodationHotel component via the additionalFields prop
+      if (additionalFields) {
+        dataToSubmit = {
+          ...dataToSubmit,
+          ...additionalFields.state, // Assuming the additional fields are stored in a "state" object within additionalFields
+        };
+      }
         // Create a new document in the "vehicles" collection
-        const docRef = await addDoc(collection(db, 'vehicles'), {
-          name: productName,
-          service: selectedService,
-          category: selectedCategory,
-          price: productPrice,
-          discount: productDiscount,
-          quantity: productQuantity,
-          product_status: status,
-          location,
-          model,
-          brand,
-          condition,
-          color,
-          seats,
-          horse_power: horsePower,
-          interior_color: interiorColor,
-          mileage,
-          year_of_manufacture: yearOfManufacture,
-          engine_size: engineSize,
-          transmission,
-        });
+        const docRef = await addDoc(collection(db, 'accommodation'), dataToSubmit);
 
         console.log('Document written with ID: ', docRef.id);
+
+        // Set the success message
+      setSuccessMessage('Form submitted successfully!');
+    
       }
 
         // Reset form fields after successful submission
@@ -123,21 +132,10 @@ const CreateProduct = () => {
         setStatus('');
         setSelectedService('');
         setSelectedCategory('');
-        setProductPrice(''); 
-        setProductDiscount(''); 
-        setProductQuantity(''); 
         setLocation('');
-        setModel('');
-        setBrand('');
-        setCondition('');
-        setColor('');
-        setSeats('');
-        setHorsePower('');
-        setInteriorColor('');
-        setMileage('');
-        setYearOfManufacture('');
-        setEngineSize('');
-        setTransmission('');
+        setAdditionalFieldData({}); // Reset additional field data
+
+        
     } catch (error) {
       console.error('Error adding document: ', error);
     }
@@ -243,9 +241,11 @@ const CreateProduct = () => {
 
           {selectedCategory === 'Travel/Tourism' && <TravelTourism />}
 
-          {selectedCategory === 'Accommodation/Hotels' && <AccommodationHotel />}
+          {selectedCategory === 'Accommodation/Hotels' && <AccommodationHotel   additionalFields={additionalFields}
+  onAdditionalFieldsChange={handleAdditionalFieldsChange}/>}
 
-          {selectedCategory === 'Accommodation/Apartments' && <AccommodationHotel />}
+          {selectedCategory === 'Accommodation/Apartments' && <AccommodationHotel   additionalFields={additionalFields}
+  onAdditionalFieldsChange={handleAdditionalFieldsChange}/>}
 
           {selectedCategory === 'Events Services' && <TravelTourism />}
 
@@ -253,14 +253,19 @@ const CreateProduct = () => {
 
 
             {additionalFields && (
-            <div>
+              <div>
                 <label>Additional Fields</label>
                 {additionalFields}
-            </div>
-          )}
+              </div>
+            )}
 
           <button type='submit'>Save</button>
         </form>
+        {successMessage && (
+        <div className="success-message">
+          {successMessage}
+        </div>
+      )}
       </div>
 
 
@@ -271,6 +276,15 @@ const CreateProduct = () => {
         .form-container{
             padding: 20px 30px ;
         }
+
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+          }
 
         .first-row{
             display: flex;
@@ -466,6 +480,67 @@ const CreateProduct = () => {
           position: relative;
           left: 1.875vw;
         }
+
+
+        .image-preview{
+          background-color: white;
+          max-height: 325px;
+          width: 300px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 10px;
+          overflow: hidden;
+          border-radius: 5px;
+        }
+
+        .image-gallery {
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .image-gallery-thumbnails {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: start;
+          border-radius: 5px;
+        }
+
+        .image-gallery-thumbnail {
+          margin: 5px;
+          cursor: pointer;
+          width: 60px;
+          height: 50px;
+          border-radius: 5px;
+
+        }
+
+        .image-gallery-thumbnail.active {
+          background-color: transparent;
+          width: 60px;
+          height: 50px;
+          border-radius: 5px;
+
+        }
+
+        .image-gallery-fullscreen-button {
+          position: absolute;
+          right: -100px;
+          top: -50px;
+          display: none;
+          }
+
+          .image-gallery-left-nav{
+            width: 10px;
+            font-size: 12px;
+            height: 10px;
+            display: none;
+          }
+
+          .image-gallery-right-nav{
+            display: none;
+          }
+
 
         
         

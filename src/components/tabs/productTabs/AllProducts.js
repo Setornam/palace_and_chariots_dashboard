@@ -143,7 +143,7 @@ const AllProducts = ({selectedFilter, searchQuery}) => {
               <td>{product.price}</td>
               <td>{product.discount}</td>
               <td>{product.quantity}</td>
-              <td>{product.status}</td>
+              <td>{product.product_status}</td>
               <td>
               <FiChevronRight className='icon'
                 onClick={() => handleTabClick(index)} />

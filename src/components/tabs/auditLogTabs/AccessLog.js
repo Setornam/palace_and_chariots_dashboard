@@ -115,7 +115,7 @@ const AccessLog = () => {
    return (
       <div>
          <table className="active-requests-table">
-            <thead>
+            <thead className='heading'>
                <tr>
                   <th>Employee</th>
                   <th>Activity Performed</th>

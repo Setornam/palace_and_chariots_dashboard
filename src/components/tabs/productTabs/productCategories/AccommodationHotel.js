@@ -1,20 +1,74 @@
 import React, { useState } from 'react';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../../auth/firebase';
+import { storage } from '../../../auth/firebase'; // Make sure to use the correct path
+import ImageGallery from '../ImageGallery'; // Import the ImageGallery component
+import Dropzone from 'react-dropzone'; // Import the Dropzone component
+import Gallery from 'react-image-gallery'; // Import the Gallery component
+import 'react-image-gallery/styles/css/image-gallery.css';
 
-const AccommodationHotel = () => {
 
 
-    const handleImageUpload = (e) => {
-        const selectedImages = e.target.files;
-        // Process the selected images here, e.g., upload them to a server or store them in state
-      };
+const AccommodationHotel = ({ additionalFields, onAdditionalFieldsChange }) => {
+
+  const selectedFacilities = [];
+
+
+  const [hotelImages, setHotelImages] = useState([]); // Separate state for hotel images
+  const [roomImages, setRoomImages] = useState([]);
+
+
+  const handleHotelImageUpload = async (acceptedFiles) => {
+    const newHotelImages = await handleImageUpload(acceptedFiles);
+    setHotelImages([...hotelImages, ...newHotelImages]);
+  };
+
+  const handleRoomImageUpload = async (acceptedFiles) => {
+    const newRoomImages = await handleImageUpload(acceptedFiles);
+    setRoomImages([...roomImages, ...newRoomImages]);
+  };
+
+  
+  const handleImageUpload = async (acceptedFiles) => {
+    const newImages = [];
+
+    for (const imageFile of acceptedFiles) {
+      const filename = Date.now() + '_' + imageFile.name;
+      const storageRef = ref(storage, 'images/' + filename);
+
+      try {
+        await uploadBytes(storageRef, imageFile);
+        const imageUrl = await getDownloadURL(storageRef);
+        newImages.push({ original: imageUrl, thumbnail: imageUrl });
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+
+    return newImages;
+  };
+
+
+ 
+
+    
+  
+ 
       
 
       const [checkboxes, setCheckboxes] = useState({
-        diningArea: false,
-        kitchenCabinets: false,
-        airConditioning: false,
-        hotWater: false,
+        swimmingPool: false,
+        privateParking: false,
+        freeWifi: false,
+        disabledGuests: false,
+        freeWifiInAllAreas: false,
+        familyRooms: false,
+        spaAndWellness: false,
+        airportShuttle: false,
+        freeParking: false,
         security: false,
+
       });
     
       const handleCheckboxChange = (event) => {
@@ -25,10 +79,15 @@ const AccommodationHotel = () => {
         });
       };
 
+      
+
+    
+
+
 
   return (
     <div>
-      {/* Fields for Vehicle Saloon */}
+      {/* Fields for Hotel Facilities */}
       <h2>Hotel Facilities</h2>
       <div className='add-fields'>
         <div className='add-left-column'>
@@ -76,7 +135,7 @@ const AccommodationHotel = () => {
                 <label>
                     <input
                     type="checkbox"
-                    name="freeWifieInAllAreas"
+                    name="freeWifiInAllAreas"
                     checked={checkboxes.freeWifiInAllAreas}
                     onChange={handleCheckboxChange}
                     />{' '}
@@ -126,6 +185,16 @@ const AccommodationHotel = () => {
                     Free Parking
                 </label>
                 <br />
+                <label>
+                    <input
+                    type="checkbox"
+                    name="security"
+                    checked={checkboxes.security}
+                    onChange={handleCheckboxChange}
+                    />{' '}
+                    24/7 Security
+                </label>
+                <br />
                 
             </div>
         </div>
@@ -133,24 +202,35 @@ const AccommodationHotel = () => {
             <label >Images</label>
             <div className='file-input-outer-container'>
                 <div className='file-input-container'>
-                    <input
-                    type='file'
-                    id='images'
-                    accept='image/*'
-                    multiple
-                    onChange={handleImageUpload}
-                    className='custom-file-input'
-                    />
-                    <label htmlFor='images' className='custom-file-label'>
-                    Click to add Images
-                    </label>
+                <Dropzone
+                  onDrop={handleHotelImageUpload}
+                  accept='image/*'
+                  multiple
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()} className='file-input-outer-container '>
+                      <input {...getInputProps()} className='custom-file-input' />
+                      <label className='custom-file-label'>
+                        Click to add Hotel Images
+                      </label>
+                    </div>
+                  )}
+        </Dropzone>
+                     {/* Display uploaded hotel images using the Gallery component */}
+        <div className='image-preview'>{hotelImages.length > 0 && <Gallery
+          items={hotelImages}
+          showThumbnails={true}
+          showFullscreenButton={true}
+          showPlayButton={false}
+        />}</div>
                 </div>
             </div>
+            
         </div>
       </div>
       <div className='border'> </div>
       <div>
-      {/* Fields for Vehicle Saloon */}
+      
       <h2>Rooms</h2>
       <div className='add-fields'>
         <div className='add-left-column'>
@@ -290,17 +370,29 @@ const AccommodationHotel = () => {
             <label >Room Images</label>
             <div className='file-input-outer-container'>
                 <div className='file-input-container'>
-                    <input
-                    type='file'
-                    id='images'
-                    accept='image/*'
-                    multiple
-                    onChange={handleImageUpload}
-                    className='custom-file-input'
-                    />
-                    <label htmlFor='images' className='custom-file-label'>
-                    Click to add Images
-                    </label>
+                <Dropzone
+                  onDrop={handleRoomImageUpload}
+                  accept='image/*'
+                  multiple
+                >
+                    {({ getRootProps, getInputProps }) => (
+                      <div {...getRootProps()} className='file-input-outer-container'>
+                        <input {...getInputProps()} className='custom-file-input' />
+                        <label className='custom-file-label'>
+                          Click to add Room Images
+                        </label>
+                      </div>
+                    )}
+              </Dropzone>
+                      <div className='image-preview'>
+                        {/* Display uploaded room images using the Gallery component */}
+        {roomImages.length > 0 && <Gallery
+          items={roomImages}
+          showThumbnails={true}
+          showFullscreenButton={true}
+          showPlayButton={false}
+        />}
+                      </div>
                 </div>
             </div>
         </div>
@@ -308,6 +400,7 @@ const AccommodationHotel = () => {
     </div>
     </div>
   )
+  
 }
 
 export default AccommodationHotel

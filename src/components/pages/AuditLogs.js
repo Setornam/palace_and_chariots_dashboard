@@ -51,6 +51,8 @@ const AuditLogs = () => {
                         border-radius: 6px;
                     }
 
+                   
+
                     .top-bar {
                         display: flex;
                         height: 100px;

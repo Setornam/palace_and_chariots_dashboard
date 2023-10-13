@@ -3,7 +3,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 
 
 
-const ViewOrderTab = ({ title, 
+const ViewOrderTabB = ({ title, 
   content, 
   onClose, 
   tabContainerClassName, 
@@ -51,23 +51,10 @@ const ViewOrderTab = ({ title,
               {/* <h4>{title}</h4> */}
               <div className={contentClassName}>
               <ul>
-                <li>Request: {name}</li>
-                <div className={checkInAndOut}>
-                  <span style={{marginRight:'100px'}}>
-                    Check In: <p>date{orderData.check_in}</p>
-                  </span>
-                  <span>
-                    Check Out: {checkOut}
-                  </span>
-                </div>
-                <div className={checkInAndOut}>
-                  <span style={{marginRight:'100px'}}>
-                    Guest: <p>date{orderData.check_in}</p>
-                  </span>
-                  
-                </div>
-                <li>Dates<br/>{orderData.order_date}</li>
-                <li style={{color:'#595959',fontSize:'14px'}}>Total<br/><b>US${orderData.price}</b></li>
+                <li>Request: Call back</li>
+                <li>Product: {name}</li>
+                
+                
                 
               </ul>
               
@@ -128,4 +115,4 @@ const ViewOrderTab = ({ title,
     </div>  )
 }
 
-export default ViewOrderTab
+export default ViewOrderTabB
