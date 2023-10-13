@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
+import { collection, doc, updateDoc } from 'firebase/firestore'; // Import Firestore dependencies
+import { db } from '../../auth/firebase';
 
 
 
@@ -20,12 +22,33 @@ const ViewOrderTab = ({ title,
   checkInAndOut,
   headingThree }) => {
 
-    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState('')
     const name = `${orderData.name ||  'Travel'}`
     const checkIn = ` ${orderData.flight_departure_date || orderData.check_in || ''} `;
     const checkOut = ` ${orderData.flight_return_date || orderData.check_out}`
 
+    const handleStatusChange = (event) => {
+      setSelectedStatus(event.target.value);
+    };
   
+    const handleSave = async (event) => {
+      event.preventDefault();
+      // Create a reference to the specific order document you want to update
+      const orderRef = doc(db, 'orders', 'order_id'); // Replace 'your_order_id' with the actual order ID
+  
+      try {
+        // Update the 'order_status' field in the Firestore document
+        await updateDoc(orderRef, {
+          order_status: selectedStatus,
+        });
+        // Handle success or show a notification to the user
+        console.log('Order status updated successfully');
+      } catch (error) {
+        // Handle errors, e.g., show an error message
+        console.error('Error updating order status', error);
+      }
+    };
+    
   
   return (
 <div className={tabContainerClassName}>
@@ -75,6 +98,7 @@ const ViewOrderTab = ({ title,
               <form className={form}>
                 <label for="status">Status</label>
                 <select name="status" id="status">
+                  <option value="" disabled selected hidden>{orderData.order_status}</option>
                   <option value="Active">Active</option>
                   <option value="Pending">Pending</option>
                   <option value="Closed">Closed</option>

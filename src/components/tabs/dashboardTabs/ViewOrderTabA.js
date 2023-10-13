@@ -78,6 +78,7 @@ const ViewOrderTabA = ({ title,
               <form className={form}>
                 <label for="status">Status</label>
                 <select name="status" id="status">
+                <option value="" disabled selected hidden>{orderData.order_status}</option>
                   <option value="Active">Active</option>
                   <option value="Pending">Pending</option>
                   <option value="Closed">Closed</option>
