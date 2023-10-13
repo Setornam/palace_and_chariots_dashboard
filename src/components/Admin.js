@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
-import { collection, doc, getDoc, query, where} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
 import { db, auth } from './auth/firebase';
 import 'firebase/firestore'
 
 const Admin = () => {
-  const [activeMenu, setActiveMenu] = useState('dashboard');
-  const [accessRole, setAccessRole] = useState([]);
+  const [activeMenu, setActiveMenu] = useState('profile');
+  const [accessRole, setAccessRole] = useState(null);
+
 
   // Define different menus based on the user's access role
   const standardMenu = [
-    { id: 'requests', label: 'Request' },
+    { id: 'requests', label: 'Requests' },
     { id: 'messages', label: 'Messages' },
   ];
 
@@ -24,14 +25,50 @@ const Admin = () => {
     { id: 'user-management', label: 'User Management' },
   ];
 
-  // Determine which menu to use based on the user's access role
-  let menus;
+  useEffect(() => {
+    if (auth.currentUser) {
+      const userUID = auth.currentUser.uid;
+      const userCollectionRef = collection(db, 'superAdmins');
+      const userQuery = query(userCollectionRef, where('uid', '==', userUID));
 
-  if (accessRole === 'System Admin') {
-    menus = standardMenu;
-  } else {
-    menus =  systemAdminMenu;
-  }
+      getDocs(userQuery)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach((doc) => {
+              const userData = doc.data();
+              const userAccessRole = userData.accessRole;
+              setAccessRole(userAccessRole);
+            });
+          } else {
+            console.error('User document not found.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user document:', error);
+        });
+    }
+  }, []);
+
+  // Fetch the user's role based on their email
+  const userEmail = auth.currentUser.email;
+
+  const q = query(collection(db, 'superAdmins'), where('email', '==', userEmail));
+  getDocs(q)
+    .then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        // Assuming there's only one document per user (unique email)
+        querySnapshot.forEach((doc) => {
+          setAccessRole(doc.data().accessRole);
+        });
+      } else {
+        // Handle the case where the user's email doesn't match any document
+        console.log('User not found in superAdmins collection');
+      }
+    })
+
+  // Determine which menu to use based on the user's access role
+  let menus = accessRole === 'System Admin' ? systemAdminMenu : standardMenu;
+
   const handleMenuClick = (menuId) => {
     setActiveMenu(menuId);
   };

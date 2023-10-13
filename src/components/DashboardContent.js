@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import AuditLogs from './pages/AuditLogs';
 import Messages from './pages/Messages';
 import UserMgt from './pages/UserMgt';
+import Requests from './pages/Requests';
 
 const DashboardContent = ({ selectedMenu }) => {
   let content;
@@ -16,6 +17,9 @@ const DashboardContent = ({ selectedMenu }) => {
       break;
     case 'products':
       content = <Products />;
+      break;
+      case 'requests':
+      content = <Requests />;
       break;
     case 'customers':
       content = <Customers />;
