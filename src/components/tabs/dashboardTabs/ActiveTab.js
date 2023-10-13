@@ -98,8 +98,28 @@ const ActiveTab = ({data , searchQuery}) => {
           orderDate.includes(searchQueryLowerCase) 
         );
       });
+
+      
   
         setFilteredData(filteredData);
+
+
+         // Listen for real-time updates on the Firestore collection
+         const collectionRef = collection(db, 'orders'); // Replace 'orders' with your collection name
+         const q = query(collectionRef, where('order_status', '==', 'Active'));
+         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+           const updatedOrders = [];
+           querySnapshot.forEach((doc) => {
+             updatedOrders.push({ id: doc.id, ...doc.data() });
+           });
+           // Update the activeOrders state with real-time data
+           setActiveOrders(updatedOrders);
+         });
+ 
+         // Return the unsubscribe function to clean up the listener when the component unmounts
+         return () => {
+           unsubscribe();
+         };
       } catch (error) {
         console.error('Error fetching data:', error);
       }

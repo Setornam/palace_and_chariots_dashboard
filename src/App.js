@@ -10,6 +10,7 @@ import { auth } from './components/auth/firebase';
 import './App.css';
 
 
+
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -35,6 +36,7 @@ const App = () => {
 
   return (
     
+
     <Router>
       <Routes>
         <Route path="/" element={loading ? <SplashScreen /> : <Login />} />
@@ -51,6 +53,7 @@ const App = () => {
         
       </Routes>
     </Router>
+
     
   );
 };
