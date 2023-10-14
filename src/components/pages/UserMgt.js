@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {  FiSearch, FiPlusSquare, FiEye } from 'react-icons/fi';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {  createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification } from 'firebase/auth';
@@ -12,6 +12,7 @@ import { storage } from '../auth/firebase'; // Import Firebase Storage
 import 'firebase/firestore'; // 
 
 
+
 const UserMgt = () => {
 
     const genderOptions = ['Male', 'Female', ];
@@ -19,7 +20,9 @@ const UserMgt = () => {
     const accessRoleOptions = ['Standard User', 'System Admin']
     const [selectedProfilePhoto, setSelectedProfilePhoto] = useState(null);
     const [admins, setAdmins] = useState([]);
+    const profilePhotoInputRef = useRef(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [profilePhotoInputKey, setProfilePhotoInputKey] = useState(0);
     const rowsPerPage = 11;
     
 
@@ -30,6 +33,38 @@ const UserMgt = () => {
         const adminsData = snapshot.docs.map((doc) => doc.data());
         return adminsData;
       };
+
+      const updateProfilePhoto = async (userId, newProfilePhoto) => {
+        try {
+          // Upload the new profile photo
+          const storageRef = ref(storage, 'profile-photos/' + newProfilePhoto.name);
+          await uploadBytes(storageRef, newProfilePhoto);
+          const newProfilePhotoURL = await getDownloadURL(storageRef);
+      
+          // Update the Firestore document with the new profile photo URL
+          const userRef = doc(db, 'superAdmins', userId); // Adjust the collection name
+          await setDoc(userRef, { profilePhoto: newProfilePhotoURL }, { merge: true });
+      
+          return newProfilePhotoURL;
+        } catch (error) {
+          console.error('Error updating profile photo:', error);
+          return null;
+        }
+      };
+      
+
+      const handleProfilePhotoUpdate = async (userId, newProfilePhoto) => {
+        const updatedProfilePhotoURL = await updateProfilePhoto(userId, newProfilePhoto);
+        if (updatedProfilePhotoURL) {
+          // Handle the success, such as updating the UI to display the new profile photo
+          console.log('Profile photo updated successfully.');
+        } else {
+          // Handle the error
+          console.error('Failed to update profile photo.');
+        }
+      };
+      
+      
 
       useEffect(() => {
         // Fetch data from different collections
@@ -108,6 +143,8 @@ const UserMgt = () => {
     
       const handleSubmit = async (e) => {
         e.preventDefault();
+
+        
       
        
       
@@ -120,6 +157,18 @@ const UserMgt = () => {
         
             // Send a verification email to the user
             await sendEmailVerification(user);
+
+             // Upload profile photo if selected
+    if (selectedProfilePhoto) {
+      const updatedProfilePhotoURL = await updateProfilePhoto(user.uid, selectedProfilePhoto);
+      if (updatedProfilePhotoURL) {
+        // Handle the success, such as updating the UI to display the new profile photo
+        console.log('Profile photo updated successfully.');
+      } else {
+        // Handle the error
+        console.error('Failed to update profile photo.');
+      }
+    }
         
             // Create a new Firestore document with the form data
             const regularAdminCollection = collection(db, 'superAdmins'); // Replace with your collection name
@@ -137,7 +186,9 @@ const UserMgt = () => {
               employeeId: formData.employeeId,
               email: formData.email,
               workPhone: formData.workPhone,
-              profilePhoto: formData.profilePhoto, 
+              profilePhoto: selectedProfilePhoto ? selectedProfilePhoto.name : null,
+
+              
             });
 
           
@@ -184,19 +235,25 @@ const UserMgt = () => {
     const [profilePhoto, setProfilePhoto] = useState(null);
 
     const handlePhotoChange = async (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-          try {
-            const resizedImage = await resizeImage(selectedFile, 70, 70);
-            setProfilePhoto(URL.createObjectURL(resizedImage));
-          } catch (error) {
-            console.error('Error resizing image:', error);
-          }
-        } else {
-          // Clear the profile photo when no file is selected
-          setProfilePhoto(null);
+      const selectedFile = event.target.files[0];
+      if (selectedFile) {
+        try {
+          const resizedImage = await resizeImage(selectedFile, 150, 150);
+          setProfilePhoto(URL.createObjectURL(resizedImage));
+        } catch (error) {
+          console.error('Error resizing image:', error);
         }
-      };
+      } else {
+        // Clear the profile photo when no file is selected
+        setProfilePhoto(null);
+      }
+    
+      // Reset the profile photo input field
+      if (profilePhotoInputRef.current) {
+        profilePhotoInputRef.current.value = '';
+      }
+    };
+    
 
   
 
@@ -795,6 +852,10 @@ const UserMgt = () => {
                   name="profilePhoto"
                   accept="image/*"
                   onChange={handlePhotoChange}
+                  ref={profilePhotoInputRef} 
+                  key={profilePhotoInputKey} 
+
+
                 />
                 <span>Choose File</span>
                 
