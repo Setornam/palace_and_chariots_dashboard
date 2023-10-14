@@ -20,7 +20,6 @@ import {
 const AccessLog = () => {
 
   const [accessLogs, setAccessLogs] = useState([]);
-  const [users, setUsers] = useState({});
   const [superAdmins, setSuperAdmins] = useState({});
   const [deviceType, setDeviceType] = useState(null);
   const [browser, setBrowser] = useState('');
@@ -73,7 +72,8 @@ const AccessLog = () => {
     const fetchAccessLogs = async () => {
       try {
         const accessLogsCollection = collection(db, 'AccessLogs'); // Replace 'AccessLogs' with the actual name of your collection
-        const querySnapshot = await getDocs(query(accessLogsCollection, orderBy('time', 'desc')));
+        const accessLogsQuery = query(accessLogsCollection, orderBy('time', 'desc'));
+        const querySnapshot = await getDocs(accessLogsQuery);
 
         const logsData = [];
         querySnapshot.forEach((doc) => {
@@ -98,7 +98,7 @@ const AccessLog = () => {
         const superAdminsData = {};
         querySnapshot.forEach((doc) => {
           const superAdmin = doc.data();
-          superAdminsData.push(superAdmin);
+          superAdminsData[doc.id] = superAdmin; // Store superAdmin data in an object using the document ID as the key
         });
 
         setSuperAdmins(superAdminsData);
@@ -128,10 +128,9 @@ const AccessLog = () => {
             <tbody>
               
             {accessLogs.map((log, index) => {
-            const user = users[log.userId];   console.log('SuperAdmins:', superAdmins);
 
-            const superAdmin = superAdmins[log.employeeId]; // Get superAdmin data
-            const employeeName =  superAdmin?.firstName || 'Unknown User'; // Use superAdmin name if available
+              const superAdmin = superAdmins[log.email]; // Get superAdmin data using 'userId'
+            const employeeName = superAdmin ? superAdmin.firstName : 'Unknown User';
             const loginTime = log.loginTime ? new Date(log.loginTime.seconds * 1000) : null;
             const logoutTime = log.logoutTime ? new Date(log.logoutTime.seconds * 1000) : null;
 
@@ -146,7 +145,7 @@ const AccessLog = () => {
           : 'N/A' // Handle cases where time is not available or invalid
         }</td>
                 <td> {deviceType}</td>
-                <td>{isIOS && <p> iOS .</p>}
+                <td>{isIOS && <p> iOS</p>}
                     <span>{browserName}</span>
                     <span> on </span>
                     <span>{osName}</span>

@@ -94,9 +94,9 @@ const Login = () => {
           errorMessage =
             'Too many failed login attempts. Please reset your password or try again later.';
         } else {
-          // Handle other error codes here
-          errorMessage = 'An error occurred. Please check your internet connection and try again.';
-        }
+    // Handle other error codes here
+    errorMessage = 'An error occurred. Please check your internet connection and try again.';
+  }
   
         setError(errorMessage);
       });
