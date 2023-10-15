@@ -79,7 +79,7 @@ const PendingTab = ({ data, searchQuery }) => {
   
        // Filter data based on search query
       const filteredData = mergedData.filter((order) => {
-        const fullName = `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
+        const fullName = `${order.personal_info.first_name} ${order.personal_info.last_name}`.toLowerCase();
         const orderName = order.name.toLowerCase();
         const requestCategory = order.service.toLowerCase();
         const orderId = order.order_id.toLowerCase();
@@ -170,8 +170,9 @@ const PendingTab = ({ data, searchQuery }) => {
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
               <td>{order.order_id.slice(6, 14)}</td>
-              <td>{`${order.user.first_name} ${order.user.last_name}`}</td> {/* Access user data */}
-              <td>{order.service}</td>
+              <td>{order.personal_info.first_name || order.personal_info.last_name
+    ? `${order.personal_info.first_name} ${order.personal_info.last_name}`
+    : "N/A"}</td>              <td>{order.service}</td>
               <td>{order.name}</td>
               <td className='state'>
                 <select
