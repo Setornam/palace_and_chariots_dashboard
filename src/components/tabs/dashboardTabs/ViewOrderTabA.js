@@ -54,7 +54,7 @@ const ViewOrderTabA = ({ title,
                 <li>Request: {name}</li>
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Pick-up Date: <p>date{orderData.check_in}</p>
+                    Pick-up Date: <p>{orderData.check_in}</p>
                   </span>
                   <span>
                     Pick-up Time: {checkOut}
@@ -63,7 +63,7 @@ const ViewOrderTabA = ({ title,
 
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Drop-off Date: <p>date{orderData.check_in}</p>
+                    Drop-off Date: <p>{orderData.check_in}</p>
                   </span>
                   <span>
                     Drop-off Time: {checkOut}
@@ -91,22 +91,22 @@ const ViewOrderTabA = ({ title,
               <h4>Customer Details</h4>
               <div className={contactDetails}>
                 <ul>
-                  <li>First Name:{orderData.first_name}</li>
-                  <li>Last Name: {orderData.last_name}</li>
-                  <li>Email: {orderData.email_address}</li>
-                  <li>Country: {orderData.country}</li>
-                  <li> Contact: {orderData.phone}</li>
+                  <li>First Name: {orderData.personal_info.first_name}</li>
+                  <li>Last Name: {orderData.personal_info.last_name}</li>
+                  <li>Email: {orderData.personal_info.email}</li>
+                  <li>Country: {orderData.personal_info.country}</li>
+                  <li> Contact: {orderData.personal_info.phone_number}</li>
                 </ul>
               </div>
 
                <h4>Driver Details</h4>
               <div className={contactDetails}>
                 <ul>
-                  <li>First Name:{orderData.first_name}</li>
-                  <li>Last Name: {orderData.last_name}</li>
-                  <li>Email Address: {orderData.email_address}</li>
-                  <li>Country/Region: {orderData.country}</li>
-                  <li> Contact Number: {orderData.phone}</li>
+                  <li>First Name: {orderData.driver_details.full_name}</li>
+                  <li>Last Name: {orderData.driver_details.email}</li>
+                  <li>License Number: {orderData.driver_details.license_number}</li>
+                  <li>Country/Region: {orderData.driver_details.country}</li>
+                  <li> Contact Number: {orderData.driver_details.phone_number}</li>
                 </ul>
               </div>
             </span>

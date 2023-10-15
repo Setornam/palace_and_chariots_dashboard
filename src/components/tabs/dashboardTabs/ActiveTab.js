@@ -282,7 +282,7 @@ const ActiveTab = ({data , searchQuery}) => {
               />
             );
 
-          }  else if (requestCategory === 'security') {
+          }  else if (requestCategory === 'car-sales' || requestCategory === 'house-sales') {
             return (
               <ViewOrderTabB
                 key={tabIndex}

@@ -75,11 +75,11 @@ const ViewOrderTabB = ({ title,
               <h4>Customer Details</h4>
               <div className={contactDetails}>
                 <ul>
-                  <li>First Name:{orderData.first_name}</li>
-                  <li>Last Name: {orderData.last_name}</li>
-                  <li>Email Address: {orderData.email_address}</li>
-                  <li>Country/Region: {orderData.country}</li>
-                  <li> Contact Number: {orderData.phone}</li>
+                  <li>First Name: {orderData.personal_info.first_name}</li>
+                  <li>Last Name: {orderData.personal_info.last_name}</li>
+                  <li>Email Address: {orderData.personal_info.email}</li>
+                  <li>Country/Region: {orderData.personal_info.country}</li>
+                  <li> Contact Number: {orderData.personal_info.phone_number}</li>
                 </ul>
               </div>
             </span>

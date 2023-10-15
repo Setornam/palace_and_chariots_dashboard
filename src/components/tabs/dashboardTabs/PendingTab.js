@@ -6,8 +6,8 @@ import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
 import ViewOrderTabA from './ViewOrderTabA';
 import ViewOrderTabB from './ViewOrderTabB';
-
-
+import ViewOrderTabC from './ViewOrderTabC';
+import ViewOrderTabD from './ViewOrderTabD';
 
 const PendingTab = ({ data, searchQuery }) => {
 
@@ -208,7 +208,7 @@ const PendingTab = ({ data, searchQuery }) => {
           const orderData = filteredData[tabIndex];
           const requestCategory = orderData.service.toLowerCase();
 
-          if (requestCategory === 'accommodation-rentals' ) {
+          if (requestCategory === 'accommodation-rentals' || requestCategory === 'accommodation-hotels') {
             return (
               <ViewOrderTab
                 key={tabIndex}
@@ -255,9 +255,57 @@ const PendingTab = ({ data, searchQuery }) => {
               />
             );
 
-          } else {
+          }  else if (requestCategory === 'car-sales' || requestCategory === 'house-sales') {
             return (
-          <ViewOrderTabB
+              <ViewOrderTabB
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          }   else if (requestCategory === 'tourism') {
+            return (
+              <ViewOrderTabC
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          }else {
+            return (
+          <ViewOrderTabD
             key={tabIndex}
             title={`Order ${tabIndex + 1}`} 
             orderData={filteredData[tabIndex]}
