@@ -96,7 +96,7 @@ const ViewOrderTab = ({ title,
               </ul>
               
               </div>
-              <form className={form}>
+              <form className={form} >
                 <label for="status">Status</label>
                 <select name="status" id="status">
                   <option value="" disabled selected hidden>{orderData.order_status}</option>
