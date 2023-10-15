@@ -208,7 +208,7 @@ const PendingTab = ({ data, searchQuery }) => {
           const orderData = filteredData[tabIndex];
           const requestCategory = orderData.service.toLowerCase();
 
-          if (requestCategory === 'accommodation-rentals') {
+          if (requestCategory === 'accommodation-rentals' ) {
             return (
               <ViewOrderTab
                 key={tabIndex}

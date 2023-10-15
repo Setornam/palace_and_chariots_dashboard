@@ -6,7 +6,8 @@ import { db } from '../../auth/firebase';
 import ViewOrderTab from './ViewOrderTab';
 import ViewOrderTabA from './ViewOrderTabA';
 import ViewOrderTabB from './ViewOrderTabB';
-
+import ViewOrderTabC from './ViewOrderTabC';
+import ViewOrderTabD from './ViewOrderTabD';
 
 
 const ActiveTab = ({data , searchQuery}) => {
@@ -46,14 +47,13 @@ const ActiveTab = ({data , searchQuery}) => {
       try {
         // Fetch users and create a map for efficient lookups
         const usersCollection = collection(db, 'users');
-    const usersSnapshot = await getDocs(usersCollection);
-    console.log('usersSnapshot', usersSnapshot);
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersData = {};
+        usersSnapshot.forEach((doc) => {
+          const userData = doc.data();
+          usersData[userData.user_id] = userData;
 
-    const usersData = {};
-    usersSnapshot.forEach((doc) => {
-      const userData = doc.data();
-      usersData[userData.user_id] = userData;
-    });
+        });
 
         // Fetch orders
         const ordersCollection = collection(db, 'orders');
@@ -71,10 +71,8 @@ const ActiveTab = ({data , searchQuery}) => {
           console.log('List of Users', user)
           return {
             ...order,
-            user: {
-              ...user,
-              // Add additional user-related properties as needed
-            },
+            user,
+            
           };
         });
 
@@ -200,7 +198,7 @@ const ActiveTab = ({data , searchQuery}) => {
               <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
               <td>{order.order_date}</td>
               <td>{order.order_id.slice(6, 14)}</td>
-              <td>{`${order.user.first_name || ''} ${order.user.last_name || ''}`}</td>
+              <td>{order.user.first_name}</td>
               <td>{order.service}</td>
               <td>{order.name}</td>
               <td className='state'>
@@ -237,7 +235,7 @@ const ActiveTab = ({data , searchQuery}) => {
           const orderData = filteredData[tabIndex];
           const requestCategory = orderData.service.toLowerCase();
 
-          if (requestCategory === 'accommodation-rentals' || 'accommodation-hotels') {
+          if (requestCategory === 'accommodation-rentals' || requestCategory === 'accommodation-hotels') {
             return (
               <ViewOrderTab
                 key={tabIndex}
@@ -284,9 +282,57 @@ const ActiveTab = ({data , searchQuery}) => {
               />
             );
 
-          } else {
+          }  else if (requestCategory === 'security') {
             return (
-          <ViewOrderTabB
+              <ViewOrderTabB
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          }   else if (requestCategory === 'tourism') {
+            return (
+              <ViewOrderTabC
+                key={tabIndex}
+                title={`Order ${tabIndex + 1}`}
+                orderData={orderData}
+                content={`Tab Content ${tabIndex + 1}`}
+                onClose={() => handleTabClose(tabIndex)}
+                tabContainerClassName="custom-tab-container"
+                topBarClassName="custom-top-bar"
+                contentClassName="custom-content"
+                greyAreaContainer="grey-area"
+                contentContainerAreaClassName="custom-content-container-area"
+                requestDetailsContainer="request-details-container"
+                bottomBorder="custom-bottom-border"
+                headingThree="heading-three"
+                secondSection='custom-second-section'
+                contactDetails='custom-contact-details'
+                checkInAndOut='check-in-and-out'
+                form='form'
+                // Add specific props for ViewOrderTabB
+              />
+            );
+
+          }else {
+            return (
+          <ViewOrderTabD
             key={tabIndex}
             title={`Order ${tabIndex + 1}`} 
             orderData={filteredData[tabIndex]}
@@ -592,7 +638,7 @@ const ActiveTab = ({data , searchQuery}) => {
 
             .custom-second-section{
               display: flex;
-              width: 937px;
+              width: 73.2vw;
               height: 90%;
             }
 

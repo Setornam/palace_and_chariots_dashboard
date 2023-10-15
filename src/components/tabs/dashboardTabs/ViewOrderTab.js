@@ -77,19 +77,20 @@ const ViewOrderTab = ({ title,
                 <li>Request: {name}</li>
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Check In: <p>date{orderData.check_in}</p>
+                    Check In: <p>{orderData.check_in}</p>
                   </span>
                   <span>
-                    Check Out: {checkOut}
+                    Check Out: <p>{checkOut}</p>
                   </span>
                 </div>
                 <div className={checkInAndOut}>
                   <span style={{marginRight:'100px'}}>
-                    Guest: <p>date{orderData.check_in}</p>
+                    Guest: <p>{orderData.number_of_rooms} rooms - {orderData.number_of_adults} adults - {orderData.number_of_children} children</p>
                   </span>
                   
                 </div>
                 <li>Dates<br/>{orderData.order_date}</li>
+                <li>Room(s)<br/>{orderData.roomType}</li>
                 <li style={{color:'#595959',fontSize:'14px'}}>Total<br/><b>US${orderData.price}</b></li>
                 
               </ul>
@@ -111,11 +112,11 @@ const ViewOrderTab = ({ title,
               <h4>Customer Details</h4>
               <div className={contactDetails}>
                 <ul>
-                  <li>First Name:{orderData.first_name}</li>
-                  <li>Last Name: {orderData.last_name}</li>
-                  <li>Email Address: {orderData.email_address}</li>
-                  <li>Country/Region: {orderData.country}</li>
-                  <li> Contact Number: {orderData.phone}</li>
+                  <li>First Name: {orderData.personal_info.first_name}</li>
+                  <li>Last Name: {orderData.personal_info.last_name}</li>
+                  <li>Email Address: {orderData.personal_info.email}</li>
+                  <li>Country/Region: {orderData.personal_info.country}</li>
+                  <li> Contact Number: {orderData.personal_info.phone_number}</li>
                 </ul>
               </div>
             </span>
@@ -136,6 +137,8 @@ const ViewOrderTab = ({ title,
             z-index: 1000000;
             cursor: pointer;
           }
+
+          
 
           .tab{
             background-color: white;
