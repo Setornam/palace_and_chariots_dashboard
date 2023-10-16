@@ -8,7 +8,7 @@ import Gallery from 'react-image-gallery';
 
 
 
-const ViewProductsTab = ({ 
+const ViewProductsTab1 = ({ 
     
     product,
     onClose,
@@ -123,323 +123,126 @@ const ViewProductsTab = ({
           <div className='border'> </div>
 
           <div>
-            <div>
-      {/* Fields for Hotel Facilities */}
-      <h2>Facilities</h2>
+          <div>
+      {/* Fields for Vehicle Saloon */}
+      <h2>Features</h2>
       <div className='add-fields'>
         <div className='add-left-column'>
-            <div className='checkboxes'>
-                <label>
-                    <input
-                    type="checkbox"
-                    name="swimmingPool"
-                    checked={checkboxes.swimmingPool}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Swimming Pool
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="privateParking"
-                    checked={checkboxes.privateParking}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Private Parking
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="freeWifi"
-                    checked={checkboxes.freeWifi}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Free Wifi
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="disabledGuests"
-                    checked={checkboxes.disabledGuests}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Facilities for disabled guests
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="freeWifiInAllAreas"
-                    checked={checkboxes.freeWifiInAllAreas}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Free Wifi in all areas
-                </label>
-            </div>
+          <label htmlFor='model'>Model</label>
+          <input
+            type='text'
+            id='model'
+          />
+  
+          <label htmlFor='seats'>Seats</label>
+          <input
+            type='text'
+            id='seats'
+          />
+  
+          <label htmlFor='horsePower'>Horse Power</label>
+          <input
+            type='text'
+            id='horsePower'
+          />
+  
+          <label htmlFor='interiorColor'>Interior Color</label>
+          <input
+            type='text'
+            id='interiorColor'
+          />
+
+          <label htmlFor='pricePerDay'>Price (per day)</label>
+          <input
+            type='text'
+            id='pricePerDay'
+            required
+          />
+
+            <label htmlFor='freeCancellation'>Free Cancellation</label>
+            <select
+            id='freeCancellation'
+            >
+            <option value=''>Select free cancellation</option>
+            <option value='24 hours'>24 hours</option>
+            <option value='48 hours'>48 hours</option>
+            </select>
+
+            <label htmlFor='quantity'>Quantity</label>
+            <input
+            type='number'
+            id='quantity'
+            min='1'
+            max='10000'
+        />
         </div>
         <div className='add-middle-column'>
-            <div className='checkboxes'>
-                <label>
-                    <input
-                    type="checkbox"
-                    name="familyRooms"
-                    checked={checkboxes.familyRooms}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Family Rooms
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="spaAndWellness"
-                    checked={checkboxes.spaAndWellness}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Spa and Wellness Center
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="airportShuttle"
-                    checked={checkboxes.airportShuttle}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Airport Shuttle
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="freeParking"
-                    checked={checkboxes.freeParking}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Free Parking
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="security"
-                    checked={checkboxes.security}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    24/7 Security
-                </label>
-                <br />
-                
-            </div>
+        <label htmlFor='make'>Make</label>
+          <input
+            type='text'
+            id='make'
+          />
+          <label htmlFor='color'>Color</label>
+          <input
+            type='text'
+            id='color'
+          />
+          <label htmlFor='yearOfManufacture'>Year of Manufacture</label>
+          <input
+            type='text'
+            id='yearOfManufacture'
+          />
+          <label htmlFor='engineSize'>Engine Size</label>
+          <input
+            type='text'
+            id='engineSize'
+          />
+          <label htmlFor='transmission'>Transmission</label>
+          <input
+            type='text'
+            id='transmission'
+          />
+          <label htmlFor='discount'>Discount</label>
+          <input
+            type='text'
+            id='discount'
+          />
+
+    
+
+          <label htmlFor='numberOfBags'>Number of Bags</label>
+          <input
+            type='text'
+            id='numberOfBags'
+          />
         </div>
         <div className='add-right-column'>
             <label >Images</label>
             <div className='file-input-outer-container'>
                 <div className='file-input-container'>
-                <Dropzone
-                  accept='image/*'
-                  multiple
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <div {...getRootProps()} className='file-input-outer-container '>
-                      <input {...getInputProps()} className='custom-file-input' />
-                      <label className='custom-file-label'>
-                        Click to add Hotel Images
-                      </label>
-                    </div>
-                  )}
-        </Dropzone>
-                     {/* Display uploaded hotel images using the Gallery component */}
-        <div className='image-preview'>{hotelImages.length > 0 && <Gallery
-          items={hotelImages}
-          showThumbnails={true}
-          showFullscreenButton={true}
-          showPlayButton={false}
-        />}</div>
-                </div>
-            </div>
-            
-        </div>
-      </div>
-      <div className='border'> </div>
-      <div>
-      
-      <h2>Rooms</h2>
-      <div className='add-fields'>
-        <div className='add-left-column'>
-          <label htmlFor='roomType'>Room Type</label>
-          <input
-            type='text'
-            id='roomType'
-            required
-          />
-
-          <h2>Occupancy</h2>
-  
-          <label htmlFor='adultsOccupancy'>Adults</label>
-          <input
-            type='number'
-            id='adultsOccupancy'
-            min='0'
-            max='10000'
-            style={{width: '100px'}}
-          />
-
-          <label htmlFor='childrenOccupancy'>Children</label>
-          <input
-            type='number'
-            id='childrenOccupancy'
-            min='0'
-            max='10000'
-            style={{width: '100px'}}
-          />
-  
-          <label htmlFor='hotelDiscount'>Discount</label>
-          <input
-            type='text'
-            id='hotelDiscount'
-          />
-
-            <div className='checkboxes'>
-                <label>
                     <input
-                    type="checkbox"
-                    name="kingSizeBed"
-                    checked={checkboxes.kingSizeBed}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    King Size Bed
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="queenSizeBed"
-                    checked={checkboxes.queenSizeBed}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Queen Size Bed
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="singleBed"
-                    checked={checkboxes.singleBed}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Single Bed
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="doubleBed"
-                    checked={checkboxes.doubleBed}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Double Bed
-                </label>
-                <br />
-                <label>
-                    <input
-                    type="checkbox"
-                    name="breakfastAvailable"
-                    checked={checkboxes.breakfastAvailable}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Breakfast Available
-                </label>
-                <br />
-
-                <label>
-                    <input
-                    type="checkbox"
-                    name="airCondition"
-                    checked={checkboxes.airCondition}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Air Condition
-                </label>
-                <br />
-
-                <label>
-                    <input
-                    type="checkbox"
-                    name="freeToiletries"
-                    checked={checkboxes.freeToiletries}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Free Toiletries
-                </label>
-                <br />
-
-                <label>
-                    <input
-                    type="checkbox"
-                    name="miniBar"
-                    checked={checkboxes.miniBar}
-                    onChange={handleCheckboxChange}
-                    />{' '}
-                    Complimentary Minibar
-                </label>
-                <br />
-            </div>
-
-          
-  
-        </div>
-        <div className='add-middle-column'>
-        <label htmlFor='hotelPrice'>Price</label>
-          <input
-            type='text'
-            id='hotelPrice'
-          />
-          
-        
-        </div>
-        <div className='add-right-column'>
-            <label >Room Images</label>
-            <div className='file-input-outer-container'>
-                <div className='file-input-container'>
-                <Dropzone
-                  accept='image/*'
-                  multiple
-                >
-                    {({ getRootProps, getInputProps }) => (
-                      <div {...getRootProps()} className='file-input-outer-container'>
-                        <input {...getInputProps()} className='custom-file-input' />
-                        <label className='custom-file-label'>
-                          Click to add Room Images
-                        </label>
-                      </div>
-                    )}
-              </Dropzone>
-                      <div className='image-preview'>
-                        {/* Display uploaded room images using the Gallery component */}
-        {roomImages.length > 0 && <Gallery
-          items={roomImages}
-          showThumbnails={true}
-          showFullscreenButton={true}
-          showPlayButton={false}
-        />}
-                      </div>
+                    type='file'
+                    id='images'
+                    accept='image/*'
+                    multiple
+                    className='custom-file-input'
+                    />
+                    <label htmlFor='images' className='custom-file-label'>
+                    Click to add Images
+                    </label>
                 </div>
             </div>
         </div>
       </div>
-    </div>
     </div>
           </div>
 
           
-        <div>
-          <br/>
-          <br/><br/>
-        </div>
+          <div>
+            <br/>
+            <br/>
+            <br/>
+          </div>
         </form>
       </div>
       
@@ -747,4 +550,4 @@ const ViewProductsTab = ({
   )
 }
 
-export default ViewProductsTab
+export default ViewProductsTab1

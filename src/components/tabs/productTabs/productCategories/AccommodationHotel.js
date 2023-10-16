@@ -88,7 +88,7 @@ const AccommodationHotel = ({ additionalFields, onAdditionalFieldsChange }) => {
   return (
     <div>
       {/* Fields for Hotel Facilities */}
-      <h2>Hotel Facilities</h2>
+      <h2>Facilities</h2>
       <div className='add-fields'>
         <div className='add-left-column'>
             <div className='checkboxes'>
@@ -355,7 +355,6 @@ const AccommodationHotel = ({ additionalFields, onAdditionalFieldsChange }) => {
 
           
   
-          
         </div>
         <div className='add-middle-column'>
         <label htmlFor='hotelPrice'>Price</label>

@@ -4,6 +4,11 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs,  doc, updateDoc, query, where, } from 'firebase/firestore';
 import { db } from '../../auth/firebase';
 import ViewProductsTab from './ViewProductsTab';
+import ViewProductsTab1 from './ViewProductsTab1';
+import ViewProductsTab2 from './ViewProductsTab2';
+import ViewProductsTab3 from './ViewProductsTab3';
+
+
 
 const AllProducts = ({selectedFilter, searchQuery}) => {
 
@@ -61,6 +66,8 @@ const AllProducts = ({selectedFilter, searchQuery}) => {
   
     fetchData();
   }, [selectedFilter]);
+
+  
 
   
   useEffect(() => {
@@ -137,13 +144,13 @@ const AllProducts = ({selectedFilter, searchQuery}) => {
 
             {pageData.map((product, index) => (
             <tr key={index} className='table-row'>
-              <td>{product.name}</td>
-              <td>{product.service}</td>
-              <td>{product.category}</td>
-              <td>{product.price}</td>
-              <td>{product.discount}</td>
-              <td>{product.quantity}</td>
-              <td>{product.product_status}</td>
+              <td>{product.name ? product.name : "N/A"}</td>
+              <td>{product.service ? product.service : "N/A"}</td>
+              <td>{product.category ? product.category : "N/A"}</td>
+              <td>{product.price ? product.price : "N/A"}</td>
+              <td>{product.discount ? product.discount : "N/A"}</td>
+              <td>{product.quantity ? product.quantity : "N/A"}</td>
+              <td>{product.product_status ? product.product_status : "N/A"}</td>
               <td>
               <FiChevronRight className='icon'
                 onClick={() => handleTabClick(index)} />
@@ -162,16 +169,74 @@ const AllProducts = ({selectedFilter, searchQuery}) => {
           </table>
 
           <div className='tabs-content'>
-            {activeTabs.map((tabIndex) => (
-              <ViewProductsTab
-                onClose={() => handleTabClose(tabIndex)}
-                tabContainerClassName="custom-tab-container"
-                topBarClassName='custom-top-bar'
+  {activeTabs.map((tabIndex) => {
+    const productData = products[tabIndex];
+
+    if (productData) {
+      const requestCategory = (productData.category || '').toLowerCase();
+
+      if (requestCategory === 'hotel' || requestCategory === 'apartment') {
+        return (
+          <ViewProductsTab
+            key={tabIndex}
+            product={productData}
+            onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName='custom-top-bar'
+            formContainerClassName='custom-form-container'
+            category={requestCategory}
+            products={productData.products}
+          />
+        );
+      } else if (requestCategory === 'saloon') {
+        return (
+          <ViewProductsTab1
+            key={tabIndex}
+            product={productData}
+            onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName='custom-top-bar'
+            formContainerClassName='custom-form-container'
+            category={requestCategory}
+            products={productData.products}
+          />
+        );
+
+      } else if (requestCategory === 'event-service') {
+        return (
+          <ViewProductsTab2
+            key={tabIndex}
+            product={productData}
+            onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName='custom-top-bar'
+            formContainerClassName='custom-form-container'
+            category={requestCategory}
+            products={productData.products}
+          />
+        );
+
+      }else {
+        return (
+          <ViewProductsTab3
+            key={tabIndex}
+            onClose={() => handleTabClose(tabIndex)}
+            tabContainerClassName="custom-tab-container"
+            topBarClassName='custom-top-bar'
+            formContainerClassName='custom-form-container'
+            category={requestCategory}
+            products={productData.products}
+          />
+        );
+      }
+    } else {
+      // Handle the case where productData is undefined or doesn't have a category
+      return null;
+    }
+  })}
+</div>
 
 
-              />
-            ))}
-          </div>
 
           <div className="pagination">
         

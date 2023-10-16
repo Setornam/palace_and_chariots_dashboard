@@ -20,6 +20,7 @@ const Products = () => {
   const [isEditingLabel, setIsEditingLabel] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
+  
 
   const tabData = [
     { id: 1, label: 'All Products' },
@@ -70,7 +71,7 @@ const Products = () => {
           <div className="heading-container">
             <h1>Products</h1>
           </div>
-          <div className={`search-container ${activeTab === 2 ? 'hidden' : ''}`}>
+          <div className={`search-container ${activeTab === 2  ? 'hidden' : ''}`}>
             <div className="search-box">
               <div className="search-icon">
                 <FiSearch size={18} color="#8B8B8B" />
@@ -445,7 +446,6 @@ const Products = () => {
           .selected-filter {
             margin-top: 5.5px;
             width: 200px;
-            {/* background-color: red; */}
             font-weight: bold;
             color: white;
             position: relative;
@@ -464,6 +464,14 @@ const Products = () => {
               width: 85.14vw;
               z-index: 100000000000000000;
               border-radius: 
+            }
+
+            .custom-form-container{
+              width: 78.125vw;
+              height: 95%;
+              position: relative;
+              left: 8.59vw;
+              padding-left: 3.125vw;
             }
 
             .custom-top-bar{
