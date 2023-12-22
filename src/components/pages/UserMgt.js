@@ -824,7 +824,7 @@ const UserMgt = () => {
                             </div>
                                            </form>
                     </div>
-                    <div className="right-column">
+                    {/* <div className="right-column">
         <br></br>
         <br></br>
         
@@ -866,7 +866,7 @@ const UserMgt = () => {
             
           </div>
         )}
-      </div>
+      </div> */}
              
                     </div>
                     

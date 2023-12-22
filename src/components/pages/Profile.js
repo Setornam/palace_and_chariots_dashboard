@@ -9,8 +9,8 @@ const Profile = () => {
 
   const tabData = [
     { id: 'editProfile', label: 'Edit Profile', content: <EditProfile /> },
-    { id: 'notification', label: 'Notification', content: <Notification /> },
-    { id: 'password', label: 'Password', content: <Password /> },
+    // { id: 'notification', label: 'Notification', content: <Notification /> },
+    // { id: 'password', label: 'Password', content: <Password /> },
   ];
 
   const handleTabChange = (tabId) => {

@@ -6,21 +6,21 @@ import { db, auth } from './auth/firebase';
 import 'firebase/firestore'
 
 const Admin = () => {
-  const [activeMenu, setActiveMenu] = useState('profile');
+  const [activeMenu, setActiveMenu] = useState('dashboard');
   const [accessRole, setAccessRole] = useState(null);
 
 
   // Define different menus based on the user's access role
   const standardMenu = [
     { id: 'requests', label: 'Requests' },
-    { id: 'messages', label: 'Messages' },
+    // { id: 'messages', label: 'Messages' },
   ];
 
   const systemAdminMenu = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'products', label: 'Products' },
     { id: 'customers', label: 'Customers' },
-    { id: 'messages', label: 'Messages' },
+    // { id: 'messages', label: 'Messages' },
     { id: 'audit-logs', label: 'Audit Logs' },
     { id: 'user-management', label: 'User Management' },
   ];

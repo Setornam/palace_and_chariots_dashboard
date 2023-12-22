@@ -121,7 +121,7 @@ const EditProfile = () => {
       </div>
 
       
-      <div className="right-column">
+      {/* <div className="right-column">
         <br></br>
         <br></br>
         
@@ -157,7 +157,7 @@ const EditProfile = () => {
             
           </div>
         )}
-      </div>
+      </div> */}
 
       <style jsx>{`
         .edit-profile {
