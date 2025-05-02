@@ -12,7 +12,8 @@ const Admin = () => {
 
   // Define different menus based on the user's access role
   const standardMenu = [
-    { id: 'requests', label: 'Requests' },
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'requests', label: 'Account Summary' },
     // { id: 'messages', label: 'Messages' },
   ];
 

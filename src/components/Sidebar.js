@@ -146,7 +146,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
           .menu-item {
             display: flex;
             align-items: center;
-            padding: 0 0 40px 20px;
+            padding: 0 0 20px 0px;
             font-size: 1rem;
             font-weight: 400;
             cursor: pointer;
@@ -156,7 +156,7 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
               display: flex; 
               color: white;
               cursor: pointer;
-              padding: 0 0 40px 20px;
+              padding: 0 0 20px 0px;
 
             }
             .logout-button li{
@@ -192,20 +192,20 @@ const Sidebar = ({ menus, activeMenu, onMenuClick }) => {
             width: 200px;
             height: 0;
             border: 0.5px #ECF0F4 solid; /* Add border between menus */
-            margin: 100px 0 0 0;
-            margin: 100px auto 0 auto; 
+            margin: 200px 0 0 0;
+            margin: 250px auto 0 auto; 
             }
 
             .logo-container {
             display: flex;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             padding-top: 0;
             }
 
             .logo-image {
-            width: 138px; /* Set the width of the logo */
+            width: 200px; /* Set the width of the logo */
             height: auto; /* Maintain aspect ratio */
             }
 

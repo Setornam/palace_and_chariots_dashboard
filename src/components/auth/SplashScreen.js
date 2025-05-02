@@ -5,7 +5,7 @@ import logoImage from '../Images/logo.png'; // Import the logo image
 const SplashScreen = () => {
   return (
     <div className="splash-screen">
-      {/* <img src={logoImage} alt="Logo" className="logo-image" /> */}
+      <img src={logoImage} alt="Logo" className="logo-image" />
 
 
 

@@ -178,14 +178,14 @@ const Dashboard = () => {
     return (
         <div className='main-container'>
             <div className='dashboard'>
-                <h1>Dashboard</h1> 
+                <h1></h1> 
                 <div className='inner-dashboard'>
                     <div className='services-box'>
-                        <h2>{Object.keys(serviceCounts).length}</h2>
-                        <h3>Services</h3>
+                        <h3>Available Balance</h3>
+                        <h2>{Object.keys(serviceCounts).length} GHS</h2>
                     </div>
 
-                    <div className='request-box'>
+                    {/* <div className='request-box'>
                         <h2>{orderCount}</h2>
                         <h3>Total Request</h3>
                     </div>
@@ -198,16 +198,16 @@ const Dashboard = () => {
                     <div className='services-box'>
                         <h2>{messageCount}</h2>
                         <h3>Messages</h3>
-                    </div>
+                    </div> */}
                 </div>
 
             </div>  
 
 
             <div className='tabs-container'>
-                <h3>Requests</h3>
+                <h3>Account Summary</h3>
                 <div className="inner-dashboard">
-          {tabData.map((tab) => (
+          {/* {tabData.map((tab) => (
             <div
               key={tab.id}
               className={`tab ${activeTab === tab.id ? 'active' : ''}`}
@@ -215,8 +215,8 @@ const Dashboard = () => {
             >
               {tab.label}
             </div>
-          ))}
-          <div className='search-container'>
+          ))} */}
+          {/* <div className='search-container'>
                     <div className="search-box">
 
                     <div className="search-icon">
@@ -231,7 +231,7 @@ const Dashboard = () => {
                         />
                     
                     </div>
-                </div>
+                </div> */}
         </div>
         <div className="tab-content">
         {activeTab === 1 && <ActiveTab searchQuery={searchQuery} />}
@@ -269,7 +269,7 @@ const Dashboard = () => {
 
                 }
                 .services-box {
-                    width: 14.06vw;
+                    width: 88%;
                     height: 11.64vh;
                     background-color: white;
                     margin: 0 5.12vw 0 0;
@@ -282,7 +282,7 @@ const Dashboard = () => {
                     width: 16.9vw;
                     height: 11.63vh;
                     background-color: white;
-                    margin: 0 5.12vw 0 0;
+                    margin: 0px 5.12vw 0 0;
                     text-align: center;
                     border: 0.5px solid #CDCDCD;
                     border-radius: 6px;
@@ -322,7 +322,7 @@ const Dashboard = () => {
                     font-size:1.7rem;
                     color:#595959;
                     font-weight: 600;
-                    padding-top: 1.172vh;
+                    padding-top: 5.172vh;
                 }
 
                 .tab {

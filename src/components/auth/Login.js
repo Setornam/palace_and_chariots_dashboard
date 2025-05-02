@@ -178,7 +178,7 @@ const Login = () => {
                 </div>
               </form>
               <div style={noAccount}>
-                <div style={greyLine}></div>
+                {/* <div style={greyLine}></div> */}
                 <div
                   style={{
                     width: 110,
@@ -192,16 +192,16 @@ const Login = () => {
                     paddingTop: 5,
                   }}
                 >
-                  No Account?
+                  {/* No Account? */}
                 </div>
-                <div style={greyLine}></div>
+                {/* <div style={greyLine}></div> */}
               </div>
 
-              <p className="text-sm text-white text-center">
+              {/* <p className="text-sm text-white text-center">
                 <NavLink to="/signup" style={registerButton}>
                   Register
                 </NavLink>
-              </p>
+              </p> */}
             </div>
           </div>
         </section>
@@ -228,7 +228,7 @@ const logoContainer = {
     color: '#FFFFFF',
     borderRadius: '10px 0 0 10px',
     width: 198, 
-    height: 483, 
+    height: 353, 
     background: '#071EC3', 
     //borderTopLeftRadius: 10, 
     //borderTopRightRadius: 10
@@ -265,7 +265,7 @@ const logoContainer = {
     paddingLeft: '5%',
     justifyContent: 'center',
     width: 422,
-    height: 483, 
+    height: 353, 
     background: 'white', 
     borderBottomRightRadius: 10, 
     borderTopRightRadius: 10, 
